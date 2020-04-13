@@ -36,6 +36,9 @@
         .tab{
             margin: 0 1rem;
         }
+        html{
+            scroll-behavior: smooth;
+        }
         </style>
 
     <title>04 TS & Modern JS</title>
@@ -49,12 +52,87 @@
                 let, const, destructuring, spread operator, etc... and what TS does with this syntax. <em>This is review</em>. JS has a few new features that are supported by some browsers. <a href="https://kangax.github.io/compat-table/es6/">This chart</a> will allow you to see what browsers support features and how TS can handle it. This is useful to see what target you need to set. Most of this is ES6+. TS will allow you to use these features in development and will then compile them to older JS that didn't handle these features. 
             </p>
         </header>
+
+        <h2 id="00" class="subtitle">Index</h2>
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th scope="col">#</th>
+                    <th scope="col">Topic</th>
+                    <th scope="col">Description</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <th scope="row">1</th>
+                    <td>
+                        <a href="#01">let and const</a>
+                    </td>
+                    <td>
+                        let and const vs var and their scope and access.
+                    </td>
+                </tr>
+                <tr>
+                    <th scope="row">2</th>
+                    <td>
+                        <a href="#02">Arrow Functions</a>
+                    </td>
+                    <td>
+                        ES6 function declaration using => and setting default values for arguments.
+                    </td>
+                </tr>
+                <tr>
+                    <th scope="row">3</th>
+                    <td>
+                        <a href="#03">Spread Operator</a>
+                    </td>
+                    <td>
+                        Using the spread operator on Arrays and Objects to use the individual values of an array or objects by setting them into a separate array for use. <code>arr1.push(...arr2)</code> <code>const copy = { ...person }</code>
+                    </td>
+                </tr>
+                <tr>
+                    <th scope="row">4</th>
+                    <td>
+                        <a href="#04">Rest Parameters (Unlimited params in a function), reduce() and tuples with Rest Parameters</a>
+                    </td>
+                    <td>
+                        Use the spread operator inside your function declarations to enable unlimited parameters with comma separated values <code>const fnName(...numbers: number[])=>{ ... }</code> call with <code>fName(1,2,3,4,5...)</code>
+                        <br>
+                        <strong>reduce()</strong> Use a callback to add up the values of an array. <code>variable.reduce((previousValue,currentValue)=>{ ... },stratingIndex:number)</code>
+                        <br>
+                        <strong>Tupes with rest params</strong> Set a fixed number of params with less code with <code>const fnName = (...numbers: [number, number, number])=>{ ... }</code> can take 3 number params of type number. 
+                    </td>
+                </tr>
+                <tr>
+                    <th scope="row">5</th>
+                    <td>
+                        <a href="#05">Array and Object Destructuring</a>
+                    </td>
+                    <td>
+                        <strong>Destructuring with arrays</strong>
+                        <br>
+                        Declare multiple variables at once from an array <code>const [n1,n2,n3, ...remainingNums] = numberArray</code> will declare 3 consts for index 0,1,2 and put the remaining numbers from the array into an array labeled remainingNums. 
+                        <br>
+                        <strong>Destructuring with Objects</strong>
+                        <br>
+                        Store the k:v pairs from an object into separate variables <code>const { keyName1, keyName2 } = objName</code>
+                        <br>
+                        <strong>Overriding key names in object destructuring</strong>
+                        <br>
+                        Set your own names with <code>const {myName1: keyName1, myName2: keyName2} = objName</code>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+
         <ul class="list-group">
             <li class="list-group-item">
+                <a id="01" href="#00">Index</a>
                 <h2 class="subtitle">let and const</h2>
                 <p class="paragraph">
                     <strong>const</strong> are constants that cannot be changed. If it is an array or an object, you can push new items or create new properties on the const. <strong>let</strong> is a variable that can be changed, such as var. The difference from var and let is the scope they are available in. Var has a global scope or a function scope, meaning that if you declare it globally you have access to it everyhwere. If you declare it in a function you have access to it within the function and its nested functions. This is the same for let. However, if we declare a var inside an if <code>if(n1: number > 20){var isOld = true}</code> is scoped globally, meaning that you have access to it anywhere in your script. With <strong>let</strong> <code>if(n1:number > 20){ let isOld = true }</code> is scoped to the block scope, meaning anything inside the if statement and not outside of it. <strong>Note:</strong> Block scope means that let will be scoped to <strong>ANYTHING</strong> inside curly braces, this includes <code>{ let age = 20 }</code> even though it has no execution context. It is great to run cleaner code and avoid problems where you declare the same variable name inside an execution that is <strong>NOT</strong> a function multiple times and get runtime errors, such as i counters, result, or any other generic name. Therefore we only use let and const in modern JS.
                 </p>
+                <a id="02" href="#00">Index</a>
                 <h2 class="subtitle">Arrow Functions</h2>
                 <p class="paragraph">
                     <strong>Arrow Functions</strong> mean that we can now declare and write functions without using the function keyword by using <code>=></code>. 
@@ -63,6 +141,7 @@
                 <p class="paragraph">
                     <strong>A single expression</strong> in our add() function, we had a single return expression, arrow functions allow us to remove the curly braces and return in that declaration: <code>const add = (n1: number, n2: number) => n1 + n2</code> which would be the same as we had before. Arrow functions add an implicit <em>return</em> statement on single expression functions. <strong>In Single Parameter</strong> functions, we can ommit the parenthesis in JS. However, if we have some type definition directly in our parameters we cannot use this feature in TS. The JS version would be: <code>const printOutput = output => console.log(output)</code> if we wanted to use this feature in TS we would need to declare the function type outside of the arguments, this could be done using custom types, or directly in the declaration. For now we will do it directly in the declaration: <code>const printOutput: (a: number | string) => void = output => console.log(output)</code> uses this feature. In arrow functions if your function has <em>NO parameters</em> then you need to use <em>()</em> <code>()=>{...}</code>. <strong>Default values for arguments</strong>. Modern JS supports adding default values to function arguments, for example in a function that requires two arguments, you can set a default value for the second argument, allowing you to call the function using the first parameter only: <code>const add = (n1,n2=1) => n1 + n2</code> in TS it would be <code>const add = (n1: number, n2: number = 1) => n1 + n2;</code> Now we can call the add() function with a first parameter, as it will default to 1 on the second parameter. <strong>Note:</strong> Remember that if we are setting defualts, they must be done on the later arguments. If you set a default for the first argument and not the second, when you call the function using one parameter it will override the defualt from the first and ask you to give a second parameter. Neither TS or JS can guess that you want to skip the first argument of a function and give a value to the second, therefore set defaults after the mandatory arguments. 
                 </p>
+                <a id="03" href="#00">Index</a>
                 <h2 class="subtitle">Spread Operator</h2>
                 <p class="paragraph">
                     <strong>On Arrays</strong>
@@ -74,6 +153,7 @@
                     <br>
                     If we create a person{} object, with name and age, and want to create a copy of that object using <code>const copy = person</code> will <strong>NOT</strong> create a copy of the object. It will set <code>copy</code> as the pointer for our <code>person</code> object in memory, not actually creating a new object. To actually <em>CREATE</em> a new copy, we use the spread operator with objects: <code>const copy = { ...person }</code> which pulls out the k:v pairs of the object and allows you to use them somewhere else. Since we created a new object with the k:v pairs from another object, this is actually a real copy with its own memory allocation. 
                 </p>
+                <a id="04" href="#00">Index</a>
                 <h2 class="subtitle">Rest Parameters</h2>
                 <p class="paragraph">
                     This is an easier way to declare functions that can take multiple or unlimited parameters. We create an addUnlimited() function that can add as many number parameters as it is given. How we have seen things up to know, we would have to manually give it the number of arguments, and then it would only take that number of parameters. Using the spread operator sytnax inside function declaration will let us overcome this and is called <strong>rest parameter</strong>: <code>const addUnilimited = (...numbers)=>{...}</code> will <strong>MERGE</strong> the comma separated list of parameters passed to this function, into an array. We then handle the logic inside this function as an array. To set the type we use <code>(...numbers: number[])</code> which will make only numbers valid as parameters to this function.
@@ -88,6 +168,7 @@
                     <br>
                     We can use the rest parameter and tuples in our type definition, to limit the number of params in an easier manner: <code>const addThree = (...numbers: [number,number,number])=>{return numbers.reduce(...)}</code> which is equivalent to having a declaration using <code>n1: number, n2: number, n3:number</code>. This would make the declaration easier, but we would have to handle the arguments as an array in our logic. Now addThree() takes three parameters that have to be numbers, and adds them using reduce().
                 </p>
+                <a id="05" href="#00">Index</a>
                 <h2 class="subtitle">Array and Object Destructuring</h2>
                 <p class="paragraph">
                     <strong>Destructuring with arrays</strong> lets us declare values for variables using an array in an easier manner. We create a numberArray[] and want to store the values for that array individually, we could do: <code>const n1 = numberArray[0]...</code> for each value. Destructuring allows us to do this quicker with a different syntax: <code>const [n1,n2,n3,...remainingNums] = numberArray</code> will create constants for the values inside number array. In this case, we create <code>const n1, n2, n3</code> and then <code>const remainingNums = [remainingValues]</code> which stores an array of the remaining values. If we were to use <code>let [] = numberArray</code> instead of const, it would declare the variables as let instead of const. <strong>Note:</strong> this syntax has us put the brackets <em>[]</em> before the = which is what separates it: <code>varName [] = arrayName;</code>
