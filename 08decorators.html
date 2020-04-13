@@ -1,0 +1,272 @@
+
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+    <style>
+        code{
+            background-color: rgba(0,0,0,.075);
+            font-weight: bold;
+        }
+        .subtitle{
+            font-size: 1.3rem;
+            font-weight: bold;
+            margin: 0;
+            padding: 5px;
+            margin-top: 5px;
+            background-color: rgba(0,0,0,.075);
+            text-align: center;
+        }
+        h3{
+            font-size: 2rem;
+            font-weight: bold;
+            margin: 0;
+            padding: 5px;
+            margin-top: 10px;
+        }
+        .paragraph{
+            margin: 0.5rem 0 0.5rem;
+        }
+        .tab{
+            margin: 0 1rem;
+        }
+        html{
+            scroll-behavior: smooth;
+        }
+        </style>
+
+    <title>08 Decorators</title>
+  </head>
+  <body>
+      
+    <div class="container">
+        <h1 class="display-3 text-center">08 Decorators<hr></h1>
+        <header>
+            <p class="paragraph">
+                Features for Meta-Programming. Decorators are a well suited instrument for writing code that is easier to use by other developers. <a href="https://www.typescriptlang.org/docs/handbook/decorators.html">TS Decorator Docs</a> It is also the way that the framework <strong>Angual</strong> works with JS and DOM rendering, and the way that <strong>Nest.JS</strong> implements validation and other features through TS and Decorators.
+            </p>
+        </header>
+        <h2 id="00" class="subtitle">Index</h2>
+        <p class="paragraph">
+            <table class="table table-striped">
+                <thead>
+                    <tr>
+                        <th scope="col">#</th>
+                        <th scope="col">Topic</th>
+                        <th scope="col">Description</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <th scope="row">1</th>
+                        <td>
+                            <a href="#01">First Class Decorator</a>
+                        </td>
+                        <td>
+                            <code>@DecoratorName</code>
+                        </td>
+                    </tr>
+                    <tr>
+                        <th scope="row">2</th>
+                        <td>
+                            <a href="#02">Decorator Factories</a>
+                        </td>
+                        <td>
+                            <code>function DecoratorName(ourOutputString: string){ return function(constructor: function){ ... }}</code>
+                        </td>
+                    </tr>
+                    <tr>
+                        <th scope="row">3</th>
+                        <td>
+                            <a href="#03">HTML Rendering Decorators</a>
+                        </td>
+                        <td>
+                            <code>@DecoratorName('HTMLTemplateCode','HTMLIdTag')</code>
+                        </td>
+                    </tr>
+                    <tr>
+                        <th scope="row">4</th>
+                        <td>
+                            <a href="#04">Multiple Decorators</a>
+                        </td>
+                        <td>
+                            <code>@Decorator1 @Decorator2</code> Declaration and execution order
+                        </td>
+                    </tr>
+                    <tr>
+                        <th scope="row">5</th>
+                        <td>
+                            <a href="#05">Property Decorators</a>
+                        </td>
+                        <td>
+                            <code>function DecoratorName(target: any, propertyName: string){ ... }</code>
+                        </td>
+                    </tr>
+                    <tr>
+                        <th scope="row">6</th>
+                        <td>
+                            <a href="#06">Parameter and Accessor Decorators</a>
+                        </td>
+                        <td>
+                            <strong>Parameter:</strong>
+                            <code>
+                                function DecoratorName(target: any, name: string | Symbol ,description: PropertyDescriptor){ ... }
+                            </code>
+                            <br>
+                            <strong>Accessor</strong>
+                            <code>
+                                function DecoratorName(target: any, name: string | Symbol, position: number){ ... }
+                            </code>
+                        </td>
+                    </tr>
+                    <tr>
+                        <th scope="row">7</th>
+                        <td>
+                            <a href="#07">Returning (and changing) a Class in a Class Decorator</a>
+                        </td>
+                        <td>
+                            <code>function DecoratorName {return function (return class extends baseConstructor {constructor{}{ ... }})}}</code>
+                        </td>
+                    </tr>
+                    <tr>
+                        <th scope="row">8</th>
+                        <td>
+                            <a href="#08">Other Decorator Return Types</a>
+                        </td>
+                        <td>
+                            <code>function DecoratorName(...): PropertyDescriptor{ return{ descriptorSettings }}</code>
+                        </td>
+                    </tr>
+                    <tr>
+                        <th scope="row">9</th>
+                        <td>
+                            <a href="#09">Validation with Decorators</a>
+                        </td>
+                        <td>
+                            Basic and innerworkings of a validation package using decorator for DOM compliance and validation of input data and subsquent processing.
+                        </td>
+                    </tr>
+                    <tr>
+                        <th scope="row">10</th>
+                        <td>
+                            <a href="#10">Wrap Up</a>
+                        </td>
+                        <td>
+                            Angular and Nest.JS use of Decorators.
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </p>
+        <ul class="list-group">
+            <li class="list-group-item">
+                <a id="01" href="#00">Index</a>
+                <h2 class="subtitle">A First Class Decorator ( @DecoratorName )</h2>
+                <p class="paragraph">
+                    We begin by entering our tsconfig.json file and enabling <code>experimentalDecorators</code> for our compiler. Decorators in general are all abour classes. We create a class <code>class Person { constructor(public name = 'Moerse'){ console.log(Creating Person instance...) } }</code> then we create an instance <code>const pers = new Person()</code> and we <code>console.log(pers)</code>. Then we create our <strong>decorator</strong> which is a <em>function</em> with no special keyword: <code>function Logger(){ console.log(Logging...); console.log(constructor: Function) }</code> A decorator <em><u>is just a function</u></em>, and the convention is to have it capitalized. We then use it with <code>@Logger</code> placed right over our class declaration. Notice we dont execute our Logger with <code>()</code>, just point at it. Logger takes an argument with type :Function and when we compile and run we see our message 'Logging...' and then our class definition as it was compiled to JS in our console. <strong>Note: Decorators are exectued when your functions are declared, not when they are called.</strong>
+                </p>
+                <a id="02" href="#00">Index</a>
+                <h2 class="subtitle">Working with Decorator Factories ( function DecoratorName(ourOutputString: string){ return function (constructor: Function){ ... } ))</h2>
+                <p class="paragraph">
+                    Decorator factories allow us to create custom tags for our decorators and reuse our code, we do this by making our decorator function a return value inside our decorator, and using a parameter string to label our decorator: <code>function Logger(logString: string){ function(constructor: Function){ console.log(logString); console.log(constructor); } }</code> now we call our decorator <code>@Logger('LOGGING - PERSON')</code> and we get our decorator return with our custom tag.
+                </p>
+                <a id="03" href="#00">Index</a>
+                <h2 class="subtitle">Building More Useful Decorators ( @DecoratorName('HTMLTempalteCode','HTMLIdTag') )</h2>
+                <p class="paragraph">
+                    This decorator will add html code in our index.html file. We create a div with id <em>app</em> which we will use to target our decorator. We create a decorator factory that takes two arguments <code>function WithTemplate(template: string, hookId: string){}</code> inside our decorator we will do our factory <code>return function(_: Function){ ... }</code>  Inside we get our HTML element and then if it is found we add our template into it <code>const hookEl = document.getElementById(hookId); if(hookEl){ hookEl.innerHTML = template }</code>. Then we call our decrator with <code>@WithTemplate('&lt;h1&gt;Template!&lt;/h1&gt;, 'app')</code> and we get our template displayed in our HTML div element. <strong>Note:</strong> the undescore <code>(_)</code> is a convention used by developers to indicate that the binding/parameter is to be ignored. Since TS checks and errs if we don't use a parameter, we use this so it understands that we wont use it and ingonres it, making it not err. In some cases it can replace <code>()=></code> with <code>_=></code>, however in other cases like <code>arr.forEach((_,i)=>{ ... })</code> it would help TS understand that we don't want to use the element, but just the index and not err.
+                </p>
+                <p class="paragraph">
+                    <strong>One step further</strong>
+                    <br>
+                    We can access properties of our class if we modify the code <code>return(constructor: any){ ... const p = new constructor(); if(hookEl){ ... hookEl.querySelector('h1')!.textContent = p.name; } }</code> Here we call the constructor, since it is a parameter in our return function, we set it to <em>any</em> so that TS doesn't think its a normal function. Then we query for an h1 tag, because we are creating one in our decorator, and use <code>!</code> to tell it that we will always get this element and make it ignore the possibility of null. And to that element we pass the property we want of our object as textContent, which will make it display in our HTML template. <strong>Note:</strong> The Angular framework uses classes and decorators to display components in the DOM in much more elaborate and advanced ways. 
+                </p>
+                <a id="04" href="#00">Index</a>
+                <h2 class="subtitle">Adding Multiple Decorators ( @Decorator1 @Decorator2 declaration and execution order )</h2>
+                <p class="paragraph">
+                    You can add more than 1 decorator to a class. We enagle the <code>@Logger()</code> decorator over our WithTemplate decorator and we get both executed. Inside our WithTemplate we add a console.log to our return to compare with our logger's logs and see which gets executed first. We see that decorators get exectued from the bottom up, meaning that the one that is directly over the class gets executed first, and then the following decorators get executed. We add a log directly inside our decorators to see in what order they get declared, and as expected, they get declared in the order that they are in the script. 
+                </p>
+                <a id="05" href="#00">Index</a>
+                <h2 class="subtitle">Diving into Property Decorators (function DecoratorName(target: any, propertyName: string){ ... }) </h2>
+                <p class="paragraph">
+                    We can add decorators for other things that are not classes, in this case we create one for logging properties of a class. This decorator takes two arguments, the target, which is what we are placing it on top of, and the property name, which is the name of the property we are targetting <code>function Log(target: any, propName: string | Symbol) { ... }</code> we set target to <em>any</em> beacuse we don't know the structure the target will have. Inside we log a few things: <code>console.log('Prperty decorator!'); console.log(target, propertyName);</code> which will show us when it is executed, and the parameters we passed to it. We create a separate class <code>class Product { ... }</code> where we declare the property outside of the constructor in order to access it with our decorator. <strong>Note:</strong> if we do the constructor shortcut, we can <em>NOT</em> place the decorator! We place the decorator <code>@Log title:string;</code> to use it. We then get the <strong>prototype</strong> of our object, and the property name we are working with. Since we never create an instance of our class, this decorater gets executed when our class definition is declared by JS. 
+                </p>
+                <a id="06" href="#00">Index</a>
+                <h2 class="subtitle">Accessor & Parameter Decorators ( function DecoratorName (target, name, description | position){ ... } ) </h2>
+                <p class="paragraph">
+                    A decorator to <strong>accessors</strong>: <em>getters</em> and <em>setters</em>, takes 3 arguments <code>function Log2(target: any, name: string, descriprtor: PropertyDescriptor) { ... }</code> the target, which could be of any structure, the name which is the name of our accessor, and the description which describes it and is of the TS type <em>PropertyDescriptor</em>. We then call this over the setter we have in our class <code>set price(value: number){ ...this._price = value ... }</code> which sets the <strong>private</strong> property <em>_price</em>. We then can see all the information in our console. 
+                </p>
+                <p class="paragraph">
+                    <strong>Method Decorator</strong>
+                    <br>
+                    The method decorator is almost the same as the access decorator <code>function Log3(target: any. name: string | Symbol, description: PropertyDescriptor){ ... }</code> with the only variation that the name could also be the symbol, and that we log that this is a method decorator. We then use it on top of our class method <code>getPriceWithTax(tax: number){ return this._price * (1 + tax) }</code> which logs our decorator. 
+                </p>
+                <p class="paragraph">
+                    <strong>Parameter Decorator</strong>
+                    <br>
+                    This decorator is almost the same of our Method Decorator, but takes a different third argument <code>function Log4(target: any, name: string | Symbol, position: number) { ... }</code> beacuse it takes the position of the argument in the function as our third parameter. We use this inside our method <code>getPriceWithTax(@Log4 tax: number){ ... }</code> and we now see the return in our console. It is not in the last place because it gets called in the JS execution order, which means that it is not done in the order we would expect. 
+                </p>
+                <p class="paragraph">
+                    These are the places where we can use decorators, and how they are used. Be mindful that you need to know the parameters, as TS does not have intellisense to tell you how to complete your decorators, and that the JS compilation is extremely funky.
+                </p>
+                <a id="07" href="#00">Index</a>
+                <h2 class="subtitle">
+                    Returning (and changing) a Class in a Class Decorator
+                    <br>
+                    ( function DecoratorName { return function ( return class extends baseConstructor{ constructor(){ ... } } )} )
+                </h2>
+                <p class="paragraph">
+                    <strong>Decorator executrion</strong>
+                    <br>
+                    We create instaces of our class <code>const prod1 = new Product('Book' , 19) ....</code> and see that we don't get more logs of our decorators. This is because they don't run from the instanciation of our class, but on the declaration of our class. We can use the decorator to do some behind the scenes work to set up some code whenever the method, property, or accessor with a decorator is called or used. 
+                </p>
+                <p class="paragraph">
+                    <strong>Advanced Decorators</strong>
+                    <br>
+                    We can add a return inside our decorator factories by adding a return inside of our <code>return function(constructor: any){ ... }</code> What can be returned depends on what you are using your decorator in. 
+                    <code>class:</code> The syntax in this is very complex and has a lot of new things in it. I will only talk about it in a high level as it is very complicated and will be of fringe usage if I'm not planning on working with Angular. The premise is that we take the decorator factory where we rendered something in the DOM and change it so that it executes not on the class definition, but when we create an instance of that class. We do this by returning a class that extends our baseClass in our return function. Inside there we declare our constructor, use super() to use the base class' constructor, and move our render logic in there, where we can do anything else we want. Now, if we don't instanciate our base class, we won't manipulate the DOM. Meaning that we can set a constructor to do things when the constructor of our base class is called. <strong>Note:</strong> The syntax in this is very nested, much like the old callback hell that prompted the creation of <em>promises</em> and <em>async/await</em>.
+                </p>
+                <a id="08" href="#00">Index</a>
+                <h2 class="subtitle">Other Decorator Return Types ( function DecoratorName(...): PropertyDescriptor{ return { descriptorSettings } } )</h2>
+                <p class="paragraph">
+                    Not all decorators can return something, we can return in decorators that add to <em>methods</em> and <em>accessors</em>, in our code <em>Log2</em> and <em>Log3</em>. Decorators on <em>properties</em> and <em>parameters</em> <em>CAN</em> return something, but TS will ignore them and wont be able to be used. 
+                </p>
+                <p class="paragraph">
+                    In the cases we can return, we can return new <em>descriptors</em>. Type <strong>Property Descriptor</strong> is a JS thing. They allow you to define a property in more detail. We can assign a value, but we can control if it is writable(Can it change after creation), configurable(Change config or delete this property), and enumerable(if it shows up when you loop as a property of the object). 
+                </p>
+                <p class="paragraph">
+                    <strong>Creating an "Autobind" Decorator</strong>
+                    <br>
+                    The <code>@AutoBind</code> is a very complex decorator to use on class methods. It makes it so that every time the method is called it will automatically bind this to the method inside of our class. It effectively removes the need to call <code>classInstance.methodName.bind(this)</code> every time we call the function. We select a button from the DOM and add a listener for click that uses our classes method. However it will return undefined unless we use the bind code. Our decorator accesses the descriptor in our method and changes the <em>get</em> parameter to bind atomatically to our methor. The sytnax and logic is intense and crazy and once again it is for fringe use outside of Angular. The neat thing is that it shows us that we can alter the native JS descriptor object to change the behaviour of our instance, which could be useful to ignore some properties by setting enumerable: false when we are looping through it. 
+                </p>
+                <a id="09" href="#00">Index</a>
+                <h2 class="subtitle">Validation with Decorators</h2>
+                <p class="paragraph">
+                    This is some very intense and complex code to do something bery simple. It is a way to use decorators to disallow us from missusing a form. We create a class for the object we want to get from the form, in this case it is a Course. We create a form in our DOM and then find it and set a listener to it. We get the values and convert them into our valid types and then create an instance of our class. We then check for validation of our new instance by using decorators. We set a decorator Required and a decorator PositiveNumber to our class properties and a validator function to check. We create an object where we store validator configuration properties with a class ValidatorConfig that uses dynamic properties. The decorators execute and add a property to the validator object which is then passed through our validator function which checks using a switch statement, wheter we met the criteria or not. If we don't we get a message from our browser that the value is invalid and we have to put a correct value in our form. It is way more intense and complex. <strong>Note:</strong> Max says that this is something that thrid party libraries code for you so you only have to set the decorator, and they do so more elegantly and intircately. This is the kind of thing you would do if you were creating a package or a library. 
+                </p>
+                <a id="10" href="#00">Index</a>
+                <h2 class="subtitle">Wrap Up</h2>
+                <p class="paragraph">
+                    There is a package called <strong>typestack/class-validator</strong> if you search for ts class validator on google. Which has a more ellaborate implementation of what we just did. This package can be added to any project and we can import a bunch of decorators or decorator factories, with instructions on how to set them, and a validate() function to apply the validation logic we set. This does all the heavy lifting for you and would be a great way to implement decorators into your project for validation. 
+                </p>
+                <p class="paragraph">
+                    <strong>Angular</strong>
+                    <br>
+                    Angular is a framework that heavily relies on decorators with some added custom syntax from Angular. These do more than plain decorators, but work similarly in the end. There is also <strong>Nets.js</strong> which is a backend framework for Node JS that also has heavy use of Decorators through TS. It comes bundled with the decorators that we would have from a library so that you can add them to your code. 
+                </p>
+            </li>
+        </ul>
+    </div>
+
+    <!-- Optional JavaScript -->
+    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+    <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js" integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>
+    </body>
+</html>

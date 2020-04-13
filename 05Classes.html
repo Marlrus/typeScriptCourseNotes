@@ -1,0 +1,172 @@
+
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+    <style>
+        code{
+            background-color: rgba(0,0,0,.075);
+            font-weight: bold;
+        }
+        .subtitle{
+            font-size: 1.3rem;
+            font-weight: bold;
+            margin: 0;
+            padding: 5px;
+            margin-top: 5px;
+            background-color: rgba(0,0,0,.075);
+            text-align: center;
+        }
+        h3{
+            font-size: 2rem;
+            font-weight: bold;
+            margin: 0;
+            padding: 5px;
+            margin-top: 10px;
+        }
+        .paragraph{
+            margin: 0.5rem 0 0.5rem;
+        }
+        .tab{
+            margin: 0 1rem;
+        }
+        </style>
+
+    <title>05 Classes</title>
+  </head>
+  <body>
+      
+    <div class="container">
+        <h1 class="display-3 text-center">05 Classes<hr></h1>
+        <header>
+            <p class="paragraph">
+                TS classes, inheritance, modifyers. Complex and sometimes very niche. Had to breakdown the module into 2 files: one for Classes and one for Interfaces. Examples are in the src/classes.ts file.
+            </p>
+        </header>
+        <ul class="list-group">
+            <li class="list-group-item">
+                <h2 class="subtitle">Classes</h2>
+                <p class="paragraph">
+                    We need to understand OOP (Object Oriented Programming). We work with <em>real-life</em> entities in your code, to make it easier to reason about your code. We can create objects that have properties and methods in them. These methods help us with things inside that object, and objects inside those objects could have their own properties and methods as well. We might have a productList object that has a list of products and methods to render and fetch those products, and for each product inside our productList object, we could have a product object with its own properties and methods for rendering or adding to the cart. And then a cart object and so on. This allows us to split our code into objects that manage the chunks of logic in our code. 
+                </p>
+                <p class="paragraph">
+                    <strong>Objects vs Classes</strong> Objects are the concrete objects we work with in our code, <em>Classes</em> are the blueprints for objects: telling our objects what properties and methods they should have to easily build objects based on those classes. We can then call these objects as instances of a class to create objects quickly with the same properties and methods. <em>Class-based creation is an alternative to using object literals</em> how we are used to creating objects in JS. 
+                </p>
+                <p class="pargraph">
+                    <strong>Creating our first class</strong>
+                    <br>
+                    We start setting classes by using the <em>class</em> keyword following by the placeholder for our class. The convention is to have the class name Capitalized: <code>class Department</code>. Inside we set k:type pairs: <code>class Department { name: string; }</code>. Inside the class, we need to add a <strong>constructor</strong> function (JS Object Creation keyword), to create objects of this class. <code>const Department { name: string; constructor(n: string) { this.name = n } }</code> which will be used to create our objects based on this class. We then create them using the <strong>new</strong> keyword: <code>const accounting = new Department('accounting')</code> which will use the constructor method to create the object. 
+                </p>
+                <p class="paragraph">
+                    <strong>constructors vs classes</strong>
+                    <br>
+                    JS <strong>constructor</strong> functions are just regular functions, that by convention are capitalized: <code>function User(name){ this.name = name }</code>. These functions are used to create objects and are executed with the <strong>new</strong> keyword. When executed <code>let user = new User( 'Moerse' )</code> it does three things: Creates a new empty object and assigns <em>this</em> to that object, the function executes modifying <em>this</em>(new object) and adds the properties and methods from the function, and the returns <em>this</em> the created end object. In our case it does <code>const user = new User( 'Moerse' ){this = {}; (implicitly) this.name = name; return this; (implicitly)}</code> essentially being the same as declaring the object with <code>let user = { name: 'Moerse' }</code>. With more complex blueprints it makes creating more objects easier as we only have to call the function instead of declaring the object each time. 
+                </p>
+                <p class="paragraph">
+                    JS supports <strong>class</strong> since ES2015 and works similary to constructors. You declare a class using the <em>class</em> keyword, and then the class name, capitalized by convention like we did in constructors. <code>class User { ... }</code>, inside classes we have access to the keyowrd <em>construtor</em> to build the object. In classic JS we could do <code>class User { constructor(name){this.name = name} }</code> to then call using <code>const user = new User('Moerse')</code> to create the user object. Using TS it is a bit more strict about this and that code will err for two reasons, once is that the argument name in the constructer has no type <code>constructor(user: string){...}</code> and the second one is that we weren't explicit about what properties our User class could have: <code>class User { name: string; constructor... }</code> which tells TS that our objects created using the User class have a name property that is a string, and can only be constructed using a string as a parameter. <code>const user = new User( 'Moerse' )</code>. 
+                </p>
+                <p class="paragraph">
+                    Since <strong>constructors</strong> are just regular function declarations, while <strong>class</strong> are class declarations, JS treats them differently. constructor functions are hoisted, while class declarations are not hoisted. You must declare your class before you can access it. <em>The difference between constructors and classes is comparable to the difference between let, const and var.</em> in terms of hoisting and access. The other major difference is that classes have access to the <strong>extends</strong> keyword, which we will learn about in the future. Just as with let and const, you should use classes instead of constructors. <strong>Note:</strong> if we use TS and are compiling to es5 or earlier versions of JS we can use classes and it will compile them to JS. Also in es6 the code we added to be explicit on the properties of our class is not supported either. 
+                </p>
+                <p class="paragraph">
+                    <strong>Adding methods to our class</strong>
+                    <br>
+                    We can add methods to our class by declaring our functions inside of the class as we would normally do: <code>class User { ... describe(){ console.log(`User's name is ${this.name}`) } }</code> Now if we create a user and call the describe() function it will execute our function. In our function declaration, we have to use this, which refers to the properties we assigned to our class. Remember that the <em>this</em> keyword in JS is tricky. If we were to declare an object not using our class and then assign our describe function to that property, it will execute undefined <code>const user2 = { describe = user1.describe }</code> and then exectue <code>user2.describe()</code> we would get <code>User's name is undefined</code>. This is because user 2 doesn't have a name property, and JS is looking for one. This could be a potential error that we can handle in JS by using the <em>this</em> keyword when adding the method to our class. If we do <code>class User {... describe(this: User){ console.log(`User's name is ${this.name}) }</code> our previous code would err. This tells TS that this method should only be called on objects matching our User class blueprint, and since <em>user2</em> does not match the structure set in our User class and will err on TS. If we add a name property to user2, this will match our class blueprint and TS will not err, because it knows that the describe() method call will execute correctly. Be explicit!
+                </p>
+                <h2 class="subtitle">"private" and "public" Access Modifiers</h2>
+                <p class="paragraph">
+                    We create two new methods in our class addFriend() and listFriends(). We create a new property in our class <code>friends: string[] = [];</code> that is a string of friends with an initializer that is required (the empty array). The addFriend() method is <code>addFriend(friend: string){ this.friends.push(friend) }</code> and the listFriends() method is <code>listFriends(this: User){ console.log(this.friends.length); console.log(this.friends) }</code>. We push friends into user1 and then call the listFriends() method to list them. We could go one step further and use the spread operator <code>console.log(...(this.friends))</code> which will print them as space separated values. There is a slight problem here, if we were to run <code>user1.friends[2] = 'Otter'</code> we would add a value to the property in our user outside of our method. This could result in overwriting values, and using other methods like push here as well, which we want to avoid having happen outside of our conditions and improve code consistency. 
+                </p>
+                <p class="paragraph">
+                    <strong>private property</strong> TS gives us the <em>private</em> keyword (modifier). If we set the property friends to private, we wont have access to it outside of the methods from our class: <code>class User{... private friends: string[] = []; ...}</code> would make using push or declarations like we had before err in TS. Methods can also be made private. On the flipside, <em>public</em> is the default, like we had set before. We don't need to add it, as TS implicitly makes it so. JS does not know private and public, only until very recently was it implemented and browser support is sketchy at best. JS syntax does not use the private and public keywords.
+                </p>
+                <p class="paragraph">
+                    <strong>Why "private" and "public"</strong>
+                    <br>
+                    As we saw, in TS we need to declare our properties and their types and then call them in our constructor. If we use private and public, we don't need to do that: <code>class User {private fiends: string[] = []; constructor(public name: string){ this.name = name }...}</code> would remove our previous property declaration <code>name: string;</code> but now our constructor does not take a placeholder as an argument, instead taking the name we want to give the property. In our case, it creates a name property that is of the access type public. This is the case where we would use public explicitly. Another great thing is that having a property set as private removes autocomplete from it in VSCode intellisense, disallowing you from accidentally accessing a property equivocally.
+                </p>
+                <h2 class="subtitle">"readonly" properties</h2>
+                <p class="paragraph">
+                    <strong>readonly</strong> is another modifier, like private and public, which makes a property unmutable after declaration. This is a TS feature that does not exist on JS. You would usually set this modifier when creating an ID. This is great for properties that should only be initialized once and not changed after. 
+                </p>
+                <p class="paragraph">
+                    <strong>prototype</strong>
+                    <br>
+                    When we compile to es5, we see that the constructor functions for our classes add our methods to the .prototype property of our constructor. Which was the old JS way to do things. Prototypes work with the concept of inheritance. JS only has one construct: objects. The prototype object has a prototype of its own, and so on until an object with <em>null</em> as it's prototype is reached. Almost all JS objects are instances of <em>Object</em> which sits on the top of a prototype chain. Of you try to access a property or a method in a JS object, you have access to methods in the prototype chain. If JS doesn't find the method or property in the object, it goes to the <em>__proto__</em> property of the object and looks for it there, if it doesn't find anything, it goes into the <em>__proto__</em> property of that obejct and so on untill the proto property is null. <strong>Note:</strong> <code>hasOwnProperty('propertyName')</code> is the only thing in JS that deals with properties and does not traverse the protoype chain. In modern JS we don't work with prototypes as often anymore because the class system was introduced, however vainlla JS works with prototypes only. 
+                </p>
+                <h2 class="subtitle">Inheritance</h2>
+                <p class="paragraph">
+                    In the class model, we can use the keyword <strong>extends</strong>. If inside my User class I would also like to include a separate entity with it's own properties and methods, I would use the <em>class</em> and <em>extends</em> keywords to achieve this. We create a new class Creature <code>class Creature { constructor(private name: string){ this.name = name } }</code> This will be our base class. Then we create a new class FriendCircle: <code>class FriendCircle extends Creature { ... }</code> if we leave this empty and we call our new class: <code>const friendC1 = new FriendCircle()</code> we would use the constructor of the parent class. Meaning that it is effectivelly using the constructor from our Creature class. However, the point of extending a class is to add new properties or methods to the undelying class which would have us use the constructor.
+                </p>
+                <p class="paragraph">
+                    <strong>constructor in extends (super())</strong>
+                    <br>
+                    When we use constructor in a class that extends, we have to add the keyword <strong>super</strong> which is a function that calls the constructor from the parent class. Inside our class FriendCircle we add <code>constructor(name: string, private friends: string[]){ super(name) }</code> which will create a private friends property in our object, which is an array of strings, and will set the name property from our parent class as the name we pass as a first parameter to our object creation. <strong>Note:</strong> we can only have access to the <em>this</em> keyword inside our class that extends <em>AFTER</em> we call super(), which we would have needed if we didnt use the modifier private for friends in our constructor. <code>const friendCircle1 = new FriendCircle('Marmot',['Moerse','Paro'])</code> will create an object with the property name as Marmot and an array of friends. However, since we set the array as private, we can't access it without any methods declared in our new class. So if we want to use that array, we must declare a method inside our class <code>listFriends(){ console.log(this.friends) }</code>
+                </p>
+                <p class="paragraph">
+                    <strong>inheritance from parent class</strong>
+                    <br>
+                    If we give our Creature class a method salute() that console.logs 'name says hi!' we will have access to that method in our child class FriendCircle. Meaning that we could use <code>friendCircle1.salute()</code> and it would work, as it inherited that method from the Creature class. Also, since we made friends a private property, we need to add methods to handle it. We create a listFriends() method that logs the friends array in our object. So now friendCircle1 has access to both methods. This allows us to create more specific objects based on more general objects.
+                </p>
+                <p class="paragraph">
+                    <strong>Inheritance chains with extends</strong>
+                    <br>
+                    If we create a further down class that extends FriendCircle the same rules apply. We can call a constructor inside this class, but that one will refer us to the constructor of FriendCircle which we would have to call using <code>super(...)</code> in a way that fulfills our constructor criteria. When we create an object using this class, we now have access to all the methods from both Creature, and FriendCircle. If we console.log our created object we can see them under the <code>__proto__</code> property of our object. It will display <code>__proto__: FriendCircle</code> which will have the constructor and methods for our new class. There we would see <code>__proto__: Creature</code> which will have the constructor and methods of our FriendCircle class. And then we would reach <code>__proto__:</code> which will have the constructor and methods from our Creature class. And finally we would have <code>__proto__: Object</code> which has all methods related to objects. 
+                </p>
+                <h2 class="subtitle">Overriding Properties of the "protected" Modifier</h2>
+                <p class="paragraph">
+                    We can override methods or properties of our base class. If we have a method on our parent class and want to create a different version of that method on our child class, we can override it and handle the logic differently. If the method affects a private property from the parent class, it can only be accessed by methods from the parent class. <em>Private properties can only be accessed by the class they are declared in</em>. If we want to give access to a child class we change the <em>modifier</em> private to protected. It works like <em>private</em> in that the value cannot be modified from outside, but it gives access to that parameter to the classes that inherit from the parent class. We add a property <code>hobbies: string[] = [];</code> to our Creature class and a method <code>addHobby(hobby: string){ this.hobbies.push(hobby) }</code> to add values to hobbies. If I wanted to create an addHobby() method to a child class, like FriendCircle, I can <code>addHobby(hobby: string){ if(hobby === 'having friends'){ return; }else{ this.hobbies.push(hobby) } }</code>. Even though we have a hobbies string array property in our object, this method will not work because hobbies has the private modifier set. This makes it so that only the addHobby() method from Creature can access that property. We keep it safe from modification from outside the classes, but accessable by the children classes by changing <em>private</em> to <em>protected</em>. We create a method listHobbies() that lists the hobbies[] array inside our FriendsCircle class. We use the addHobbies() with 'having friends' and then again with 'eating sweets' and then call listHobbies() and see that only 'eating sweets' was pushed due to the logic we used in the modifyied version of addHobbies() from our child class FriendCircle. 
+                </p>
+                <h2 class="subtitle">Getters and Setters</h2>
+                <p class="paragraph">
+                    We add a new property to our WorkplaceCircle class <code>private latestCoworker: string;</code> which holds the name for the latest coworker we added to our object. We need to handle this value in the constructor for this class <code>constructor(name:string, private coworkers: string[]){ super(name); this.latestCoworker = coworkers[coworkres.length - 1] }</code> Which will create our object with a name value, and make latestCoworker the last value of our coworkers array. Now we handle it in our addCoworker() method <code>addCoworker(name: string){ this.coworkers.push(name); this.latestCoworker = name }</code> This is nothing new, however we can change the way we can access our private <em>latestCoworker</em> porperty by using getters and setters.
+                </p>
+                <p class="paragraph">
+                    The <strong>get</strong> keyword is what we use to create a getter. <code>get newestCoworker(){ return this.latestCoworker }</code> however we want to handle additional logic in our getter, so we add <code>if(this.latestCoworker){...}else{ throw new Error(...) }</code> so that if we use the getter and there is no value, it wil err. <em>The name we use for the getter is closely related to the name of the property in our object.</em> To <em>USE</em> a getter, we access it as if we were accessing a property of our object: <code>moerseWorkplace.newestCoworker</code> will return the property latestCoworker of our object and use the logic we set in our method. <strong>Note:</strong> See that even though the getter is declared as a function, it is <em>CALLED</em> as a property. Now if we access the property with our getter, and it has a falsy value like an empty string '', our code will err.
+                </p>
+                <p class="paragraph">
+                    The <strong>set</strong> keyword is what we use to create a setter. We also set the name very similary to our property, and in this case the same as our getter: <code>set newestCoworker(argument){...}</code> The setter <em>NEEDS</em> an argument as it is intended to set the value of our property. In our case we want it to set latestCoworker, however, since we have a coworker array, our latest coworker must be added to the coworkers[] array. <code>set newestCoworker(name: string){ if(!name){ throw new Error... } else { this.addCoworker(name) } }</code>. This means that if we call our setter with a valid <em>not falsy</em> value, it will execute our addCoworker() method, pushing the name to our coworker[] array, and also set our latestCoworker with name. However, we call it as if we were accessing a property: <code>moerseWorkplace.newestCoworker = 'Garviel'</code> which will push Garviel to the array, and set him as newestCoworker. Now we can set the value of our property as if we were declaring it without bypassing the logic around that property by declaring it directly as <code>moerseWorkplace.latestCoworker = 'Marmot'</code> will err because of our settings. 
+                </p>
+                <h2 class="subtitle">Static Methods & Properties</h2>
+                <p class="paragraph">
+                    They were introduced in ES6+ to JS and exist in TS. They allow us to create properties and methods which are detatched to any instance of a class (You don't need to declare new ClassName), but can access them directly on the class <code>ClassName.methodName()</code> They are often used for utility funcions that are grouped or mapped to a class logically or global constants that you want to store in a class. An example that comes with JS is the <code>Math</code> class that has a bunch of methods related to math operations like <em>sqrt, pow, min, max, etc...</em> In this case Math acts more like a namespace or goruping mechanism for these related methods. 
+                </p>
+                <p class="paragraph">
+                    In our Creature class we add a static method makeFood() <code>static makeFood(food: string){ return { food: food } }</code> which will return an object with the key food and the value as the string parameter when the function is called. To call it we use <code>padThai = Creature.makeFood('Pad Thai')</code> which if we console.log will show us an object <code>{ food: 'Pad Thai' }</code>. Here we use the class as a grouping mechanism for methods with <strong>static</strong>. This can also be done to properties <code>static kingdom = 'Walrotic Empire'</code> now if we use <code>Creature.kingdom</code> it will show us 'Walrotic Empire', however if we log a created creature, the kingdom property is not displayed. 
+                </p>
+                <p class="paragraph">
+                    <strong>class access of static properties</strong>
+                    <br>
+                    Only other <strong>static</strong> methods have access to static properties of an object in the class. This means that running <code>this.staticProperty</code> inside our <em>construtor</em> will not work as it will err. If we would want to use the static property from the object in a non static method or property, you would need to use the class name <code>constructor(...){ console.log(ClassName.staticProperty) }</code> <em>Remember that the whole point of static properties, is to have them detached from instances of the class</em>, meaning that we don't want them to exist in created instances of that class, but want to have access to them by using the class name. 
+                </p>
+                <h2 class="subtitle">Abstract Classes</h2>
+                <p class="paragraph">
+                    <strong>abstract</strong> classes work by allowing you to set methods in parent classes that are mandatory for classes that inherit from the class. This is usefull when you have a class that will work as a template for other classes that all need a method with slightly different implementations. By adding the keyword <strong>abstact</strong> you can declare a function structure inisde your class and have all classes that extend this class do their own version of that method. We do <code>abstract class Creature {...}</code> to enable the use of abstract in our class, and then add our method <code>tellUsMore(): void;</code>. Now we get an err on all our classes that extend from Creature because we don't implement the inherited abstract member 'tellUsMore' from class 'Creature'. <strong>Note:</strong> a side effect of making an abstract class, is that you cannot use it to create instances anymore, meaning that you cannot do <code>const Creature1 = new Creature;</code> as Creature is now purely a blueprint. You can also set <em>abstract</em> properties in an abstact class. 
+                </p>
+                <h2 class="subtitle">Singletons & Private Constructors</h2>
+                <p class="paragraph">
+                    The implementation of the <strong>private</strong> keyword comes from the concept of a <strong>singleton</strong>, or a class that should only create a single instance. This is a very complex and niche utility that is made slightly easier by TS. For the sake of the course I will do one <code>class Emperor extends Creature{...}</code>. We add the abstract method we require and then proceed to make it a singleton. We make our constructor <code>constructor(name: string, public title: string){ super(name); this.title = title }</code> which calls the Creature constructor with the first argument and then add a new property with a second argument: title.
+                </p>
+                <p class="paragraph">
+                    To make a singleton, we must make the constructor in the class <strong>private</strong>: <code>private constructor(...){...}</code> This disables the keyword new when using this class: <code>moerse = new Emperor(...)</code> will err in TS because the private construtor <em>is only accessible within the class declaration</em>, in our case class Emperor... Which begs the question, how do we get access this constructor? We do this through <strong>static</strong> properties. We create a static method <code>static getInstance() {...}</code> and a static property <code>private static instance: Emperor;</code> since <em>static methods have access to static properties of an object in the class</em>, in our case <em>instace</em> which is of type Emperor. Since we set it to <em>private</em> it is only accessible from inside the class and it has the structure of the class itself. 
+                </p>
+                <p class="paragraph">
+                    Now inside our method we can check if an instance of this class already exists: <code>static getInstance( if(this.instance){return this.instance}... )</code> we could also use the static version <code>static getInstance( if(Emperor.instance){...}... )</code> and then we can create the instance if it has not been created yet <code>if(this.instance){...}; this.instance = new Emperor('Moerse','Emperor'); return this.instance</code> which calls the constructor method. This can be done because even though constructor is private and cannot be called from outside the class, our method is inside of the class, therefore it can use the constructor() method. Now to call this instance we can use <code>const moerse = Emperor.getInstance()</code> which executes our method. If we do <code>const moerse2 = Emperor.getInstance()</code> we get the exact same object back. However if we put it to an === test we can see that <code>console.log(moerse === moerse2)</code> returns true, meaming that a new instance was not created and the new constant is just a pointer to the original instances place in memory. 
+                </p>
+            </li>
+        </ul>
+    </div>
+
+    <!-- Optional JavaScript -->
+    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+    <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js" integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>
+    </body>
+</html>

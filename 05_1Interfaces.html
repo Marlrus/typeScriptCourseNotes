@@ -1,0 +1,101 @@
+
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+    <style>
+        code{
+            background-color: rgba(0,0,0,.075);
+            font-weight: bold;
+        }
+        .subtitle{
+            font-size: 1.3rem;
+            font-weight: bold;
+            margin: 0;
+            padding: 5px;
+            margin-top: 5px;
+            background-color: rgba(0,0,0,.075);
+            text-align: center;
+        }
+        h3{
+            font-size: 2rem;
+            font-weight: bold;
+            margin: 0;
+            padding: 5px;
+            margin-top: 10px;
+        }
+        .paragraph{
+            margin: 0.5rem 0 0.5rem;
+        }
+        .tab{
+            margin: 0 1rem;
+        }
+        </style>
+
+    <title>05 Interfaces</title>
+  </head>
+  <body>
+      
+    <div class="container">
+        <h1 class="display-3 text-center">05.2 Interfaces<hr></h1>
+        <header>
+            <p class="paragraph">
+            </p>
+        </header>
+        <ul class="list-group">
+            <li class="list-group-item">
+                <h2 class="subtitle">Interfaces</h2>
+                <p class="paragraph">
+                    Interfaces describe the structure of an object. We create them with the TS exclusive keyword <strong>interface</strong>, which are capitalized by convention. Interfaces <em>CANNOT</em> have initializers, just type assignments <code>interface Person { name:string; age: number; }</code> we can also set methods in interfaces, but again, we cannot have initalizers, just the definition: <code>greet(phrase:string):void;</code>. We can now use it to type check an object. If we declare an object <code>let user1: Person;</code> and then give values to it <code>user1 = {...}</code> we must match what we set on the interface: <code>let paro = { name: 'Paro', age: 29, greet(phrase: string){ console.log( phrase + ' ' + this.name) } }</code> which will make TS not err because we match our interface. <strong>Note:</strong> when declaring the object, I accidentally set the method to use <em>name</em> instead of <em>this.name</em> and TS didn't err, but the code ran and returned some really weird code. 
+                </p>
+                <p class="paragraph">
+                    <strong>Why interfaces?</strong>
+                    <br>
+                    Why do we have interfaces if we can use <strong>type</strong> to get exactly the same thing? One difference is that <em>interfaces can only be used to describe the structure of an object</em> therefore it is clearer that you are defining the structure of an object. The second one is that <em>you can implement an interface in a class.</em> For this example I create a new interface <code>interface shape { width: number; height: number; area():number; }</code> which I will use to implement on a class. I use it on <code>class Rectangle implements Shape { constructor(public width: number, public height: number){ this.width = width; this.height = height }; area(){ return this.width * this.height } }</code> which meets the criteria set in our interface. <strong>Note:</strong> You can implement various interfaces by separating them with a comma <code>class Rectangle implements Shape, IntrefaceName2, InterfaceName3...{...}</code> whereas a class can only inherit from one other class with <strong>extends</strong>. Now we can add new properties and methods to our class as long as we meet the base requirements for our interface <code>name: string;... constructor logic...</code>. The key thing is that <em>interfaces have no implementation AT ALL</em> where abstract classes can have a mixture of things. <strong>Wrap up:</strong> interfaces can be used as types, and multiple interfaces can be implemented on classes.
+                </p>
+                <p class="paragraph">
+                    <strong>Why would we use interfaces?</strong>
+                    <br>
+                    We can force the existance of certain properties and methods on a class with interface but have those classes implement their own logic regarding the interface that meets the structure we set. Also, we can use multiple interfaces with <strong>implements</strong> to do what we would need to <strong>extend</strong> chain multiple abstact classes. Also, interfaces cannot have static properties or methods, or initializers, making our intention clear. 
+                </p>
+                <h2 class="subtitle">Readonly Interface Properties</h2>
+                <p class="paragraph">
+                    Interfaces don't have acces to the <em>public</em> or <em>private</em> modifyers, instead they have the <strong>readonly property</strong> which means that the value must only be set once, and is readonly thereafter. It cannot be changed. This can also be done with <em>type</em>. <strong>Note:</strong> max made a mistake here, he says that if you use <em>impmements</em> with an interface that declared readonly properties, they will inherit that status. However, writing the code I didn't get an err from TS when re-assigning the value. I only got the expected TS behvaior when I declared my variable with the type <em>Shape</em> that had the readonly property declared. <strong>Workaround:</strong> Looking at the <a href="https://www.typescriptlang.org/docs/handbook/classes.html" target="_blank">TS Docs</a> it states: <em>Readonly properties must be initialized at their declaration or in the constructor.</em> meaning that they are not inherited. We can do this by using the <em>readonly</em> keyord in the constructor for Rectangle <code>constructor(name: string, public readonly width: number, public readonly height: number){ ... }</code> which makes the properties readonly once declared. Or by doing what we did before, assigning the type <em>Shape</em> to our variable, which has the readonly properties. <strong>Note:</strong> readonly must be declared after the modifier <em>public</em> or <em>private</em> when declaring it. 
+                </p>
+                <h2 class="subtitle">Extending Interfaces</h2>
+                <p class="paragraph">
+                    We can use <strong>extends</strong> on interfaces with other interfaces. If we create another interface <code>interface Named { readonly name: string; }</code> and then do <code>interface Shape extends Named</code> our Greetable interface inherits the properties of Named. <strong>Note:</strong> interfaces <strong>DO</strong> inherit the readonly property. If we set <code>const rectangle1: Shape;</code> the <em>name</em> property in created instances will be treated as readonly, unlike what happened when we used <em>implements</em> on the class. <strong>Why?</strong> If we want to have a common object that has some base properties, but another set of objects that have additional mandatory properties, we would split them into two interfaces instead of creating two separate interfaces with very similar declarations. I could think of this with a User interface and an Admin interface, where an Admin instance has other properties or methods, but also has all the properties of the base User object. <strong>Key Difference:</strong> we <em>CAN</em> use <strong>extends</strong> with multiple interfaces into a single interface, something we cannot do with type or class: <code>interface Admin extends User, AnotherInterface...</code> This is one of the main advantages of interfaces. 
+                </p>
+                <h2 class="subtitle">Interfaces as Function Types</h2>
+                <p class="paragraphs">
+                    As a fringe case you can define functions using <strong>interface</strong>. We saw how to declare functions with <em>type</em> <code>type AddFn = (a: number, b: number)=> number;</code> but we can also do this with interfaces using a different syntax <code>interface AddFn { (a: number, b: number): number; }</code>. When doing this with interfaces, TS infers that the name of the function is what we set after the keyword <em>interface</em>. This essentially does the same, but the syntax is a bit longer and odder than the one using type. Therefore, it is much more common to just leave interface for objects and use something else for functions. 
+                </p>
+                <h2 class="subtitle">Optional Parameters and Properties</h2>
+                <p class="paragraph">
+                    You can define <strong>optional</strong> properties, methods, and parameters in <em>interfaces</em> and <em>classes</em>. You do this by adding a "?" after a property, parameter, or method <code>interface Shape { ... threeD?(): number; }</code> which tells us that the Shape interface has an optional method threeD that if declared must return a number. We also did <code>interface Named { readonly name?: string; }</code> which is inherited by the class we implemented Shape in. Since we made name optional, in our class we did <code>constructor(public width: number, public height: number, public name?: string ){ ... }</code> which means we can now call the constructor without a name property using only two parameters. We handle the logic inside with <code>if(name){ this.name = name }</code> We can also set a default value to our parameter with <code>constructor(public width: number, public height: number, name: string = 'Shape')</code> which would make our <em>name</em> parameter optional and set it as 'Shape' if it is not used. <strong>Note:</strong> if we do this, we dont use <em>?</em> since it will be set, therefore won't be optional. <strong>Where to place optional parameters?</strong> Optional arguments/parameters in a function declaration <em>MUST</em> go at the end, after the mandatory arguments. This will not err in TS but TS has no way of making the first argument in a parameter optional if there are mandatory parameters afterwards.
+                </p>
+                <h2 class="subtitle">TS Inferrence Discoveries (IMPORTANT)</h2>
+                <p class="paragraph">
+                    We saw that in classes and interfaces we can declare properties explicitly, or have TS infer their name depending on how we code the <em>constructor</em>. It goes beyond just this, when writin the constructor <code>constructor(public width: number, public: height: number, public name?: string){}</code> we don't need to add code into the constructor. TS will infer the value declaration for us, meaning that we don't have to do <code>this.width = width; ...</code> and in the case for the optinal value, it will handle the logic by inferring that it will add it to the name property if it is used as a parameter in the function. Making this much better than doing the property declaration outside of the constructor. 
+                </p>
+                <h2 class="subtitle">Compiling Interfaces to JS</h2>
+                <p class="paragraph">
+                    Since <em>interface</em> is a TS feature, it will not output <em>ANYTHIGN</em> to JS, as there is no translation for interfaces to JS. This is great, because you will be able to improve your code without adding weight to your runtime code, which is a win win. 
+                </p>
+            </li>
+        </ul>
+    </div>
+
+    <!-- Optional JavaScript -->
+    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+    <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js" integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>
+    </body>
+</html>

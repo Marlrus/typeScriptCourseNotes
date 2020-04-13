@@ -1,0 +1,184 @@
+
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+    <style>
+        code{
+            background-color: rgba(0,0,0,.075);
+            font-weight: bold;
+        }
+        .subtitle{
+            font-size: 1.3rem;
+            font-weight: bold;
+            margin: 0;
+            padding: 5px;
+            margin-top: 5px;
+            background-color: rgba(0,0,0,.075);
+            text-align: center;
+        }
+        h3{
+            font-size: 2rem;
+            font-weight: bold;
+            margin: 0;
+            padding: 5px;
+            margin-top: 10px;
+        }
+        .paragraph{
+            margin: 0.5rem 0 0.5rem;
+        }
+        .tab{
+            margin: 0 1rem;
+        }
+        </style>
+
+    <title>07 Generics</title>
+  </head>
+  <body>
+      
+    <div class="container">
+        <h1 class="display-3 text-center">07 Generics<hr></h1>
+        <header>
+            <p class="paragraph">
+                Generics are TS exclusive. The concept exists in other programming languages like C#. What are generics? Generic Functions & Classes. Generic constraints. Special TS Types. 
+            </p>
+            <p>
+                <a href="#01" >Generics:</a> <code>&lt;type&gt;</code> JS Native generics <code>Array</code> and <code>Promise</code>
+                <br>
+                <a href="#02" >Generic Functions:</a> <code>fN functionName&lt;T&gt;( ... )</code> 
+                <br>
+                <a href="#03" >Constraints:</a> <code>&lt;T extends type&gt;</code> 
+                <br>
+                <a href="#04" >Generic Fn Constraints:</a> <code>&lt;T extends customType&gt;</code> 
+                <br>
+                <a href="#05" >The "keyof" Constraint:</a> <code>&lt;U extends keyof T&gt;</code>
+                <br> 
+                <a href="#06" >Generic Classes:</a> <code>ClassName&lt;T&gt;{ ... }</code>  & <code>new ClassName&lt;type&gt;{ ... }</code> Problem with objects, Avoiding problems with generics and objects. 
+                <br>
+                <a href="#07" >Generic Utility Types:</a> <code>:Partial&lt;type&gt;</code>  & <code>:Readonly&lt;nonNativeType&gt;{ ... }</code> & using Partial in classe and constructors.
+                <br>
+                <a href="#08" >Generic Types vs Union Types:</a> <code>:( string | number | boolean)[]</code>  CANNOT REPLACE <code>: T[]</code>
+            </p>
+        </header>
+        <ul class="list-group mb-3">
+            <li class="list-group-item">
+                <h2 id="01" class="subtitle">
+                    What are generics? ( &lt;type&gt; ) 
+                    <br> 
+                    JS Native Generics ( Array & Promise )
+                </h2>
+                <p class="paragraph">
+                    <strong>JS generic Array</strong>
+                    <br>
+                    To understand Generics, we use a native JS generic type <code>Array</code>. Array is a valid type <code>const names: Array = []</code> should be valid, however an array is actually two types. This will err in TS and it shows us that the err is <em>Generic type 'Array&lt;T&gt;' requires 1 type argument(s).</em> Seeing the <code>&lt;type&gt;</code> notation, means we are working with a generic. Array errs because it is a type that stores data of other types. The Array on it's own doesn't care what type of data you store in it, however TS will ask us for some sort of context of the data that will be in the array. We have seen the notation <code>any[]</code>, we could do the same with <code>Array&lt;any&gt;;</code> which is exactly the same. 
+                </p>
+                <p class="paragraph">
+                    <strong>JS generic Promise</strong>
+                    <br>
+                    Promise is a native JS type like array. Promises are objects that <em>resolve</em> or <em>reject</em> the eventual completion or failure of an asynchronous operation, and its resulting value. They are called with the keyword <em>new</em> <code>const promise = new Promise( ... )</code> and take a callback called an <strong>executor</strong> in their declaration with two paramters: <code>new Promise((reslove,reject)=>{ ... })</code> Inside the <em>executor</em> you use your script, and if it succeeds the promise resolves, if it fails the promise rejects. They are chained with <code>.then()</code> that executes code after the asynchronous event is completed, and <code>.catch()</code> to handle the failure or rejection of the asynchronous event. 
+                </p>
+                <p class="paragrapg">
+                    Inside our executor we use setTimeout() <code>setTimeout(()=>{ resolve('This is done!') },2000)</code> that returns the string 'This is done!' after 2000ms. We access the result of our script through the promise object with <code>promise.then(result=>{ result... })</code>. This is a generic because the Promise does not have a value of its own, it <em>returns</em> a value depending on it resolving, or being rejected. This code will not err in TS, however we are returning a <em>string</em> but TS doesn't know that, meaning that we dont have access to intellisense and can use whatever method we want on our <em>result</em> even if it doesn't work and TS will not err. If we hover over result, we see that TS has it set to the type :any. 
+                </p>
+                <p class="paragraph">
+                    We fix this by adding a generic <code>const promise: Promise&gt;string&lt; = new Promise( ... )</code> Now TS knows that the <em>resolve</em> value for our promise will be a string, and therefore gives us TS support for string methods. <strong>Wrap Up:</strong> An <em>Array</em> knows which data it store, a <em>Promise</em> knows which data it returns, they are not types on their own. 
+                </p>
+                <h2 id="02" class="subtitle">Creating a Generic Function ( fN functionName&lt;T&gt;() )</h2>
+                <p class="paragraph">
+                    Generics can be used in functions for very powerful TS inferrence. We create a function <code>function merge(obj1: Object, obj2: Object){ return Object.assign( obj1, obj2 ) }</code> that takes two objects and merges their properties. <strong>Note:</strong> Object.assign() copies all enumerable own properties from one or more source objects to a traget object. If a property is repeated, it will take the value of the later parameter in the function. If we look at the TS hover over assign() we see that it has 3 overloads and usees generics for up to 4 parameters, and after that it uses ...sources: any[] meaning it doesn't offer TS intellisense after 4 parameters. We call the function <code>const mergedObj = merge({name: 'Moerse'},{age:29})</code> and log the result and as expected we get our merged Object.
+                </p>
+                <p class="pargraph">
+                    If we try <code>mergedObj.name</code> TS will err, and if we try to access age, TS will err as well. This is where generics come in. Of we hover over <em>mergedObj</em>, we see that it is of the type <em>Object</em>, which tells us absolutely nothing about the type and shows us that TS doesn't know the content of mergedObj. We could type cast <code>as { name: string, age: number }</code> or similarly in the function <code>(obj1: { name: string }, obj1: { age: number })</code>, however, we would need to redeclare this depending on every object we put it, which is far removed from ideal. 
+                </p>
+                <p class="paragraph">
+                    <strong>The power of generics</strong>
+                    <br>
+                    Here is where the power of TS inferrence will shine with generics. As it stands if we hover over our merge() we get <code>...( obj1: Object, obj2: Object ): Object & Object</code> which tells us that TS is smart enough to know that our function create an Intersection of two types <code>Object & Object</code>, but not set to understand the properties and types of the objects. We fix this by using <code>function merge&gt;T, U&lt;(obj1: T, obj2: U){ ... }</code> where <em>T</em> and <em>U</em> are our identifiers. <strong>Convention:</strong> T and the alpahet from there on after U, V, W... If we hover over TS, we see that the return of our function is now <code>T & U</code> and if we gover over <em>mergedObj</em> we see <code>const mergedObj: { name: string } & { age: number }</code> meaning that TS understands the objects and the resulting intersection. 
+                </p>
+                <p class="paragraph">
+                    <strong>Why does this work?</strong> 
+                    <br>
+                    How we had it before, TS inferred the intersection of to unkown objects. With our generics T and U, we are telling TS that the two arguments can be of different types and that it should infer their properties and types based on their declarations. TS will now look for the properties and types of the objects we pass through merge, and because it understands that the return is an intersection of the two, it will know what properties and types the resulting object will have and not err when we try to access a property that does exist: <code>mergedObj.name</code>. <em>Now we can pass any object and TS will infer and intersect them without a hitch because the types are set <u>dynamically</u></em>.
+                </p>
+                <p class="paragraph">
+                    <strong>Telling TS what types are being passed to the function using generics.</strong>
+                    <br>
+                    We can be explicit on what the type being passed to the call with <code>mergedObj = merge&lt;string,number&gt;( ... )</code> which would tell TS that we the type of our generics are strings and number, which would only make our T and U string and number and TS would adhere to that logic. This is completely redundant, <em>let TS do its work infering!</em>
+                </p>
+                <h2 id="03" class="subtitle">Working with Constraints ( &lt;T extends type&gt; ) </h2>
+                <p class="paragraph">
+                    If we were to call our function <code>mergedObj = merge({name: 'Moerse'}, 30)</code> TS would not err, however if we compile and run, we would see that our mergedObj only has a property name. This happens because our merge function uses assign() that can only merge tow objects, and 30 is a number. Since we are using generics, TS doesn't care what type we are passing, only that we are passing one. How do we tell TS that the arguments for our function should only be objects of a type T and U?
+                </p>
+                <p class="pargraph">
+                    <strong>Constraints (T extends object) </strong>
+                    <br>
+                    We can use the <strong>extends</strong> keyword in our generics to tell TS that anything of our generic type <em>T</em> has to be an object: <code>function merge&lt;T extends object, U extends object&gt;(obj1: T, obj2: U){ ... }</code> which will make TS know that we only want objects as parameters which would make <code>merge({ ... }, 20)</code> err becasue 20 is not an object. <strong>Note:</strong> always type <em><u>object</u></em> instead of Object when assigning type, asi works with everything, constraints will <em>NOT</em> work with Object. <strong>What can we use for a constarint:</strong> We can use anything as a constraint: unions, types, custom types, interfaces, classes, etc...
+                </p>
+                <h2 id="04" class="subtitle">Another Generic Function ( &lt;T extends customType&gt; )</h2>
+                <p class="paragraph">
+                    We create a function <code>function countAndDescribe( ... )</code> that takes 1 argument and returns the element and a description text based on the elements <em>length.</em> <code>(){ let description: '...'; if(element.length > 1){ description = '...' }else{ description = '...' } return [element, description] }</code> Since we are using the <em>length</em> property for our logic, we want to pass in only arguments that contain that property. We could find out which ones those are and set those types in the function, or we could use a custom type with a generic. Since we can err manually assigning the types that have the property we want, we create <code>interface Lengthy { length: number }</code>. We then use this <code>function countAndDescribe&lt;T extends Lengthy&gt;(element: T){ ... }</code> which will make TS err if we pass in a value that does not have a length property. We hovevr over and see that TS infers that the return is <code>( string | number )[]</code>, but our return is a tuple, so we can be more specific and do <code>: [T, string]</code> to complete our declaration. 
+                </p>
+                <h2 id="05" class="subtitle">The "keyof" Constraint ( &lt;U extends keyof T&gt; ) </h2>
+                <p class="paragraph">
+                    We have a function <code>function extractAndConvert(obj: object, key: string){ return 'Value: ' + obj[key]; }</code> that takes an object as the first argument, and then a string as a second <em>key</em> argument, and returns the value of the property that matches the <em>key</em> value. Ts will err our return here because it has no way of knowing if there is a property <em>key</em> in our object. 
+                </p>
+                <p class="paragraph">
+                    <strong>extends keyof</strong> 
+                    <br>
+                    We use <code>function extractAndConvert&lt;T extends object, U extends keyof T&gt;(obj: T, key: U){ ... }</code> This tells TS that our first argument can be any type of object, and our second argument <em>key</em> should be any kind of key of our T object. TS uses this and infers what we want and gives us intellisense when calling the function. If we hover over our call <code>console.log(extractAndConvert({name: 'Moerse'},'name')</code> we can see that TS inferred the generic <code>&lt;{ name: string }, "name"&gt;</code> giving our second argument <em>key</em> the <strong>literal</strong> value 'name', making it the only valid parameter. If we had more than 1 parameter TS would autocomplete with the only valid values for our <em>key</em> parameter and change the generic acordingly. 
+                </p>
+                <h2 id="06" class="subtitle">Generic Classes ( ClassName&lt;T&gt;{ ... } and new ClassName&lt;type&gt;( ... ) )</h2>
+                <p class="paragraph">
+                    This is usefull if we want to create a class to store different kinds of <em>primitive</em> data in arrays. We want it to be a private value, and we add our own methods to add items, remove items, and get the items <code>class DataStorage { constructor(private data: []){} addItem(item){ this.data.push(item) } removeItem(item){this.data.splice(this.data.indexof(item),1)} getItems(){ return this.data } }</code> Since our data is private, we cannot access or modify the properties directly, however TS will err because we have no type definitions. We want to set this up so that we can have data storage for different kinds of data, an array for strings, and an array for numbers. 
+                </p>
+                <p class="paragraph">
+                    We use generics: <code>class DataSttorage&lt;T&gt;{ ... }</code> where every value inside matches T: <code>private data: T[];</code>, <code>(item: T){ ... }</code> now when we create an instance of our class, we use generics to determine the types that it will accept: <code>const stringStorage = new DataStorage&lt;string&gt;([])</code> now we can call all of our methods, and they will work only with type string becasue of how we set the generic when calling the constructor. We could now do a <code>const numberStorage = new DataStorage&lt;number&gt;([1,2,3])</code> and it would also set the type of storage in this array to numbers only. 
+                </p>
+                <p class="paragraph">
+                    <strong>Problem with objects</strong>
+                    <br>
+                    If we do <code>const objStorage = new DataStorage&gt;object&lt;([])</code> we can use our methods with objects, however we get some strange behaviour when using our removeItem() method. Regardless of the object we pass through the code will not err in TS and always remove the last item in the array. This happens because of how JS handles objects, even though two objects may contain the same values they will not match because JS compares objects by their location in memory. Therefore, if we wanted to remove the item successfuly, we would need a pointer to it's location in memore which would require us to do the following code: <code>const dataObj = {name: 'Moerse'}</code> then <code>objStorage.addItem(dataObj)</code> and <code>objStorage.removeItem(dataObj)</code> which would work because we have the location in memory since before pushing the data. This is not practical whatsoever. <strong>Note on splice() and indexOf():</strong> If the first parameter is not located, indexOf() will return -1, which will casue splice() to start at -1 index from the end of the array, in this case the last element, hence the behaviour. <strong>Note:</strong> This holds true for type <em>array</em> as well, because an array is a type of object that has the same memory allocation logic for localization. 
+                </p>
+                <p class="paragraph">
+                    <strong>Avoiding these mistakes</strong>
+                    <br>
+                    Therefore we should be aware of this when using generics and include compatible types, in this case <strong>primitive values</strong> <code>class DataStorage&lt;T extends string | number | boolean&lt;( ... )</code> or create a custom <strong>union type</strong> <code>type Primitive = string | number | boolean;</code> and then <code>class DataStortage&lt;T extends Primitive&gt;{ ... }</code> We would need to create a more specialized data storage class to work with objects exclusively, <em><u>preferably through the use of an id</u></em>. <strong>Note:</strong> You can assign generic types to methods inside classes if you need to as an argument, the use of generics is boundless. 
+                </p>
+                <h2 id="07" class="subtitle">Generic Utility Types ( :Partial&lt;type&gt; and  :Readonly&lt;nonNativeType&gt; )</h2>
+                <p class="paragraph">
+                    TS built in generic types. They only exist in TS and will note be compiled to JS, like interfaces. The first one is the <strong>Partial</strong> type. We create an interface <code>interface CourseGoal { title: string; description: string; completeUnit: Date; }</code> and then a constructor function: <code>function createCourseGoal(title: string; description: string; date: Date;): CourseGoal { ... }</code> which takes 3 parameters and returns a type courseGoal object at the end. Our constructor handles the logic, where we may want to include some checks before storing a value, in this case we will just pretend we need a local variable to then use to return at the end of the constructor: <code>let courseGoal: CourseGoal = {}; courseGoal.title = title ... return courseGoal;</code> this will err because empty object doesn't meet the requirements of type CourseGoal. We know that after we execute our logic we have a CourseGoal compliant object, but TS doesn't know that, here we use the TS type <strong>Partial</strong>
+                </p>
+                <p class="paragraph">
+                    We change to <code>let courseGoal: Partial&lt;CourseGoal&gt; = {};</code> which will tell TS that courseGoal will eventually be a CourseGoal type and changes every property in the definition into an optional property <code>title?: string | undefined;</code>, <code>description?: string | undefined;</code> ... which stops TS for erring inside our logic. However now we will err in <code>return CourseGoal</code> because this <em>matches</em> type <em>CourseGoal</em> and not type <em>Partial&lt;CourseGoal&gt;</em>. We have to typecast this return to avoid the err <code>return courseGoal as CourseGoal;</code> which we know is correct because TS told us that it matched our custom type. 
+                </p>
+                <p class="paragraph">
+                    <strong>Partial in classes</strong>
+                    <br>
+                    I tested out the same logic inside a class instead of separing the class into an interface and a constructor <code>class CGoal { constructor( public title: string; ... ){ let courseGoal: Partial&lt;CGoal&gt; = {}; ... return courseGoal as CGoal; }}</code> And it functioned in exactly in the same way. This is odd because CGoal is using it's own class to determine it's type safety, and it is inferring it from the constructor function. Powerful :3
+                </p>
+                <p class="paragraph">
+                    <strong>Readonly TS type</strong>
+                    <br>
+                    If you declare a variable you can set it with the <strong>utility type</strong> <code>Readonly&lt;type&gt;</code> it will make TS err when you try to alter the value in your Readonly variable: <code>const names: Readonly&lt;string[]&gt; = ['Moerse','Marmot'];</code> will make TS err if we try to pop(), push(), or redeclare a value in our array. The <strong>Readonly</strong> utlity type works together with any type that <em><u>is NOT a primitive</u></em>. There are more Utility Types in TS in the <a href="https://www.typescriptlang.org/docs/handbook/utility-types.html">Utility types TS Docs.</a> <strong>Wrap Up:</strong> This utility types are all generics becasue they take some other value of any type and do something to it (setting to optional, locking values, etc..).
+                </p>
+                <h2 id="08" class="subtitle">Generic Types vs Union Types</h2>
+                <p class="paragraph">
+                    Generics <em>LOCK IN</em> a certain type once you call a function or initialize a constructor. You might think that we could achieve the same thing using <em>Union Types</em> however if we set <code>constructor(private data: (string | number | boolean)[])</code> it will accept an array that has any mix of string numers and booleans. If we use <code>data: string[] | number[] | boolean[]</code> now data can be an array of strings, numbers, or booleans, which is what we want. However, now with our methods we will err: <code>addItem(item: string | number | boolean){ ... }</code> because now every time this method is called, the arguments could be of type string, number, or boolean. However, our data[] array can only accept one type of data, which means our logic will not work here anymore, making our methods much more complex. With <strong>generics</strong> you <em>PICK</em> and <em>LOCK IN</em> a certain type accross a whole instance or function. Use <strong>unions</strong> when you are flexible with every call of a method. 
+                </p>
+            </li>
+        </ul>
+    </div>
+
+    <!-- Optional JavaScript -->
+    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+    <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js" integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>
+    </body>
+</html>

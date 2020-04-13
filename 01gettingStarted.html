@@ -1,0 +1,79 @@
+
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+    <style>
+        code{
+            background-color: rgba(0,0,0,.075);
+            font-weight: bold;
+        }
+        .subtitle{
+            font-size: 1.3rem;
+            font-weight: bold;
+            margin: 0;
+            padding: 5px;
+            margin-top: 5px;
+            background-color: rgba(0,0,0,.075);
+            text-align: center;
+        }
+        h3{
+            font-size: 2rem;
+            font-weight: bold;
+            margin: 0;
+            padding: 5px;
+            margin-top: 10px;
+        }
+        .paragraph{
+            margin: 0.5rem 0 0.5rem;
+        }
+        .tab{
+            margin: 0 1rem;
+        }
+        </style>
+
+    <title>01 Getting Started</title>
+  </head>
+  <body>
+      
+    <div class="container">
+        <h1 class="display-3 text-center">Getting Started<hr></h1>
+        <header>
+            <p class="paragraph">
+            </p>
+        </header>
+        <ul class="list-group">
+            <li class="list-group-item">
+                <h2 class="subtitle">What is TS</h2>
+                <p class="paragraph">
+                    It is a superset of JS. It cannot be run by node or a server. You write in TS and compile to JS that can be executed by your JS environment. Even though TS becomes JS in the end, it brings new features by writing complex workarounds for your code in JS while you keep a cleaner syntax in TS. The main feature is that TS adds types, allowing you to find errs and bugs while you write your code. In the case of a function that adds number, in JS you could pass two strings and it would run and return an undesired result. TS would avoid this. 
+                </p>
+                <p class="paragraph">
+                    When you get a value from HTML in JS it is ALWAYS a string. This makes it prone to type errors that are not execution errors, this can be avoided by TS. We want to prevent these errors before runtime. We take a DOM manimpulation JS file and create a ts version. We then see that we get a few errors with double declaration. I commented out the js file and that fixed it. However, we got an error in our listener function saying that we might not get a <code>input1.value</code> from our declared const. We use the syntax <code>!</code> to tell the compiler that the expression will not be <em>null</em> or <em>undefined</em> and make it so it doesn't complain about that possibility. We end up with the line <code>const input2 = document.getElementById("num2")! as HTMLInputElement</code> which tells our compuler that input2 will always have a value, and that it is of the type <em>HTMLInputElement</em>, which gives us access to possible properties of that type. 
+                </p>
+                <p class="paragraph">
+                    We then add the types to our function using :number to the params. We then get an error when we run our function because it knows that input1.value comes from the type <em>HTMLInputElement</em> and it can only be a string. Therefore it requires that we convert it to a number in order to run. We do this by using <code>add(+input1.value,+input2.value</code> where the + sign converts our strings into numbers. We compile using <code>tsc using-ts.ts</code> which creates our js file, which we then call in our html using a script tag with the src of our file. We can see that we don't get the ts syntax, but instead we have vanilla JS. TS forces us to write cleaner code that is more explicit. 
+                </p>
+            </li>
+            <li class="list-group-item">
+                <h2 class="subtitle">TS Advantages</h2>
+                <p class="paragraph">
+                    We get mmuch cleaner and stronger code using TS, but we also get next generation JS features like promises, async/await, in our code that gets compiled down to earlier JS for older browsers. Ts also adds non JS features like interfaces, types, and generics, that JS doesn't have access to. They don't get compiled into JS but aid us in development by giving us clearer errs. It also adds Meta-Programming features like Decorators. TS is highly configurable in the compiler to have it behave like you want. Modern tooling that helps even in non-TS projects that get applied into JS.
+                </p>
+            </li>
+        </ul>
+    </div>
+
+    <!-- Optional JavaScript -->
+    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+    <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js" integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>
+    </body>
+</html>

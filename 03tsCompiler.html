@@ -1,0 +1,176 @@
+
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+    <style>
+        code{
+            background-color: rgba(0,0,0,.075);
+            font-weight: bold;
+        }
+        .subtitle{
+            font-size: 1.3rem;
+            font-weight: bold;
+            margin: 0;
+            padding: 5px;
+            margin-top: 5px;
+            background-color: rgba(0,0,0,.075);
+            text-align: center;
+        }
+        h3{
+            font-size: 2rem;
+            font-weight: bold;
+            margin: 0;
+            padding: 5px;
+            margin-top: 10px;
+        }
+        .paragraph{
+            margin: 0.5rem 0 0.5rem;
+        }
+        .tab{
+            margin: 0 1rem;
+        }
+        </style>
+
+    <title>03 TS Compiler</title>
+  </head>
+  <body>
+      
+    <div class="container">
+        <h1 class="display-3 text-center">03 The TypeScript Compiler<hr></h1>
+        <header>
+            <p class="paragraph">
+                Configuring and running the TypeScript compiler. Settings and scripts to manage your compiler.
+            </p>
+        </header>
+        <ul class="list-group">
+            <li class="list-group-item">
+                <h2 class="subtitle">Watch Mode</h2>
+                <p class="paragraph">
+                    Automate your save to compile your code. This is called watch-mode, having typescript watch for changes in a file and then recompile automatically. We do this by running <code>tsc app.ts --watch</code> or <code>tsc app.ts -w</code>. This line of code sets watch mode on our single app.ts file, however, in a larger project you will have more .ts files. 
+                </p>
+                <p class="paragraph">
+                    To manage a large project, we need to run <code>tsc --init</code> which makes TS watch every ts file inside that directory. When we run this, it creates a <strong>tsconfig.json</strong> file which holds the settings for our compilator for every ts file inside this folder. Without doing anything in our tsconfig file, we can now run <code>tsc</code> to compile every ts file in our project directory. We can now run <code>tsc -w</code> or <code>tsc --watch</code> to enter watch mode on every ts file in the directory. 
+                </p>
+                <p class="paragraph">
+                    <h2 class="subtitle">exclude</h2>
+                    If we go to our <strong>tsconfig.json</strong> file, we can see what additional options you can get. We create <code>"exclude": ["analytics.ts"]</code> which creates an array of filepaths to be ignored by the compiler when running the <code>tsc</code> command. Now even if we are in watch mode, the files in the exclude array of our json will not be compiled. We can also set any file with certain termination to be exculded: <code>"*.dev.ts"</code> would exclude any file that has a <em>.dev.ts</em> termination. Additionally we could use <code>"**/*.dev.ts</code> which would exclude any file in any folder that has the <em>.dev.ts</em> termination.
+                </p>
+                <p class="paragraph">
+                    <strong>Common uses for exclude</strong>
+                    <br>
+                    One common exclude is <code>"node_modules"</code> which will make it so that the TS compiler doesn't compile any .ts file inside our node_modules folder that has the third party modules we add to our project. <strong>Note:</strong> this exclude is a default TS compiler setting! However if you do set "excule" on your project it <strong>WILL NOT</strong> exclude "node_modules" automatically, and you would have to specify it again.
+                </p>
+                <h2 class="subtitle">include</h2>
+                <p class="paragraph">
+                    This works in the opposite way that exclude works, in that it will only compile what is inside <em>"inculde": []</em> <strong>Note:</strong> If we set the include key, then we need to specify everything we want the TS compiler to compile. Here we could set a folder to compile everyrthing inside a directory: <code>"include": ["src"]</code> would compile everything inside the src directory. <strong>Note:</strong> if we exclude a subfolder inside a directory included in include, TS will ignore that folder. 
+                </p>
+                <p class="paragraph">
+                    <strong>files</strong>
+                    <br>
+                    We can use "files" instead of include, the difference being that we cannot specify directories here, only files. This setting is not common at all. 
+                </p>
+            </li>
+        </ul>
+        <h1 class="display-3 text-center">CompilerOptions<hr></h1>
+        <header>
+            <p class="paragraph">
+                Settings on <em>HOW</em> we want the compiler to compile things. There are plenty of options here. Most will not matter in most projects.
+            </p>
+        </header>
+        <ul class="list-group">
+            <li class="list-group-item">
+                <h2 class="subtitle">Setting a Compilation Target</h2>
+                <p class="paragraph">
+                    The target is set by default. It tells the TS compiler what target JS version you want to compile the code to. The default is set to <em>"es5"</em> which means all of our TS code is compiled down to es5, making it compatible with browsers that support es5 or greater. If we look at our js files, we can notice that there are no let or const variables, only var. This is because in es5, let and const did not exist. If we delete the <code>"es5"</code> and then hit ctrl+space we can see all of the valid options for our target key. <strong>Note:</strong> "es6" is equivalent to es2015. ES6 does support let and const. The more modern your target is, the more concise your JS code will be because the compiler won't have work around non existent features we coded into our ts files. 
+                </p>
+                <h2 class="subtitle">Lib</h2>
+                <p class="paragraph">
+                    We do some DOM manipulation in our app.ts file. Intellisense and autocompletion work with TS even though this is not vanilla JS. This is because what we have in our <em>target</em> key determines the default value for our <em>lib</em> setting. This will mean that TS will recognize everything we have access to in "es6" like Map and all DOM APIs. <strong>Note:</strong> unable to veify this, as I set it to es3 and still got DOM APIs and other things. However, I could verify that <em>Map</em> was not recognized by the compiler when using the ES3 setting. If we comment <em>"lib"</em> out, we will now get some erros at compilation because we have not included any library to our TS support because we overwrote the default settings set by target. If we uncomment the setting and ctrl+space inside the array, we can see all the supported values we can have for lib. The default settings for es6 are <code>"lib": ["dom","es6,"dom.iterable","scripthost"]</code>
+                </p>
+                <h2 class="subtitle">allowJS and checkJS</h2>
+                <p class="paragraph">
+                    Enablig allowJs will make the TS compiler also compile JS files. checkJS will make the TS compiler check syntax and report potential errors. This is nice if you are working with JS only. The TS compiler will help you as if your variables where declared as <em>any</em>. If you enable both of these, you might have to tweak exclude so you don't double compile your js files that are outputed by your TS compilation. 
+                </p>
+                <h2 class="subtitle">sourceMap</h2>
+                <p class="paragraph">
+                    sourceMap hels with debugging and development. When we use this option we generate <em>.js.map</em> files. They act as a bridge that is understood by modern browsers and their dev tools to connect the JS files to the input ts files. This allows us to go to our browser dev tools (F12) under our sources tab and find our .ts files. This is great for debugging as we can troubleshoot directly in our input files and not the compiled, weird JS code. 
+                </p>
+                <h2 class="subtitle">rootDir and outDir</h2>
+                <p class="paragraph">
+                    THe bigger the project gets, the more important organization is. You tipically don't want to organize your files in your root folder. YOu would usually have a <em>src</em> folder and a <em>dist</em> folder. src holds the input TS, dist holds the output JS. If we set <strong>outDir</strong> we can tell the TS compiler where the created files should be stored. If we mkdir dist, and then set <code>"outDir": "./dist"</code> TS will compile our files to the dist directory. If you have a folder structure in your ts files, the compiler will replicate it to your outDir directory. <strong>rootDir</strong> sets the directory where your TS compiler will look for files, similar to include, but it will preserve the folder structure you have here when outputting to outDir. We set it as <code>"rootDir": "./src"</code> If we had not set it as this, it would have taken any ts file in the root directory and also compiled them into dist, creating another folder inside it labled as the root, and it would also create a src folder inside the dist folder because it would copy the structure from the root. 
+                </p>
+                <h2 class="subtitle">removeComments, noEmit, noEmitOnError, downlevelIteration</h2>
+                <p class="paragraph">
+                    Setting <strong>removeComments</strong> removes all comments from your ts code when compiling to JS. This creates smaller files. <strong>noEmit</strong> would not emit output JS files, but if you just want to check if your files are correct and not necessarily compile them (In a very large scale project) you might set this to true so that TS checks your file without taking the time to actually create the compiled JS files. <strong>noEmitOnError</strong> is another option that will tell the TS compiler not to create JS files if it finds an err in your TS code. This is not marked in the default tsconfig file, but it is an option you can create. 
+                    <strong>downlevelIteration</strong> allows you to work using iterators introduced in versions over ES5 in your ts files when compiling to older ES5-ES3 versions of JS. Examples of these would be 'for-of' loops, spread, and destructuring. Enable this if your compilation does not work correctly, this will output more verbose code to handle these new features in older JS.
+                </p>
+            </li>
+        </ul>
+        <h1 class="display-3 text-center">Strict Compilation<hr></h1>
+        <header>
+            <p class="paragraph">
+                You can set how <em>STRICT</em> your TS compiler should be with you. Some errs might be compiled down and not counted as an error without some of these settings on. In our tsconfig file, the default setting is <code>strictTrue</code> which applies every setting after it. If we uncomment one and set it to false, it will omit that strict check alone.
+            </p>
+        </header>
+        <ul class="list-group">
+            <li class="list-group-item">
+                <h2 class="subtitle">Strict Type-Checking Options</h2>
+                <p class="paragraph">
+                    <strong>strictTrue</strong> is the equivalent of having all the settings in the <em>Strict Type-Checking Options</em> enabled. <strong>noImplicitAny</strong> This makes TS err when we have a function argument implicitly set as an <em>any</em> type. It assumes that if we wanted to use any type, we would explicitly set <code>:any</code>. This does NOT trigger when declaring variables <code>let logged;</code> even though when we hover over it it is set implicitly as <em>:any</em>. This is because TS can infer and assign the type after we declared the variable once we set a value to it. If we were to do <code>logged = true</code> TS would be able to track type <em>:boolean</em> form there on. Keep in mind that we can still change <em>logged</em> to another value, but TS would understand and treat it with the type it was set <em>AFTER</em> we changed it. Since TS cannot track the type of the parameter that will be passed to the function, it will err beacuse it will not know what type is being handled inside of the function. 
+                </p>
+                <p class="paragraph">
+                    <strong>stricNullChecks</strong> makes the TS compiler check for null values and have you handle the possibility of getting a null. In the button example, where TS could't know if we were going to get a button from the DOM to addEventListener it erred. With this set to false it would not err. We could have it not err if we add <code>if(button){...}</code> as it would verify that button is not null, or as we did, by adding <strong>!</strong> after our button variable, which tells TS that it <em>WILL</em> get a value for button. 
+                </p>
+                <p class="paragraph">
+                    <strong>strictFunctionTypes</strong> is a more advanced setting that works with custom types we will see later such as interface, class, and type. <strong>strictBindCallApply</strong> checks what you are setting with bind, call, or apply, and makes sure that what you are doing works with your code. <strong>strictPropertyInitialization</strong> is important when we work with classes in the future. <strong>noImplicitThis</strong> checks if you are using the this keyword in a place where it is not clear what it refers to. <strong>alwaysStrict</strong> makes sure that your compiled JS files are using the <code>"use strict"</code> mode. 
+                </p>
+            </li>
+        </ul>
+        <h1 class="display-3 text-center">Code Quality Options & Other<hr></h1>
+        <header>
+            <p class="paragraph">
+                These options add strictness to your TS code, and if combined with other settings like <strong>noEmitOnError</strong> may cause TS to not compile JS if you do not meet the additional checks set here. 
+            </p>
+        </header>
+        <ul class="list-group">
+            <li class="list-group-item">
+                <h2 class="subtitle">Additional Checks</h2>
+                <p class="paragraph">
+                    <strong>noUnusedLocals</strong> will make TS err if we declare a local variable and don't use it. It is not an error per say, but it tells TS that you have declared a value that is useless. The setting doesn't apply to global variables because TS has no way of knowing if you are going to use the declared variable in another script file. <strong>noUnusedParameters</strong> will make TS err if we have unused arguments when creating a function, or unused arguments when calling a function. <strong>noImplicitReturns</strong> will make TS err if we have a function that sometimes returns something, and sometimes it does not. If we were to set an add() function, and then inside an if statement that returns the addition <em>only if the sum is greater than 0</em>, with this option enabled, TS would detect that there are some conditions in which the add() function would not return anything. This would make TS err. We fix this by filling in this possibility, or by just explicitly returning nothing. It is good to make sure you are returning something in every case of the function. 
+                </p>
+                <h2 class="subtitle">Other Options</h2>
+                <p class="paragraph">
+                    <strong>Module Resolution Options</strong> are advanced options that don't matter in most projects. <strong>Source Map Options</strong> are advanced settings pertaining the source maps we set earlier. Typically defaults settings will work perfectly. <strong>Experimental Options</strong> are experimental support options which we will se later on in the course such as Decorators or Metadata that might not end up being implemented into JS in the future.
+                </p>
+            </li>
+        </ul>
+        <h1 class="display-3 text-center">Debugging with VSCode<hr></h1>
+        <header>
+            <p class="paragraph">
+                We want to have all our tools set in the same place, the <strong>Debugger for Chrome</strong> extension allows us to do this. It requires some compiler settings, and setup, but will work integrated in VSCode, making us able to debugg from our TS files inside VSCode instead of the Chrome Dev Tools. 
+            </p>
+        </header>
+        <ul class="list-group">
+            <li class="list-group-item">
+                <h2 class="subtitle">Debugger for Chrome</h2>
+                <p class="paragraph">
+                    We need to enable <strong>sourceMap</strong> for ts debugging to work with the extension. We set the breakpoint in our code and then go to our file, menu option Run and option <strong>Start Debugging</strong> hotkey F5. We select Chrome and it will open a <strong>launch.json</strong> file to configure how it should run. We should set the URL to localhost 3000, as it is where we are running (<em>default is 8080</em>). Now when we compile with <code>tsc</code> our source maps will be created. Now when we run debugging we get a debugging tab on the side and it will run automatically opening a Chrome Browser. It will pause execution automatically where we set our breakpoint in our ts file. We can watch variables and their changes in the WATCH tab by setting them with <code>variableName + '!!!'</code> and manage our script with controlers to move to the next step, skip, etc. This is how you debug code from inside VSCode. 
+                </p>
+            </li>
+        </ul>
+    </div>
+
+    <!-- Optional JavaScript -->
+    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+    <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js" integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>
+    </body>
+</html>
