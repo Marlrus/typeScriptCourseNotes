@@ -36,6 +36,9 @@
         .tab{
             margin: 0 1rem;
         }
+        html{
+            scroll-behavior: smooth;
+        }
         </style>
 
     <title>02 Basics</title>
@@ -46,10 +49,177 @@
         <h1 class="display-3 text-center">02 TypeScript Basics & Basic Types<hr></h1>
         <header>
             <p class="paragraph">
+                Typescript Basic Types. JS shared Types, and TS only types. Basic type casting, and basic function and object definitions.
             </p>
         </header>
+        <h2 id="00" class="subtitle">Index</h2>
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th scope="col">#</th>
+                    <th scope="col">Topic</th>
+                    <th scope="col">Description</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <th scope="row">1</th>
+                    <td>
+                        <a href="#01">Creating our base Project</a>
+                    </td>
+                    <td>
+                        Packages and scripts to set up a basic boilerplate <strong>lite-server</strong>
+                    </td>
+                </tr>
+                <tr>
+                    <th scope="row">2</th>
+                    <td>
+                        <a href="#02">Core Types</a>
+                    </td>
+                    <td>
+                        TS core types and handling of "falsey" values. Dynamically Typed JS vs Statically Typed TS.
+                    </td>
+                </tr>
+                <tr>
+                    <th scope="row">3</th>
+                    <td>
+                        <a href="#03">Type Casting</a>
+                    </td>
+                    <td>
+                        TS inferrance of types vs declaration. <code>const variable: type = matchingTypeValue</code>
+                    </td>
+                </tr>
+                <tr>
+                    <th scope="row">4</th>
+                    <td>
+                        <a href="#04">Object Type</a>
+                    </td>
+                    <td>
+                        TS object typecasting specificity to avoid TS errs. <code>const obj: { prop: type; ... }</code>
+                    </td>
+                </tr>
+                <tr>
+                    <th scope="row">5</th>
+                    <td>
+                        <a href="#05">Array Type</a>
+                    </td>
+                    <td>
+                        TS array typecasting and inferrence <code>const arr: type[]</code>
+                    </td>
+                </tr>
+                <tr>
+                    <th scope="row">6</th>
+                    <td>
+                        <a href="#06">TS Type: Tuple</a>
+                    </td>
+                    <td>
+                        Explicit array type, set type and set length and exceptions to the rule. <code>const arr: [type, type, type];</code>
+                    </td>
+                </tr>
+                <tr>
+                    <th scope="row">7</th>
+                    <td>
+                        <a href="#07">TS Type: enum</a>
+                    </td>
+                    <td>
+                        <code>enum Name { PROP, PROP2, PROP3 }</code>
+                        <br>
+                        We create an enum object that assigns a numeric value to each property. This assigns labels to numbers, making checks like roles easier and safer to understand. 
+                        <br>
+                        <code>if(person.role === Role.ADMIN){...}</code>
+                        <br>
+                        Which is more human readible than having person.role === 1
+                    </td>
+                </tr>
+                <tr>
+                    <th scope="row">8</th>
+                    <td>
+                        <a href="#08">TS Type: any</a>
+                    </td>
+                    <td>
+                        Most flexible TS type, TS will not err or correct anything unless typecast later. It removes some TS advantages and is like working with vanilla JS. <code>const variable: any;</code>
+                    </td>
+                </tr>
+                <tr>
+                    <th scope="row">9</th>
+                    <td>
+                        <a href="#09">TS Type: Unions</a>
+                    </td>
+                    <td>
+                        Combine types with unions on variables/params that can take more than one type of value. <code>variable: type1 | type2</code> or <code>param: type1 | type2</code>
+                    </td>
+                </tr>
+                <tr>
+                    <th scope="row">10</th>
+                    <td>
+                        <a href="#10">TS Type: Literal</a>
+                    </td>
+                    <td>
+                        Set a variable or param to ONLY accept certain values with literals. <code>variable: 'stringValue' | 'stringValue2'</code>
+                    </td>
+                </tr>
+                <tr>
+                    <th scope="row">11</th>
+                    <td>
+                        <a href="#11">TS Type: Custom Types</a>
+                    </td>
+                    <td>
+                        Create and label your custom type to make type declaration easier. <code>type CustomTypeName = type1 | type2</code> use with <code>const variable: CustomTypeName = ...</code>
+                    </td>
+                </tr>
+                <tr>
+                    <th scope="row">12</th>
+                    <td>
+                        <a href="#12">Function Return Types and "void"</a>
+                    </td>
+                    <td>
+                        Set specific returns for your function declarations <code>function fnName(arg: type): return type{ ... }</code>
+                        <br>
+                        The type "void" is used when the function has <strong>No return statemet</strong> Although JS returns the value <em>undefined</em> TS will not accept undefined as a value and err. <code>function fnName():void { console.log(...) }</code>
+                    </td>
+                </tr>
+                <tr>
+                    <th scope="row">13</th>
+                    <td>
+                        <a href="#13">Functions as Types</a>
+                    </td>
+                    <td>
+                        We can use a Function type to assign a function to a variable. To safeguard it from redeclaration we use <code>let variable: Function = ourFn;</code> to set what kind of function can be saved in that variable <code>let variable: (arg: type, arg2: type) => type = ourFn</code> so that it can only be redeclared to a function of that criteria.
+                    </td>
+                </tr>
+                <tr>
+                    <th scope="row">14</th>
+                    <td>
+                        <a href="#14">Functions Types and Callbacks</a>
+                    </td>
+                    <td>
+                        TS inferrence inside Callbacks for arguments and returns. 
+                    </td>
+                </tr>
+                <tr>
+                    <th scope="row">15</th>
+                    <td>
+                        <a href="#15">Unknown</a>
+                    </td>
+                    <td>
+                        Similar to <em>any</em> but different in that it cannot be assigned any specific type without a type check or type casting. 
+                    </td>
+                </tr>
+                <tr>
+                    <th scope="row">16</th>
+                    <td>
+                        <a href="#16">Never</a>
+                    </td>
+                    <td>
+                        A type that functions can return. Unlike void, never means that the script will be interrupted and not return <em>undefined</em>. This happens when you <em>throw</em>, which interrupts a script.
+                    </td>
+                </tr>
+                    
+            </tbody>
+        </table>
         <ul class="list-group">
             <li class="list-group-item">
+                <a id="01" href="#00">Index</a>
                 <h2 class="subtitle">Creating our base Project</h2>
                 <p class="paragraph">
                     We create an index.html file using the boiler plate that comes from <code>html:5</code> and then we add a script file that points to an <em>app.js</em> file we will compile. We add the attribute defer to the tag which will make the script execute at load. We create an <em>app.ts</em> file and compile it using tsc and then when we open the html file in our browser, we see that te code was executed. 
@@ -67,6 +237,7 @@
         </header>
         <ul class="list-group">
             <li class="list-group-item">
+                <a id="02" href="#00">Index</a>
                 <h2 class="subtitle">Core Types</h2>
                 <p class="paragraph">
                     TS has the core type <strong>number</strong> that refers to any number: <em>int, double, float, etc...</em> We have <strong>string</strong> that are text. <strong>boolean</strong> is true and false. It does not accept <em>truthy</em> or <em>falsy</em> like JS that takes 0,1 and other things as true or false. TS only accpets <em>true</em> and <em>false</em>.
@@ -74,6 +245,7 @@
                 <p class="paragraph">
                     It is important to note that TS only helps us during compilation, it doesn't change JS at runtime. Also, to avoid the duplicate declaration errors, we don't want to have the .js file and .ts file open at the same time. We could add type safety in JS by adding if statemets. In the case of our add() function we could use if with <em>typeof</em> to make sure that we are only taking in numbers into our function. This ends up being more lines of code than just handling it in TS during development. JS is dynamically typed, which means we can change the type of the variable without an issue. TS is statically typed, meaning we define the type during development and don't expect it to change at runtime. This only works in our TS file developing because since it compiles to JS where the variable can change type at runtime. JS knows fewer types than TS, and we want to get the errs and bugs in development, not runtime. This is where TS shines. 
                 </p>
+                <a id="03" href="#00">Index</a>
                 <h2 class="subtitle">Type Casting</h2>
                 <p class="paragraph">
                     In TS, the core primitives are all <strong><u>lowercase</u></strong>, not like we do in mongo schemas. We are explictly assigning the type throgh <code>: type</code>. The colon after a parameter or variable is from TS, the TS understand it, VSCode understand it, JS does not. That is why it is not there on compilation. 
@@ -81,10 +253,12 @@
                 <p class="paragraph">
                     <strong>Why don't we have type assignment on variable declarations?</strong> TS infers the type prety well. If we declare a variable <code>const number1 = 5</code> it will infer that the type is number from there on. We could implicitly set the type, but it is redundant and considered bad practice zB: <code>const number1: number = 5</code> It is good practice if we declare a variable without initializing it immediately: <code>const number1: number;</code> TS infers type and then errs if we use a wrong type, not compatible with what it infered. 
                 </p>
+                <a id="04" href="#00">Index</a>
                 <h2 class="subtitle">Object Type</h2>
                 <p class="paragraph">
                     In TS object is the same as JS, however we can have more specific types of object in TS. Like having an object that has to have certain properties. We create an object, and then we console.log it which has no errors. However, when we try to access a property that does not exist in the object, we get an error. <code>person.nickname</code> will err if person doesn't have the property. This will not happen in JS. When we compile we get that err. TS inferred the type of data that is inside our object (k:v with type). If we hover over our object person we see the code for our object type <code>const person { name: string; age: number; }</code> which is an object type that is writen using key:type pairs and use semicolons. We can set the generic object type using <code>:object</code> which will change the hover message, however TS will still detect the err because we are trying to access a property that the object we are using doesn't have. This disables intellisense options in our IDE that we would have otherwise. This is why it is not a good option. We would also get a mistake if we write valid code: <code>person.name</code> because we don't give TS information about our object making it not support any type of property. TS inferred it, but we can also be explicit about it: <code>: {name: string; age: number}</code> which uses k:t pairs instead of k:v pairs. <strong>Note:</strong> I should use appropriate syntax for object types by using semicolon which would make it easier for me to determine if it is a type or an object. In our example, it is better to just let TS infer our type. Object types can also be nested.
                 </p>
+                <a id="05" href="#00">Index</a>
                 <h2 class="subtitle">Array Type</h2>
                 <p class="paragraph">
                     We add a hobbies array to our person object <code>hobbies: ['Sports','Cooking']</code>. Now when we hover over person we see that TS inferred that hobbies is of the type <code>string[]</code> meaning string array. We declare an array <code>favoriteActivities: string[]</code> and then declare the array later. This will help us so that we cannot define our array as something other than an array of strings. We then write a for loop for our person hobbies <code>for(const hobby in person.hobbies){ console.log(hobby) }</code> which will log all the person's hobbies. We can see that we get intellisense for hobby that would allow us to use any method that can be applied to a string because TS detects that hobby can only be a string because of the types we set. 
@@ -92,10 +266,12 @@
             </li>
             <h2 class="subtitle">TS Types</h2>
             <li class="list-group-item">
+                <a id="06" href="#00">Index</a>
                 <h2 class="subtitle">Tuple</h2>
                 <p class="paragraph">
                     Tuple is a TS type that is a fixed-length and fixed-type array. We create a role property in our person object <code>role: [2, 'author']</code> and when we hover over we get the type definition as <code>(string | number)[]</code> which means a string or number array. This would allow us to push more than 2 elements into the array, as well as changing strings to numbers and viceversa because our TS compiler has no more information on what we want. Here we would want to override the implicit type TS had and set it explicitly. We set the type using a tuple <code>role: [number, string]</code> that will catch errs that we might have with our array. <strong>Note:</strong> Push is an exception to this rule and will not err. Outside of push, we wouldn't be able to set the tuple as anything other than what we defined, including adding extra length through anything that is not push. <strong>Note:</strong> tuples can have more than 2 values zB: <code>role: [number, string, number];</code> would work.
                 </p>
+                <a id="07" href="#00">Index</a>
                 <h2 class="subtitle">Enum</h2>
                 <p class="paragraph">
                     <strong>enum { NEW, OLD }</strong> Added by TS, automatically enumerated global constant identifiers. If we wanted to set a numerical value and a string to our roles (To make them human readable), we might assign global consts for each role: ADMIN = 0, READ_ONLY =1, AUTHOR = 2, and then put that as our role: ADMIN, or etc. This is where enum can save us work. We create our first custom type <strong>enum</strong> <code>enum Role { ADMIN, READ_ONLY, AUTHOR };</code> which automatically assigns a numerical value to each role: ADMIN 0, ...1, ...2. Now we can set the role in our person <code>role: Role.ADMIN</code>. <strong>Note:</strong> Custom types are capitalized by convention! <br>
@@ -104,28 +280,33 @@
                 <p class="paragraph">
                     You are not constrained to the numbers automatically assigned to enum. If you wanted to start at 1, or any other number, you could set the starting number on the first value and enum would automatically adjust from there: <code>enum Role = { ADMIN = 5, READ_ONLY, AUTHOR }</code> would set ADMIN as 5, and then the other two roles as 6 and 7. You could also assign your own numeric values to all of your enum identifiers. You could also assign text to enum: <code>enum Role { ADMIN = 'ADMIN', ... }</code> but often you want the increment in numbers that comes with the standard enum. You can mix and match numbers and strings however you want. The good thing about enum is that you set it and then call it on your verifiers more easily. 
                 </p>
+                <a id="08" href="#00">Index</a>
                 <h2 class="subtitle">Any</h2>
                 <p class="paragraph">
                     The any type is the most flexible type in TS. This means you can store any type here and TS will never yell at you if you use any. In our previous code where we declared an array <code>let favoriteActivities: string[];</code> we could change it to <code>let favoriteActivities: any;</code> and we could now declare our let as anything. This could be changed to a number, string, an array of numbers, strings, or an object and TS would not bother us with the re-assignment. If we were to set it to <code>: any[];</code> it would at least constrain that value to be an array of anything. <strong>Note:</strong> this would let us create a mixed array, one with strings, booleans, numbers, objects, etc without TS complaining. We want to avoid any whenever possible because it removes the advantages that TS gives us as it is what vanilla JS does with every variable we use. This will make TS not check anything to do with the variable declared with the type any. 
                 </p>
             </li>
             <li class="list-group-item">
+                <a id="09" href="#00">Index</a>
                 <h2 class="subtitle">Unions</h2>
                 <p class="paragraph">
                     When we we want a variable to be able to take multiple types we use <strong>union</strong>. We create a function that can add numbers, or concat strings. <code>function combine(inpit1,input2)=>{...}</code> since we want it to accept strings or numbers as parameters, we set the type using union: <code>input1: number | string, input2: number | string</code>. In TS | is or, this tells TS that this function can take either parameter as a number or a string. TS will return an error because it sees we might take multiple types where we may not be able to use the + operator. We can work around that issue by using a runtime type check: <code>if(typeof input1 === 'number' && typeof inout2 === 'number'){...}else{...input1.toString() + input2.toString()...}</code> This handles all the possible combinations we gave our function. Now if our code gets a number and a string, it will just concat, which is the operation our function was complaining about, adding a number and a string. <strong>Note:</strong> You won't always need a runtime check using unions, it depends on the logic you are writing.
                 </p>
+                <a id="10" href="#00">Index</a>
                 <h2 class="subtitle">Literal</h2>
                 <p class="paragraph">
                     In our combine() function, we want to add conversion. We add <code>resultConversion</code> as a third parameter. We use the literal here so that it can ONLY take two values for the parameter. Here we use literals <code>resultConversion: 'as-number' | 'as-text'</code> This means that the function will only take the strings <em>as-number</em> and <em>as-text</em> as third parameters, any other string value will not be allowed and err in TS. Literals are usually seen with unions. We then create a logic to handle what we want to happen when we set the resultConversion parameter in our function. 
                 </p>
             </li>
             <li class="list-group-item">
+                <a id="11" href="#00">Index</a>
                 <h2 class="subtitle">Custom Types</h2>
                 <p class="paragraph">
                     Type aliases use the <strong>type</strong> keyword. We use the type keyword and our custom type name, convention has it capitalized. Then we assign the types that our custom type can accept: <code>type Combinable = number | string ;</code> Then we can change our union type in our function to our custom <em>Combinable</em> type: <code>input1: Combinable, input2: Combinable</code>. We can user our type alias for any type set-up we can imagine. This is handier with our <strong>literal</strong> we had on our third function param: <code>type ConversionParams = 'as-number' | 'as-string' ;</code> which we can now use in our code: <code>resultConversion: ConversionParams</code>. This allows us to handle custom and more complex type definitions easier with descriptive names. 
                 </p>
             </li>
             <li class="list-group-item">
+                <a id="12" href="#00">Index</a>
                 <h2 class="subtitle">Function Return Types and "void"</h2>
                 <p class="paragraph">
                     We already used functions and set types to the params, however there is also a type for the return. In a basic add function that takes numbers, TS will infer that it will return number as well: <code>function add(n1: number, n2: number){return n1 + n2}</code> will infer that the function will return number. However, if we change the return to be <code>n1.toString() + n2.toString()</code> TS would't err, but would infer that the return of the function is a string. We could be explicit with the return we want to avoid logic errors if we need to. <code>function add(n1: number, n2: number): number {...}</code> would tell TS that we only want to return a number in any logic we handle inside this function. <strong>Note:</strong> Just like with variables it is better to let TS do its type inferrence, unless you have a specific reason for explictly setting the type, you should not do it.
@@ -134,6 +315,7 @@
                 <p class="paragraph">
                     This is a TS type that exists in other programming languages but not JS. We create a printResult() function: <code>function printResult(num: number){console.log('Result: ' + num)}</code>. If we run it using add: <code>printResult(add(5,12))</code> we execute the function and see it in the console. However, our printResult() function has <strong>NO return</strong>, and if we hover over our function we can see that the return type es <code>...):void</code>. The type void means that the function does NOT return anything. If we were to console.log the return of our printResult() function, we would see that JS returns <em>undefined</em>. This is a problem because in JS <em>undefined</em> <u>is a value</u>, which also exists if you try to access an object property which does not exist. In TS we get void even though in JS it technically returns <em>undefined</em>. <strong>undefined</strong> is also a type in TS, however if we set the return of our function as <code>:undefined</code> TS errs. Although it technically returns <em>undefined</em>, TS looks at functions differently and will want to have <em>void</em> instead of undefined if a function returns nothing. If we set the type of our return as <code>:undefined</code> TS will err unless we add <code>return</code> to the function, as it WILL return a value, and in our case that would be undefined. <strong>void</strong> will work with an empty return statement as well, which makes the use of the <em>undefined</em> type very rare. 
                 </p>
+                <a id="13" href="#00">Index</a>
                 <h2 class="subtitle">Functions as Types</h2>
                 <p class="paragraph">
                     If we declare an empty variable, we can then assign a function like our add() function because TS will infer that it is type <em>any</em>. We could then run that variable as a function no problem. However, if we were to redefine that variable as a number, TS would not err and when we try to execute it as a function, it would err on runtime on our JS file. To safeguard the variable we can use the type <code>: Function;</code> which would only allow the variable to be a function. However, if we were to change the function from add() to printResult() TS would not complain but we would get a runtime err. We can be more explicit with what function our variable can accept.
@@ -141,14 +323,17 @@
                 <p class="paragraph">
                     We do this with <code>let combineValues: (a: number, b: number) => number;</code> which lets TS know that our variable can become any function that takes any two params that are numbers and returns a number. This would make TS err when we set our variable as printResult() because that function takes one number as an argument and returns void. 
                 </p>
+                <a id="14" href="#00">Index</a>
                 <h2 class="subtitle">Function Types and Callbacks</h2>
                 <p class="paragraph">
                     We create a function that adds two numbers and then has a callback: <code>function addAndHandle(n1: number, n2: number, cb:(num: number)=> void){const result = n1+n2; cb(result)}</code>. When we call this function TS will know that what we get in our callback will be a number and we won't have to be explicit about it: <code>addAndHandle(10,20, (result)=>{console.log(result)}</code> will add the two numbers and then console.log the result without us having to specify <code>result: number</code>. TS will err if we try to do anything with result that is not acceptable with the type number. Even though we set our cb to return <em>void</em>, if we add <code>return result;</code> to our function call, TS will not err. By setting void, we tell TS to ignore any result the cb might return. If we set the return of the cb to number or string, it will err if the logic done in the cb does not return the type we have set. 
                 </p>
+                <a id="15" href="#00">Index</a>
                 <h2 class="subtitle">Unkown</h2>
                 <p class="paragraph">
                     <strong>unknown</strong> behaves similar to any, in that it allows you to declare a variable and then change it into whatever you want without getting a TS err. The difference is that if we declare another variable that has a type and make it our unkown variable value we will get an err. TS will say cannot assign type unkown to type x. If we had set the variable with type <em>any</em> it would not err. Unkown is stricter than any, if we were to do <code>userName = userInput</code> where userName:string and userInput: unkown, we would need to type check in order to not get an err. If we set that code inside an if block <code>if(typeof userInput === 'string'){...}</code> TS would not err. Essentially, unkown works like any but requires a type check before it can be assigned to a value of a fixed type. 
                 </p>
+                <a id="16" href="#00">Index</a>
                 <h2 class="subtitle">Never</h2>
                 <p class="paragraph">
                     <strong>never</strong> is a type that functions can return. We create a function generateError() that takes two arguments, a messsage string and a code number, and creates an error object using <code>throw {message: message, errorCode: code}</code>. If we hover over the function we see that TS infers the return is <em>void</em>. However if we run a script where we log the result of our generateError function we get absolutely nothing. We saw earlier that with void functions that don't return anything we get a JS return of <em>undefined</em>, which is a value. That is what is different between void and never. In our function, throw interrupts our script, therefore there is nothing happening after our throw, which is what the type <em>never</em> means. This is a newer TS type, that was not in the original build, and can help be more explicit with your code regarding that a function is meant to never return anything and crash or break your script.  

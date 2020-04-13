@@ -36,6 +36,9 @@
         .tab{
             margin: 0 1rem;
         }
+        html{
+            scroll-behavior: smooth;
+        }
         </style>
 
     <title>01 Getting Started</title>
@@ -46,11 +49,48 @@
         <h1 class="display-3 text-center">Getting Started<hr></h1>
         <header>
             <p class="paragraph">
+                What is TS? What advantages does TS offer?
             </p>
         </header>
+        <h2 id="00" class="subtitle">Index</h2>
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th scope="col">#</th>
+                    <th scope="col">Topic</th>
+                    <th scope="col">Description</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <th scope="row">1</th>
+                    <td>
+                        <a href="#01">What is TS</a>
+                    </td>
+                    <td>
+                        Superset of JS, compiled from TS to JS. Adds types and does err correction as you code.
+                        <code>const name: type = value</code>
+                    </td>
+                </tr>
+                <tr>
+                    <th scope="row">2</th>
+                    <td>
+                        <a href="#02">TS Advantages</a>
+                    </td>
+                    <td>
+                        Use type safe, modern JS features that get compiled to older versions of JS. Use interfaces, types, generics, Decorators, and more to enhance your development.
+                    </td>
+                </tr>
+            </tbody>
+        </table>
         <ul class="list-group">
             <li class="list-group-item">
-                <h2 class="subtitle">What is TS</h2>
+                <a href="#00" id="01">Index</a>
+                <h2 class="subtitle">
+                    What is TS
+                    <br>
+                    <code>const name: type = value</code>
+                </h2>
                 <p class="paragraph">
                     It is a superset of JS. It cannot be run by node or a server. You write in TS and compile to JS that can be executed by your JS environment. Even though TS becomes JS in the end, it brings new features by writing complex workarounds for your code in JS while you keep a cleaner syntax in TS. The main feature is that TS adds types, allowing you to find errs and bugs while you write your code. In the case of a function that adds number, in JS you could pass two strings and it would run and return an undesired result. TS would avoid this. 
                 </p>
@@ -62,7 +102,10 @@
                 </p>
             </li>
             <li class="list-group-item">
-                <h2 class="subtitle">TS Advantages</h2>
+                <a href="#00" id="02">Index</a>
+                <h2 class="subtitle">
+                    TS Advantages
+                </h2>
                 <p class="paragraph">
                     We get mmuch cleaner and stronger code using TS, but we also get next generation JS features like promises, async/await, in our code that gets compiled down to earlier JS for older browsers. Ts also adds non JS features like interfaces, types, and generics, that JS doesn't have access to. They don't get compiled into JS but aid us in development by giving us clearer errs. It also adds Meta-Programming features like Decorators. TS is highly configurable in the compiler to have it behave like you want. Modern tooling that helps even in non-TS projects that get applied into JS.
                 </p>
