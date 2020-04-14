@@ -36,6 +36,9 @@
         .tab{
             margin: 0 1rem;
         }
+        html{
+            scroll-behavior: smooth;
+        }
         </style>
 
     <title>06 Advanced Types</title>
@@ -46,27 +49,96 @@
         <h1 class="display-3 text-center">06 Advanced Types<hr></h1>
         <header>
             <p class="paragraph">
-                This module covered advanced TS types and patterns: 
-                <br>
-                <strong>Intersection:</strong> <code>typeName = Type1 & Type2</code>
-                <br>
-                <strong>Type Guards:</strong> <code>typeof, in, instanceof</code>
-                <br>
-                <strong>Discrimanted Union Pattern:</strong> <code>switch, case, break</code>
-                <br>
-                <strong>Type Casting</strong> <code>as elementType, &lt;elementType&gt;</code>
-                <br>
-                <strong>Index Properties</strong> <code>{ [prop: type]: type; }</code>
-                <br>
-                <strong>Function Overloads</strong> <code>function fName( possibleArguments:possibleTypes ): possbileRetruns;</code>
-                <br>
-                <strong>Optional Chaining</strong> <code>objectName?.property?.nestedProperty</code>
-                <br>
-                <strong>Nulish Coalescing</strong> <code>const varName = fetchedData ?? defaultValue</code>
+                This module covered advanced TS types and patterns. Intersections to unify two custom types. Different typeguards to handle type safety. Use patterns to enable switch, case, and brak. Type Cast external elements with "as". Use index properties to create flexible interfaces with unlimited props and values. Specify return types in different cases for your functions with Function Overloads. Check wether an item exists with "?" using Optional chaining. And handle falsey data from an API or DB with "??" to avoid overriding falsey but valid data.
             </p>
         </header>
+        <h2 id="00" class="subtitle">Index</h2>
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th scope="col">#</th>
+                    <th scope="col">Topic</th>
+                    <th scope="col">Description</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <th scope="row">1</th>
+                    <td>
+                        <a href="#01">Intersection</a>
+                    </td>
+                    <td>
+                        Unify two custom types with the <code>&</code> opeartor. <code>typeName = Type1 & Type2</code> This can be done throuhg <strong>interface</strong> for objects, but with <strong>type</strong> it can be done with any type. 
+                    </td>
+                </tr>
+                <tr>
+                    <th scope="row">2</th>
+                    <td>
+                        <a href="#02">Type Guards</a>
+                    </td>
+                    <td>
+                        Make sure your code is type compliant and avoid TS and compulation errs through the use of <em>type guards</em>: <code>typeof, in, instanceof</code> <code>if(typeof variable = 'nativeType')</code> <code>if('propertyName' in objectName)</code> <code>if(objectName instanceof ClassName/ConstructorName)</code>
+                    </td>
+                </tr>
+                <tr>
+                    <th scope="row">3</th>
+                    <td>
+                        <a href="#03">Discriminated Union (switch, case, break)</a>
+                    </td>
+                    <td>
+                        This is a pattern for working with objects, and <strong>interfaces</strong>, that allows us to woth using three statements switch, case, and break. It uses literals in our interfaces to check type <code>interface IName { litProp: litPropValue }</code>. We use <code>switch(IName.litProp){ ... }</code> inside we check for our literal with <code>case litPropValue: { ... }</code> inside we use our logic and then break to end the code <code>{ ourLogic...; break; }</code> We can use this syntax to handle many cases at once.
+                    </td>
+                </tr>
+                <tr>
+                    <th scope="row">4</th>
+                    <td>
+                        <a href="#04">Type Casting with "as"</a>
+                    </td>
+                    <td>
+                        We use the keyword as to tell TS what type a value is that we got from somewhere out of our TS code to help it understand how to handle it. Especially usefull with DOM <code>const varName = document.selector(...) as HTMLElementType</code> <em>There is an optional Angle Bracket Syntax</em> but it may interfere with JSX or TS generics.
+                    </td>
+                </tr>
+                <tr>
+                    <th scope="row">5</th>
+                    <td>
+                        <a href="#05">Index Properties for as many properties as possible in interfaces</a>
+                    </td>
+                    <td>
+                        Use for objects where you don't know the number of props it will have or their names. <strong>index types</strong> are declared with <code>interface IName { [props: validType]: valueType; }</code> where props are the name the props will take (string | number | symbol) and their value type.
+                    </td>
+                </tr>
+                <tr>
+                    <th scope="row">6</th>
+                    <td>
+                        <a href="#06">Function Overloads (Specify multiple return possibilities)</a>
+                    </td>
+                    <td>
+                        When a function returns a custom type it WILL not get TS support for its return. We use <strong>overloads</strong> to tell TS what the return type will be on different scenarios. Place multiple function declarations to tell TS what may happen <code>function FnName(a: type1, b: type1): returnType1;</code> <code>function FnName(a: type1, b: type2): returnType2;</code>  <code>function FnName(a:type2, b:type1) returnType1;</code> <code>function FnName(a: type2, b: type2): returnType2</code> <code>function FnName(a: type1 | type2, b: type1 | type2){ ... }</code>
+                    </td>
+                </tr>
+                <tr>
+                    <th scope="row">7</th>
+                    <td>
+                        <a href="#07">Optional Chaining (objN?.prop?.nestedProp?)</a>
+                    </td>
+                    <td>
+                        Check wether something exists before trying to access it without multiple ifs or the JS &&. <Code>operator(objName?.prop?.nestedProp){...}</Code> will return if it cant find any the object or property and not do a runtime err, and will access the nested prop if it finds it. 
+                    </td>
+                </tr>
+                <tr>
+                    <th scope="row">8</th>
+                    <td>
+                        <a href="#08">Nulush Coalescing ?? (handle falsey/nullish data)</a>
+                    </td>
+                    <td>
+                        There are 8 falsey values in JS that will return false. The <strong>??</strong> operator will only treat null or undefined as false. Great for fetchedData where you may accidentaly store a default if it returns a value that JS considers false but is a valid type. <code>const localData = fetchedData ?? defaultValue</code>.
+                    </td>
+                </tr>
+            </tbody>
+        </table>
         <ul class="list-group">
             <li class="list-group-item">
+                <a id="01" href="#00">Index</a>
                 <h2 class="subtitle">Intersection Types (type Name = Type1 & Type2)</h2>
                 <p class="paragraph">
                     We will use <strong>type</strong> to create different objects and merge their properties together through an intersection. We create <code>type Admin = { name:string; privileges: string[]; }</code> and <code>type Employee = { name: string; startDate: Date; }</code> and we intersect them in <code>type ElevatedEmployee = Admin & Employee;</code> which uses <strong>&</strong> to merge the properties of our two types. If we <code>const e1: ElevatedEmployee = { ... }</code> must have a name string, string[] of privileges, and a date Date{} Object. <strong>Note:</strong> Date is a JS date object (I've used them heaps in my node projects). 
@@ -74,6 +146,7 @@
                 <p class="pargraph">
                     We could have used <em>interfaces</em> for this example easily, since it is the convention for defining object, however if we wanted to do this for any other type we would need to use <em>types</em> instead of interfaces. We will intersec unions with <em>type</em> <code>type Combinable = string | number; type Number = number | boolean; </code> and then intersect them <code>type Universal = Combinable & Numeric;</code> by <em>intersecting</em> these two types, Universal is given the type <em>number</em> because it is the overlapping/intersecting type in both types. The <strong>intersection</strong> operator: <strong>&</strong> can be used with any types. <strong>Note:</strong> As we saw, the behaviour changes, in the case of intersecting object types it combines the object definition, in types or unions it finds the overlapping/intersecting types and assings that. 
                 </p>
+                <a id="02" href="#00">Index</a>
                 <h2 class="subtitle">Type Guards (typeof, in, instanceof)</h2>
                 <p class="paragraph">
                     If we declare <code>function add(a: Combinable, b: Combinable){ ... }</code> a our b could be either number | string, therefore we must handle this inside our function to avoit a TS err. Inside we use <code>if(typeof a === 'string' || typeof b === 'string'){ ... } ...</code> will make this function work with any input we might give it, and will ensure we have a return for every case, making TS happy :3. That logic is called a <em>Type Guard</em>. This is a typeguard using <strong>typeof</strong>, however, there are other forms of typeguards. 
@@ -95,6 +168,7 @@
                     <br>
                     With the added TS <strong>interface</strong> we can enforce explicit structures without adding clutter to our JS compiled code, and mix them with our JS typeguards to fullfill all cases. 
                 </p>
+                <a id="03" href="#00">Index</a>
                 <h2 class="subtitle">Discriminated Union (switch, case, break)</h2>
                 <p class="paragraph">
                     This is a <em><u>pattern</u></em> for working with objects that allows us to woth using three statements <strong>switch</strong>, <strong>case</strong>, and <strong>break</strong>. We create two interfaces: <code>interface Bird { flyingSpeed: number; }</code> and <code>interface Horse { runningSpeed: number; }</code> and then create a union type <code>type Animal = Bird | Horse</code>. We then create a function <code>function moveAnimal(animal: Animal){ ... }</code> that can take either a Bird or a Horse. In this case we cannot use <em>instanceof</em> because since we are working with interfaces, we never use a constructor. We can use <em>in</em>, but the more cases we have, we are more prone to spelling errors of the property, and have to use a lot of code. Here is where we use the <em>Discriminated Union Pattern</em>.
@@ -107,6 +181,7 @@
                 <p class="paragraph">
                     When calling our function TS will intellisense and autocomplete valid statements for our call: <code>moveAnimal({ type: 'bird', flyingSpeed: 10 })</code> beacasue of the <em>Discrimanted Union Pattern</em> we set. The name comes because we have one common property in every object that makes up our union <code>type Animal = Bird | Horse </code> which describes that object, which we can then use in our check <code>switch(...){ case ... break; ... }</code> to get 100% type safety and understand which properties or methods are available for such an object. The other thing is that it works with <strong>interfaces</strong>, even though they don't get compiled to JS, because you force the objects to have that shared literal type property <code>type: 'bird'; type: 'horse';</code> which means we don't need to use <code>instanceof</code> or <code>'propertyName' in objectName</code> we use a property we <em>KNOW</em> exists to check which type of object we are working with <code>switch(objectName.mandatoryProperty){ case: 'propertyValue':{ ... break; } }</code>. We eliminate the possiblity of misstyping because TS understands the only cases we can have and can autocomplete with intellisense. 
                 </p>
+                <a id="04" href="#00">Index</a>
                 <h2 class="subtitle">Type Casting (as elementType)</h2>
                 <p class="paragraph">
                     Type casting allows us to tell TS that a value is a specific type where TS doesn't detect it on it's own. This is especially usefull with using TS <em><u>to manipulate the DOM.</u></em> We select the button we have in the DOM <code>const button = document.querySelector('button')</code> and if we hover over it, TS shows <code>const button: HTMLButtonElement | null </code> meaning that it understands the we are selecting an HTML Button Element, but it can alos have a value of null. However, if we select an element by something like <em>id</em> or <em>className</em> <code>const paragraph = document.getElementById('message-output')</code> we see that TS can only infer the type <code>HTMLElement | null </code>. It cannot tell which HTML element type it is, because TS cannot go through our HTML files to check the id's or classes we set. 
@@ -127,6 +202,7 @@
                 <p class="paragraph">
                     Keep in mind that since you are forcing TS to use this type, it is your responsability to ensure that the type matches to avoid runtime errs or unexpected behaviour. <strong>Note:</strong> We used the <code>!</code> to tell TS that the expression before it will never return null, which works with the DOM as we expect to get a value. TS will omit the <em>null</em> type in its handling, allowing us to do code without having to handle the logic of getting null in the value. <strong>Note:</strong> We can remove the '!' from our element if we do type casting, because it implicitly tells TS that the value will not be null. 
                 </p>
+                <a id="05" href="#00">Index</a>
                 <h2 class="subtitle">Index Properties { [prop: string]: string; } </h2>
                 <p class="paragraph">
                     If I want to create an object that is flexible, but I don't know how many properties it will have, or what their names will be, we use <strong>index types.</strong> In our case we want to create an interface to handle errors, that has properties with a <em>key</em> matching the name of the input, and a <em>value</em> of type string with a message holding the error. We are clear of the vale <em>type</em>, but we're not clear of the keys, values, or number of properties our object will have. We use <code>interface ErrorContainer { [props: string]: string; }</code> What is held in the square brackets [] is the value our property can take. <em>props</em> is a placeholder and is usually props or key, and in an index type, the properties can only be of the types <em><u>string, number, or symbol</u></em>. And after our [] we assign the type that these properties will have. <strong>Note:</strong> We <em>CAN</em> add predefined properties to our <em>interface</em> but the <em>MUST</em> match the index type we have set. 
@@ -134,6 +210,7 @@
                 <p class="paragraph">
                     We declare our object <code>const errorBag: ErrorContainer = { email: 'Not a valid email!', 2: 'Not a valid user.' }</code> <strong>Note:</strong> even though the second parameter is a number, TS will not err, because it accepts <em>anything that can be converted into a string as a property name that matches the type: string</em>. This would allow us to add properties to this errorBag during our code and then do a <em>for in</em> loop to loop through all the errors our code had to handle: <code>for(const prop in errorBag){ console.log(`${prop}: ${errorBag[prop]}`) }</code> <strong>Note:</strong> <em>for in</em> only works over objects that are keyed by strings, ignoring symbols or numbers. <strong>for of</strong> works for iterable objects: String, Array, arguments, NodeList, TypedArray, Map, Set, user-defined iterables.
                 </p>
+                <a id="06" href="#00">Index</a>
                 <h2 class="subtitle">
                     Function Overloads 
                     <br>
@@ -150,6 +227,7 @@
                 <p class="paragraph">
                     <strong>Alternatively</strong> we could use <em>type casting</em> when we save our function call to tell TS what type we got as a return <code>const result = addOverload(1,4) as number;</code> or <code>as string;</code> which would allow TS to handle our variable properly. The downside to this is that we could make a mistake here and will only realize at runtime, or with odd behaviour. However, we could also make a mistake in function overloads, which would make me think that this is a better alternative with much less syntax. However, if we call the function many times, we would have to do excessive typecasting, and we want to avoid that by only having to set the overloads once. <strong>Note:</strong> function overloads are not compiled in JS because they don't exist, like interfaces, they are a TS feature that aids us in development but never get compiled. 
                 </p>
+                <a id="07" href="#00">Index</a>
                 <h2 class="subtitle">Optional Chaining (objectName?.property?.nestedProperty)</h2>
                 <p class="paragraph">
                     Optional chaining uses <code>?</code> to check wether something exists before trying to access a property or nested property. We have an object that models a user we might have in a db <code>const foundUser = { id: 1, name: 'Moerse', job: { title: 'CEO', description: 'My own company' } }</code> and we were accessing information from it to log it: <code>console.log(foundUser.job.title)</code>. In our case it will compile and run because TS <em>KNOWS</em> that these properties exist. However, if TS had no idea what the data we got from the DB was, we would need to handle if it found data at all, and if the property exists. This would be done with <code>console.log(foundUser.job && foundUser.job.title)</code> which checks if the property job exists and if it does, it tries to access title. If not, it will not execute the code after && anymore and avoid a runtime error. 
@@ -159,6 +237,7 @@
                     <br>
                     We would use <code>console.log(foundUser?.job?.title)</code> which would do the same. It will check everything before the <code>?</code>, if it finds a foundUser it will look for the job property, if it finds the job property, it will access the title property. <strong>Note:</strong> testing this syntax in TS is hard because it reads our code and knows with certainty wether we have a value or not, meaning that if we comment out the job property object it will err regardless of our code. If we uncomment it, TS will not err and we will be able to compile. 
                 </p>
+                <a id="08" href="#00">Index</a>
                 <h2 class="subtitle">Nulish Coalescing ?? (Handle flasey/nullish data) </h2>
                 <p class="paragraph">
                     This is losely related to optional chaining, and helps us work with <em><u>nullish/falsey data</u></em>. In JS there are 8 falsey values: false, 0, -0, 0n, "", null, undefined, NaN. These 8 values will be converted to false when encountered in a boolean context: <code>if(falsyValue){ ... }</code> will bypass the if conditional statement, because they are considered <em>false</em> by JS. The <strong>nullish coalescing operator</strong> <code>??</code> will only evaluate as false if the value is <em>null</em> or <em>undefined</em>. 
