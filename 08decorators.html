@@ -69,7 +69,7 @@
                             <a href="#01">First Class Decorator</a>
                         </td>
                         <td>
-                            <code>@DecoratorName</code>
+                            How to enable Decorators in our TS Compiler. Set a basic dacorator in a class through: <code>@DecoratorName</code>
                         </td>
                     </tr>
                     <tr>
@@ -78,6 +78,7 @@
                             <a href="#02">Decorator Factories</a>
                         </td>
                         <td>
+                            Create decorators that can use a custom string to output so that we can set a label to it: 
                             <code>function DecoratorName(ourOutputString: string){ return function(constructor: function){ ... }}</code>
                         </td>
                     </tr>
@@ -87,6 +88,7 @@
                             <a href="#03">HTML Rendering Decorators</a>
                         </td>
                         <td>
+                            Create Decorators that can affect the DOM and render HTML in it by leveraging decorator factories.
                             <code>@DecoratorName('HTMLTemplateCode','HTMLIdTag')</code>
                         </td>
                     </tr>
@@ -96,7 +98,7 @@
                             <a href="#04">Multiple Decorators</a>
                         </td>
                         <td>
-                            <code>@Decorator1 @Decorator2</code> Declaration and execution order
+                            How to use multiple decorators in one place <code>@Decorator1 @Decorator2</code> Decorator declaration and execution order.
                         </td>
                     </tr>
                     <tr>
@@ -105,6 +107,7 @@
                             <a href="#05">Property Decorators</a>
                         </td>
                         <td>
+                            How te set up decorators for properties: 
                             <code>function DecoratorName(target: any, propertyName: string){ ... }</code>
                         </td>
                     </tr>
@@ -114,6 +117,7 @@
                             <a href="#06">Parameter and Accessor Decorators</a>
                         </td>
                         <td>
+                            Set Decorators to parameters and accessors (getters and setters) <br>
                             <strong>Parameter:</strong>
                             <code>
                                 function DecoratorName(target: any, name: string | Symbol ,description: PropertyDescriptor){ ... }
@@ -131,6 +135,7 @@
                             <a href="#07">Returning (and changing) a Class in a Class Decorator</a>
                         </td>
                         <td>
+                            Leverage decorators to chain the constructor in a class with advanced Decorators: 
                             <code>function DecoratorName {return function (return class extends baseConstructor {constructor{}{ ... }})}}</code>
                         </td>
                     </tr>
@@ -140,7 +145,8 @@
                             <a href="#08">Other Decorator Return Types</a>
                         </td>
                         <td>
-                            <code>function DecoratorName(...): PropertyDescriptor{ return{ descriptorSettings }}</code>
+                            Use Decorators to alter the <code>PropertyDescriptor</code> to alter the undelying functioning of the property: 
+                            <code>function DecoratorName(...): PropertyDescriptor{ return{ descriptorSettings }}</code> Also a run over to make a Decorator set bind in a method to this in our class. 
                         </td>
                     </tr>
                     <tr>
@@ -158,7 +164,7 @@
                             <a href="#10">Wrap Up</a>
                         </td>
                         <td>
-                            Angular and Nest.JS use of Decorators.
+                            Packages that we can import to use Decorators in our own code. Angular and Nest.JS use of Decorators.
                         </td>
                     </tr>
                 </tbody>
