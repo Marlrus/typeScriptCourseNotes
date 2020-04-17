@@ -1,0 +1,232 @@
+
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+    <style>
+        code{
+            background-color: rgba(0,0,0,.075);
+            font-weight: bold;
+        }
+        .subtitle{
+            font-size: 1.3rem;
+            font-weight: bold;
+            margin: 0;
+            padding: 5px;
+            margin-top: 5px;
+            background-color: rgba(0,0,0,.075);
+            text-align: center;
+        }
+        h3{
+            font-size: 2rem;
+            font-weight: bold;
+            margin: 0;
+            padding: 5px;
+            margin-top: 10px;
+        }
+        .paragraph{
+            margin: 0.5rem 0 0.5rem;
+        }
+        .tab{
+            margin: 0 1rem;
+        }
+        html{
+            scroll-behavior: smooth;
+        }
+        </style>
+
+    <title>10 Modules & Namespaces</title>
+  </head>
+  <body>
+      
+    <div class="container">
+        <h1 class="display-3 text-center">10 Modules & Namespaces<hr></h1>
+        <header>
+            <p class="paragraph">
+                We go over and use the two main methods to split our files up for development. This is absolutely necessary for large proejcts. We use <strong>namepsaces</strong>, a TS only feature, and the single output js compilation option. Then we re-factor to use the JS ES6 Native <strong>ES Modules</strong>. We go through the creation of files, directories, and different export and import syntaxes and their modifiers. 
+            </p>
+        </header>
+
+        <h2 id="00" class="subtitle">Index</h2>
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th scope="col">#</th>
+                    <th scope="col">Topic</th>
+                    <th scope="col">Description</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <th scope="row">1</th>
+                    <td>
+                        <a href="#01">Splitting Code Into Multiple Files</a>
+                    </td>
+                    <td>
+                        There are two main methods we will use to do this without a bundling tool: <strong>Namespace & File Bundling</strong> and <strong>ES6 Modules</strong>. We go over what each of these does, and disadvantages and solutions.
+                    </td>
+                </tr>
+                <tr>
+                    <th scope="row">2</th>
+                    <td>
+                        <a href="#02">Working with Namespaces</a>
+                    </td>
+                    <td>
+                        We start to split our files with namespaces. We go over the concept of namespaces, the <strong>export</strong> keyword and import syntax <code>/// ...</code>, how to import the namespace, and details of the compilation. We go over the <strong>tsconfig.ts</strong> settings to create a single JS output file that allows the use of <em>namespaces.</em>
+                    </td>
+                </tr>
+                <tr>
+                    <th scope="row">3</th>
+                    <td>
+                        <a href="#03">Organizing Files and Folders</a>
+                    </td>
+                    <td>
+                        We create directories to move our new files to to improve the order of our code. We go over the change in syntax. We import all the files into our app.ts file, which is not optimal.
+                    </td>
+                </tr>
+                <tr>
+                    <th scope="row">4</th>
+                    <td>
+                        <a href="#04">A Problem with namespace Imports</a>
+                    </td>
+                    <td>
+                        We have no TS errors in compilation. However, removing a single import would break all of our code. We also don't know if all of our files have interdependecies that are being met. We import by sight what each file needs. TS does not aid us in this.
+                    </td>
+                </tr>
+                <tr>
+                    <th scope="row">5</th>
+                    <td>
+                        <a href="#05">Using ES6 Modules</a>
+                    </td>
+                    <td>
+                        We start converting our files to the second, better alternative, ES6 JS native <strong>ES6 Modules</strong>. We remove all the <em>namespaces</em> and <em>import tags</em> but we keep the <strong>export</strong> statement in our files. We use the <strong>import</strong> syntax in our files to import everything we need <code>import { Item } from 'filepath'</code> We see how to import multiple items from these files. We set the <strong>tsconfig.json</strong> to support the use of ES Modules by changing <strong>outFile, module,</strong> and <strong>type</strong>. 
+                    </td>
+                </tr>
+                <tr>
+                    <th scope="row">6</th>
+                    <td>
+                        <a href="#06">Understanding Various Import and Export Syntaxes</a>
+                    </td>
+                    <td>
+                        We learn how to change our imports through <code>import * as OurName from 'filepath'</code>. ALso how to change the import name with as <code>import { exportName as OurName } from 'filepath'</code> We go over the export default syntax and its implications to TS Intellisense.
+                    </td>
+                </tr>
+                <tr>
+                    <th scope="row">7</th>
+                    <td>
+                        <a href="#07">How Does Code in Modules Execute</a>
+                    </td>
+                    <td>
+                        We go over the execution order of ES Modules and why it is the preferred option. We look at the <strong>Dev Tools Network Window</strong> and see all the requests that need to be done to import these files, and the time it takes. This is extremely inefficient, and although this is working, we need a third party tool to stop these round trips to the server.
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+
+        <ul class="list-group">
+            <li class="list-group-item">
+                <a id="01" href="#00">Index</a>
+                <h2 class="subtitle">Splitting Code Into Multiple Files</h2>
+                <p class="paragraph">
+                    We want to break our code into multiple files to break it down into smaller files to make them easier to manage, and then import them into other files to get their code and functionality interconnected. There are three options: Write multiple TS files, tsc comiples them, and we manually import them into HTML. The larger the project this apporach becomes cumbersome and error prone. It TS doing this will also remove type support if a type is defined on a file and we want to use it on another TS file, as TS wouldn't know about it. 
+                </p>
+                <p class="paragraph">
+                    <strong>Big Project Options</strong>
+                    <br>
+                    <strong>1 Namespaces & File Bundling:</strong> This is a TS syntax feature that allows you to group code together below a namespace and then import namespaces into other files. TS bundles the files together into one file that we can import into other files leaving you with less imports to manage into your HTML.  
+                    <br>
+                    <strong>2 ES6 Imports/Exports</strong>
+                    <br>
+                    The <em>Modern</em> alternative, known also as <strong>ES6 modules</strong>. This is a modern JS feature to solve this problem. JS supports <strong>import/export</strong> statements. We don't need to manage the imports manually because modern browsers understand these statements. TS also supports this syntax. You compile per file, but you just need a single script import in your HTML because modern browsers can understand the interconnectivity of your compiled JS files. 
+                </p>
+                <p class="paragraph">
+                    <strong>Disadvantages and Solutions</strong>
+                    <br>
+                    This will leave us with multiple files. Even though we don't have to manage the imports manually, all the files we need must be downloaded separately which leads to more HTTP requests and other things. Therefore we can bypass this disadvantage by bundling files together to work on multiple files in development but ship a single file for production. This requires <em>third party tools</em>, a popular one being <strong>Webpack</strong>. 
+                </p>
+                <a id="02" href="#00">Index</a>
+                <h2 class="subtitle">Working with Namespaces</h2>
+                <p class="paragraph">
+                    We will work with the app.ts file from our <em>Drag & Drop Project</em>. We will start by moving our interfaces into a new file <code>drag-drop-interfaces.ts</code> we copy and paste our code there. Then we use the <em>namesace</em> with <code>namespace DDInterfaces{ ... }</code> which is a TS freature that will not be compiled into JS. JS manages it differently through objects. We move our interface code into the namespace. However, the interfaces are only available in <em>this namespace</em> now, we need to get them to another file. We get the code out through <strong>export</strong> <code>export interface Draggable { ... }</code> and the same for DragTarget. This makes it so that the code in the namespace is available inside and outside of the namespace if we <em>import</em> or use that namespace. 
+                </p>
+                <p class="paragraph">
+                    <strong>Importing the namespace</strong>
+                    <br>
+                    We go app.ts and use a ts special syntax: Three forward slashes <code>///</code> which is sytnax that TS understands. We create a self closing XML tag with a special sytnax <code>/// &lt;reference path="drag-drop-interfaces.ts"/&gt;</code> which is NOT JS sytanx. Now our <em>namespace</em> is available in our app.ts file. To do this we need to put anything that is going to use the namespace into the namespace in the file that is importing it. We change the namespace name to <code>namespace App { ... }</code> which is a better name we can use in our app.ts file. Now in our app TS file, after our import, we use this namespace <code>namespace App {}</code> and move <strong>ALL</strong> our code into it. <strong>Note:</strong> We get a small err in our ts, from our class instanciation at the bottom of the file, because they are <strong>unused locals</strong> now that they are inside brackets. And since we don't use them, we just remove the const declaration. This did not err before because the values were global.
+                </p>
+                <p class="paragraph">
+                    <strong>Compiling and other another namespace</strong>
+                    <br>
+                    In our dist directory we have two files, one app.js file and one drag-drop-interfaces.js file. That is actually empty because interfaces and namepsaces are TS only, therefore not compiling to anything. The question now is <em><u>What happens if we do this for something that does output in JS code?</u></em> We do this for the <em>enum</em> and Project class into a separate <em>project-models.ts</em> file. We create a namepsace <code>namespace App { ... }</code> using the same namespace so that we use it in our app.ts file, and put all of our code in here and use <strong>export</strong>. We then create the import tag with our TS syntax <code>///...</code> And we get no errs on TS. We look at the compiled JS file and see that it has some code in it, however, when we try to use our app we get an error and the app doesn't work. This happens because <strong>namespace</strong> only exists for TS, meaning that there is no problem in our ts files, but JS has no way of connecting the files. 
+                </p>
+                <p class="paragraph">
+                    <strong>tsconfig setup to fix this</strong>
+                    <br>
+                    We comment in the <strong>outFile</strong> options which makes one single JS file with our namespaces and other imports. We set it to <code>"./dist/bundle.js"</code> Which will be our single file JS compilation file. We get an error here because we need to alter another setting <code>module</code> to <code>"amd"</code> which is one of the ways of bundling JS files into one. There are many other types, which we don't really need to know. Now we compiles without issues, we can delete all of our compiled files and leave the bundle.js file on its own and it holds all of our compiled TS. We connect this file in our <em>index.html</em> file through the script tag and our app works once more. <strong>Wrap Up:</strong> We have now effectively created an environment where we can develop in multiple files but work with a single compiled JS file in production. 
+                </p>
+                <a id="03" href="#00">Index</a>
+                <h2 class="subtitle">Organizing Files and Folders</h2>
+                <p class="paragraph">
+                    We will continue splitting our code into more files using namepsaces. We proceed by creating a <strong>project-state.ts</strong> file where we move code related to our ProjectState class. We do the same <code>namespace App{ ... }</code> procedure, but here we don't export everything, we just export what we need in our app.ts file <code>export class ProjectState{ ... }</code> Then we import it in our app.ts file once more with <code>///...</code> <strong>Note:</strong> I had a small issue because I used a custom <code>type ValidInput = [string,string,number]</code> which is used on other code, therefore I just <strong>exported</strong> it. A good way to know what you need to export, is to save your files and then see where the errors in TS are, this will guide you to export the items from the code that are needed in our file. We crate a few files and do the same: <strong>validation.ts</strong> and <strong>autobind-decorator.ts</strong>.
+                </p>
+                <p class="paragraph">
+                    <strong>Subfolders</strong>
+                    <br>
+                    Now we have quite a few files in the same level, we want to create some order and separation through the creation of directories. We create 4 directories: <em>decorators/, models/, util/, and state/</em> We move our created files in there, and rename them to simpler names now that we have divided them by directory. We continue doing this, moving into components/ until we don't have anything other than the instanciation of our base classes in the app.ts file. <strong>Note:</strong> Max doesn't import base component to the app file, but instead separately into every component file. I moved it to one file and it removed the errors from everywhere as it puts the code into the App namespace, I therefore decided to just keep it in the app.ts file. 
+                </p>
+                <a id="04" href="#00">Index</a>
+                <h2 class="subtitle">A Problem with namespace Imports</h2>
+                <p class="paragraph">
+                    Max wants to refactor our imports so that each file imports the code it needs and not have a single file hold all the imports, since removing one import from here would break the whole code even though there is no TS error in compilation. This is the safer approach to make sure that every file has the code it needs and will run smoohtly at runtime as compilation may not err at times. This is a lot of code, we create imports in all of our components and then just import the two components we use to the app.ts file and we get everything working. Since the components are the ones using the code, while util/decorators/state provide functionality to components, we just need to import to our components.
+                </p>
+                <a id="05" href="#00">Index</a>
+                <h2 class="subtitle">Using ES6 Modules</h2>
+                <p class="pargraph">
+                    Namespaces are alright, but they are not perfect. In some cases, as we saw, we might compile without error, but we will get runtime errors. We will look at a <em>better</em> way of doing this through the use of <strong>ES6 Modules</strong>. These exist outside of TS, modern browsers support it natively, and TS also supports and understands them, giving us the TS support without the risk of post compilation runtime errors.
+                </p>
+                <p class="paragraph">
+                    <strong>Changing our files</strong>
+                    <br>
+                    We will remove the <em>namespaces</em> but keep the <strong>export</strong> statement, which is a JS syntax that exports functions, objects, or primitive values from the module so that they can be used by other files/programs with the <strong>import</strong> statement. We remove all the namespaces and imports using the namespace sytnax. After we do that we are left with a mess of errors, however all of our exports are there, we just need to import them. We just go through error driven development to import the items. We look for the error and then import it <code>import { Item } from './driectory/.file.js'</code> It is important that we use the .js termination. We can import more than one item with <code>import { item1, item2 } ...</code> We continue doing this until we get no more errors. <strong>Note:</strong> We get other TS support now as well, if we remove an import we will automatically get a TS err that will inform us and we can go into the file and fix it. This is the way we wanto to handle this by default. 
+                </p>
+                <p class="paragraph">
+                    <strong>Setting Compilation for ES6 Modules</strong>
+                    <br>
+                    Now we need to set up the compilation to use the native JS code. We have to comment out the <code>outFile</code> option and then we need to set <strong>module</strong> to <code>es2015</code> which is ES6. Now to get this to work our target must also be set at <code>es6</code>. Now we create a file tree that is the same as our src/ driectory. Now we have the compiled files, we change the index.html files to use app.js instead of our bundled file. However we still get an error at runtime. To fix this we need to alter our script tag to have <code>type="module" src="dist/app.js"</code> Once we have that set, our application is running again. <strong>Note:</strong> If we go into our developer tools and visit <strong>Network</strong> we can see that there are a ton of requests. And if we look into the file, we see that the requests are for the files that are imported by other files. 
+                </p>
+                <a id="06" href="#00">Index</a>
+                <h2 class="subtitle">Understanding Various Import and Export Syntaxes</h2>
+                <p class="paragraph">
+                    We can bundle imports into a single <em>Object</em>, where we group all the exports in a file, which we can access to use the properties of methods in it. This allows us to make a simpler import statement, and also to reuse names for properties or methods of we need to, or have clashing names. We do this with the notation <code>import * as ObjectName from 'filepath' </code> which means, import everything form the file with the name ObjectName. We do this in our files and replace the calls with the new notation <code>ObjectName.name</code>.
+                </p>
+                <p class="paragraph">
+                    <strong>Changing an alias with "as"</strong>
+                    <br>
+                    We can change the name of our imports wherever we want with the keyword <strong>as</strong>. <code>import { autobind as Autobind } from '...'</code> would make the name of autobind in our file Autobind. This would be very useful if we had a name clash in our file. 
+                    <br>
+                    <strong>The export "default"</strong>
+                    <br>
+                    If we have a file where we only export one item, we can set it as <code>export default ....</code>. We can still have regular exports in this file if we wanted to, but we can only have <em>ONE</em> default export per file. Now where we import this file, we cannot import by name, we import it with our own name. If we were <code>export default abstract class Component</code> When we import it, we can't import it by name, we create our own name for it <code>import MyName from '...'</code> which would correspond to our default export. This notation only works with default exports. The downside to this is that we get no TS intellisense for this import anymore. 
+                </p>
+                <a id="07" href="#00">Index</a>
+                <h2 class="subtitle">How Does Code in Modules Execute</h2>
+                <p class="paragraph">
+                    We are importing some exports in multiple files at once, however these files only run once, when they are imported for the first time. Using modules is a super useful and important feature. The clear recommendation is to use <strong>ES Modules</strong>. This is the safest, and most supported feature. However, when we use them like this, they only work in modern browsers that offer support ES6 Modules. However we want to create applications that can run on older browsers, which will address by using a bundling tool like <strong>webpack</strong> to create one single JS file. Another advantage of shipping one file, is that our browser doesn't have to download multiple files, which each represent one round trip to the server, which we can see on the <strong>network</strong> tab of our dev tools. Even though our files are very small we can see that the time it takes to load these files because of these requests, which we want to avoid
+                </p>
+            </li>
+        </ul>
+    </div>
+
+    <!-- Optional JavaScript -->
+    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+    <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js" integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>
+    </body>
+</html>
