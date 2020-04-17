@@ -1,0 +1,573 @@
+
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+    <style>
+        code{
+            background-color: rgba(0,0,0,.075);
+            font-weight: bold;
+        }
+        .subtitle{
+            font-size: 1.3rem;
+            font-weight: bold;
+            margin: 0;
+            padding: 5px;
+            margin-top: 5px;
+            background-color: rgba(0,0,0,.075);
+            text-align: center;
+        }
+        h3{
+            font-size: 2rem;
+            font-weight: bold;
+            margin: 0;
+            padding: 5px;
+            margin-top: 10px;
+        }
+        .paragraph{
+            margin: 0.5rem 0 0.5rem;
+        }
+        .tab{
+            margin: 0 1rem;
+        }
+        html{
+            scroll-behavior: smooth;
+        }
+        </style>
+
+    <title>09 Drag & Drop Project</title>
+  </head>
+  <body>
+      
+    <div class="container">
+        <h1 class="display-3 text-center">09 Drag & Drop Project<hr></h1>
+        <header>
+            <p class="paragraph">
+                We apply all of our learned TS tools to create a TS enhanced vanilla JS DOM Manipulation project to implement a Drag and Drop project using an Object Oriented Approach. We implement State Management through State Management Objects that listen to changes in our application and tirgger re-rendering of Components. We use the tools for DOM rendering through JS on the client side and have the application only render the necessary elements that change. This is a similar approach used by Frameworks like <em>React</em>, <em>Angular</em>, and <em>Redux</em> but done using the <em><u>Real DOM</u></em> and not the <em><u>Virtual DOM</u></em>. 
+            </p>
+        </header>
+
+        <h2 id="00" class="subtitle">Index</h2>
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th scope="col">#</th>
+                    <th scope="col">Topic</th>
+                    <th scope="col">Description</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <th scope="row">1</th>
+                    <td>
+                        <a href="#01">Project Intention and HTML Setup</a>
+                    </td>
+                    <td>
+                        The basic intention of our project and the use of the <em>HTML5</em> <strong>template</strong> tag and other tag setup.
+                    </td>
+                </tr>
+                <tr>
+                    <th scope="row">2</th>
+                    <td>
+                        <a href="#02">DOM Element Selection && OOP Rendering</a>
+                    </td>
+                    <td>
+                        Rendering our form using OOP throuhg <code>class ProjectInput</code> and selecting the right elements from the DOM with correct <code>HTMLElement</code> types. Setting up things to render with the instanciation of a class <code>const projectInput = new ProjectInput()</code>
+                    </td>
+                </tr>
+                <tr>
+                    <th scope="row">3</th>
+                    <td>
+                        <a href="#03">Interacting with DOM elements</a>
+                    </td>
+                    <td>
+                        We set the <em>id</em> of an element to apply our CSS styling. We override our form <em>submit</em> event and see if we have access to the data in our form inputs.
+                    </td>
+                </tr>
+                <tr>
+                    <th scope="row">4</th>
+                    <td>
+                        <a href="#04">Creating and Using an "autobind" Decorator</a>
+                    </td>
+                    <td>
+                        We enable Decorators in our <strong>tsconfig.json</strong> file. We create a decorator to remove .bind(this) that will work on any event that is used as a callback in a listener so that this refers to the <strong>class</strong> inside the callback. We set it over our <code>submitHanlder()</code> and now have a reusable <code>@autobind</code> Decorator.
+                    </td>
+                </tr>
+                <tr>
+                    <th scope="row">5</th>
+                    <td>
+                        <a href="#05">Fetching User Input</a>
+                    </td>
+                    <td>
+                        We create a <code>private gatherUserInput()</code> to access the input values. We use the TS <strong>Tuple</strong> type, <strong>void</strong> return type, <strong>Union</strong> types, and array <strong>destructuring</strong>. We also create a <code>clearInputs()</code> method to clear the inputs upon submission. 
+                    </td>
+                </tr>
+                <tr>
+                    <th scope="row">6</th>
+                    <td>
+                        <a href="#06">Creating Re-usable Validation Functionality</a>
+                    </td>
+                    <td>
+                        We create logic to check wheter the input values being submitted meet our criteria. We do this through creating an <strong>interface</strong> <code>interface Validatable {...}</code> for our configuration object that will hold our validation criteria and uses <strong>optional</strong> properties. And create a global <code>function validate(input: Validatable){ ... }</code> where we use <strong>Logical AND (&&)</strong> to handle our validation <code>isValid = isValid && condition</code>. We then user our <code>validate()</code> method inside <code>gatherUserInput()</code> to make sure we get valid data before we process the inputs or wipe the input values.
+                    </td>
+                </tr>
+                <tr>
+                    <th scope="row">7</th>
+                    <td>
+                        <a href="#07">Rendering Project Lists</a>
+                    </td>
+                    <td>
+                        Rendering project lists based on the type of list (active/finished) we want through <strong>literal types</strong>. Creating the <code>attach()</code> method to place the list in the hostElement. Creating the <code>renderContent()</code> method to render the list elements. Creating the list throgh instanciations of the class <code>projectList = new ProjectList('active')</code> and <code>const finishedProjectList = new ProjectList('finished')</code>
+                    </td>
+                </tr>
+                <tr>
+                    <th scope="row">8</th>
+                    <td>
+                        <a href="#08">My go at Rendering the LI</a>
+                    </td>
+                    <td>
+                        I go one step ahead and tackle the rendering of the list item iniside the created project lists through the use of a new <code>class ProjectListItem{ ... }</code> using clues from the CSS file, and the same approach we had for the other elements. Max's approach ended being very different, but eventually led to creating a similar class in the project.
+                    </td>
+                </tr>
+                <tr>
+                    <th scope="row">9</th>
+                    <td>
+                        <a href="#09">Managing Application State with Singletons</a>
+                    </td>
+                    <td>
+                        We create a <strong>State Object</strong> that manages the <em>State</em> of the application. The premise is that a State Object holds all the relevant data to the state it is managing, and has a list of functions <em>listeners</em> that it will call if something in the app changes the state of the data, effectivelly informing all relevant parts of the data change and having them re-render accordingly. This is the patternused by <em>React</em>, <em>Redux,</em> and <em>Angular</em>. We use the <strong>Singleton Pattern</strong>, <strong>static</strong> properties and methods, set up a <strong>Subscription Pattern</strong>, ensure data safety throuhg <strong>slice()</strong>, send the <strong>listeners</strong> to our ProjectState object, create a <code>addProject()</code> method to handle state change after submission, and we render the updated data through the use of our <strong>listeners</strong>. 
+                    </td>
+                </tr>
+                <tr>
+                    <th scope="row">10</th>
+                    <td>
+                        <a href="#10">Enhancing Type Safety and TS Intellisense</a>
+                    </td>
+                    <td>
+                        We update our types by removing the use of <strong>any</strong>. We create a <code>class Project</code> to handle valid project objects and have instanciation. We create an <strong>enum</strong> to handle ProjectStatus. We update all any[] to Project[]. And we create a <code>type Listener</code> for valid listener functions for our ProjectState object. 
+                    </td>
+                </tr>
+                <tr>
+                    <th scope="row">11</th>
+                    <td>
+                        <a href="#11">Filtering Projects with Enums</a>
+                    </td>
+                    <td>
+                        We use our <strong>enum</strong> to ensure list items only get rendered in the appropriate list. We make the decision to re-render every item because comparing what needs to be rendered by looking at the <u>Real DOM</u> might cost the same performance as just re-rendering ever list item. 
+                    </td>
+                </tr>
+                <tr>
+                    <th scope="row">12</th>
+                    <td>
+                        <a href="#12">Adding Inheritance and Generics</a>
+                    </td>
+                    <td>
+                        We create a base <code>class Component { ... }</code> that will extend ProjectList and ProjectInput class, which have overlapping props and methods. We <strong>extend</strong> the classes with this base class to get inheritance. We use <strong>generics</strong> in our Component class to have it handle the different types of data when extending more specific classes. We us <strong>constraints</strong> in our generics to limit valid generic types. We create our <code>constructor()</code> and <code>attach()</code> method for child classes inside Component using <strong>generics</strong> and use the <strong>Conditional (ternary) operator</strong>. We make the component class <strong>abstract</strong>, blocking it from creating instances. We add <strong>abstract</strong> methods <code>configure()</code> and <code>renderContent()</code> that are requirements of child classes but have their own logic. We then refactor our ProjectList and ProjectInput to use the Component class. We create a <code>class State{ ... }</code> to future-proof our app to handle different States. We <strong>extend</strong> ProjectState using State and create a custom <code>type Listener</code> using <strong>generics</strong> for our parent State class. We also use the <strong>protected</strong> accessor which makes methods or props not accessible from the outside but just within related classes. 
+                    </td>
+                </tr>
+                <tr>
+                    <th scope="row">13</th>
+                    <td>
+                        <a href="#13">Rendering Project Items with a Class</a>
+                    </td>
+                    <td>
+                        We create a <code>class ProjectItem</code> to separate our list items from the list. We set all the required methods and properties and create the logic to have the items render when instanciated inside ProjecList through <code>new ProjectItem()</code> We alter our <strong>template</strong> to have the structure of our list item and its children to manipulate in our class.
+                    </td>
+                </tr>
+                <tr>
+                    <th scope="row">14</th>
+                    <td>
+                        <a href="#14">Using a Getter</a>
+                    </td>
+                    <td>
+                        We create a <strong>getter</strong> to output text depending on the input value submitted and access it as a property.
+                    </td>
+                </tr>
+                <tr>
+                    <th scope="row">15</th>
+                    <td>
+                        <a href="#15">Utilizing Interfaces to Implement Drag & Drop</a>
+                    </td>
+                    <td>
+                        We start creating our Drag and Drop implementation. We create interfaces <code>interface Draggable</code> and <code>interface DragTarget</code> to set the properties of elements that are valid drag tragets, and valid drop targets. We look at the <strong>DragEvent</strong> JS type. We create declare methods to handle drag events and leave them open for later. We <strong>implement</strong> our interface into ProjectItem to set it as a Draggable item. We set the listeners for our drag events with the JS events for dragging, and we re use our <strong>Decorator</strong> for autobinding. We alter our <strong>index.html</strong> and set li <code>draggable="true"</code>.
+                    </td>
+                </tr>
+                <tr>
+                    <th scope="row">16</th>
+                    <td>
+                        <a href="#16">Adding a Droppable Area</a>
+                    </td>
+                    <td>
+                        We transfer data through our drag by using <code>setData()</code> in our <em>DragEvent</em> for ProjectItem. We decide to send the id, instead of the project object, through as <em>'text/plain'</em> which we will use to handle the state change. We use the dataTransfer prop <code>effectAllowed = 'move'</code> to set the cursor and tell JS the intention of our dragging. We handle our dataTransfer in our drop target <em>ProjectList</em> where we check <em>dataTransfer</em> to access the data from the drag event. We prevent the default JS beheviour of NOT allowing drop events with <code>event.preventDefault()</code>. We then handle the drop event in <code>dropHandler()</code> and check if we are getting the id through our DropEvent.
+                    </td>
+                </tr>
+                <tr>
+                    <th scope="row">17</th>
+                    <td>
+                        <a href="#17">Finishing Drag & Drop</a>
+                    </td>
+                    <td>
+                        We go to our <code>class ProjectState</code> and create methods to handle the project moving. we set it to use the id we pass to find the project and change its status using the <strong>enum</strong> which will trigger the listeners and trigger the logic everywhere to re-render the content appropriately. We can now create projects, drag and drop them in valid places, get visual feedback, and update the state and re-render our lists when it is appropriate.
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+
+        <ul class="list-group">
+            <li class="list-group-item">
+                <a id="01" href="#00">Index</a>
+                <h2 class="subtitle">Project Intention and HTML setup</h2>
+                <p class="paragraph">
+                    We will create a drag and drop PM style application with two lists where we can move items between one another. We will be working everything in a singgle .ts file, therefore it will be big and we will learn how to split it later. We will start working with the index HTML file by replacing it with the one from the resources. 
+                </p>
+                <p class="paragraph">
+                    We will use HTML 5 <strong>template</strong> tags that allow us to specify HTML code which is not rendered immediately. It can be reached by JS to then render it when we want to render it and control it with JS. We have a form with a form with: Title, description, and people. Then we have another template tag with a list item that will render a single project in a list of projects. We have another template with a header and an unorder list that will render the data entered through our form. Everything will be apended to the div with the id <em>app</em>.
+                </p>
+                <a id="02" href="#00">Index</a>
+                <h2 class="subtitle">DOM Element Selection & OOP Rendering</h2>
+                <p class="paragraph">
+                    There are many ways to achieve the rendering how we want. We will use the object oriented approach and start with making our form visible. We want to select our form <em>template</em> tag and have it render in our <em>div</em> with the id <em>app</em>.
+                </p>
+                <p class="paragraph">
+                    We star by creating a class for our inputs, <code>class ProjectInput { ... constructor(){ ... }}</code> There we select the template element by id <em>project-input</em> and the div where we will render to <code>app</code>. We set the types to their respectiv HTMLElement classification, then we select them through id, and we need to typecast them to theri type as well because TS cannot tell if we are getting the correct type from the DOM.
+                </p>
+                <p class="paragraph">
+                    Now we need to import what we have inside our templateElement and render it to the DOM. We create a const to store the HTML from our template, and get it using the <code>importNode()</code> method. It takes two arguments, the element we want to get the node from, and deep, which determines if we also take the childern elements. We do <code>const importedNode = document.importNode(this.templateElement.content, true)</code> which gets the content of our template element. <strong>Note:</strong> templateElement.content is of type DocumentFragment.
+                </p>
+                <p class="paragraph">
+                    Now we have the node DocumentFragment in importedHTML. We then create a method to render in the hostElement <code>private attach(){ ... }</code>. Inside we use the method insertAndjacentElement() which takes two arguments: Where to insert the element, and the secon one is the element itself. We have 4 literals that can be used in the first argument: <em>afterbegin, afterend, beforebegin, beforeend</em> which TS provides intellisense for. We want to use the node we imported, however the second parameter cannot take a DocumentFragment as an argument, so we need to turn that fragment into a valid HTMLElement. 
+                </p>
+                <p class="paragraph">
+                    We do two things, we create a new prop <code>element: HTMLFormELement;</code> that will hold our form, we set the type specfically because we know it will be of that type, but we could have gone with the more generic HTMLElement. We then set that property in our constructor by getting our HTML Element from our imported HTML <code>this.element = importedHTML.firstElementChild as HTMLFormELement</code>. <em>firstElementChild</em> returns the first child that is an element in our Document Fragment. We can see this through TS intellisense when we hover over this. If we look at our template, we can see that the first element is our from element. We then call the <em>private</em> method attach() inside our constructor to insert our element into the div when we instanciate our class: <code>this.attach()</code>. We call our constructor <code>const projectInput = new ProjectInput()</code> and if we reload, we will see that our form was rendered with all its child elements.
+                </p>
+                <a id="03" href="#00">Index</a>
+                <h2 class="subtitle">Interacting with DOM elements</h2>
+                <p class="paragraph">
+                    We have rendered our form, but the styling is a bit off. We have a preset css file, and if we open we can see that there is a <code>#user-input{ ... }</code> CSS selector that has padding and other styles. We just need to add that ID to our element to apply that style. We do that by adding the id to our element before we run attach() <code>this.element.id = 'user-input'</code> will now add our ID and apply our CSS styling. We have officially interacted with the DOM through TS.
+                </p>
+                <p class="paragraph">
+                    <strong>Next Steps</strong>
+                    <br>
+                    We want to have access to the content of our form once it is submited, and we want to listen to the button for the submission. We start by selecting our input elements through their id. We add them as props to our class <code>titleInputElement: HTMLInputElement;</code> and select them in our constructor: <code>this.titleInputElement = this.element.querySelector('#title') as HTMLInputElement;</code>. This is done for <em>title, description, people</em>.
+                </p>
+                <p class="paragraph">
+                    We create a new method for our class to listen to the form <code>private configure(){ this.element.addEventListener('submit',...) }</code> where element is our form, selected in our constructor. What we want to execute in the callback is handle what happens in our form, for which we create another method <code>private submitHandler(event: Event){ event.preventDefault(); console.log(this.titleElementInput.value) }</code> which will take in the submit event from our form in our <code>configure()</code> method and execute some script. In this case it uses <code>preventDefault()</code> to stop the form from submitting with the click of the button, and then we log the input value of our element.
+                </p>
+                <p class="paragraph">
+                    We now add this method to our listener <code>this.element.addEventListener('submit',this.submitHandler.bind(this))</code> We need to bind because <strong>this</strong> inside submitHandler() does not point to the class. Since we are using it inside our event listener, we are binding it to the current target of the event and not at the class when the method is triggered. We fix this by <strong>binding</strong> the method call to our class <code>this.submitHandler.bind(this)</code> which sets <em>this</em> inside our method to the class because the context of <em>this</em> inside our <em>configure()</em> method is our class. We use configure in our constructor <code>this.configure()</code> before our attach() method, which will call our listener, and our event handler. Now if we reload and add a value to our title input and click in submit, we prevent the form from sending an HTTP request and we get access to the value in our console. 
+                </p>
+                <a id="04" href="#00">Index</a>
+                <h2 class="subtitle">Creating and Using an "autobind" Decorator</h2>
+                <p class="paragraph">
+                    We did this before in our Decorator module, and we need to enable Decorators in our <strong>tsconfig.json</strong> file. We remove our <code>.bind(this)</code> and start creating our Decorator. We are creating a method decorator, and method decorators take 3 arguments. The target, the method name to which it is bound, and the descriptor of that method. <code>function autobind(target: any, methodName: string, descriptor: PropertyDescriptor){}</code> What we want to do is to alter the descriptor object from our targetMethod and alter it so that we can bind this to our class.
+                </p>
+                <p class="paragraph">
+                    We start by selecting the method we are using the decorator in <code>const targetMethod = descriptor.value;</code> which is the descriptor object from our method. If we log it, we just see our method declaration there. We then want to create our own description object to append to our target method <code>const adjustedDescriptor: PropertyDescriptor = { ... }</code>. Inside our descriptor we <code>configurable:true, get(){ const boundFunction = targetMethod.bind(this); return boundFunction }</code> which will set configurable to true so that we can change this method, and we then set a getter with <code>get()</code> This getter will get executed when you call the function, here we bind the function with targetMethod.bind(this), and return it. And after we have adjusted the descriptor we will return it <code>return adjustedDescriptor</code>.
+                </p>
+                <p class="paragraph">
+                    We have finished our autobind Decorator, however we didn't use the target, or methodName arguments in our function, we need to tell TS that we won't use those properties with the undescore character <code>function autobind(_: any. _2: string, descriptor: PropertyDescriptor){ ... }</code> Now TS will not err and we can use our Decorator. Now we set <code>@autobind</code> over our submitHandler() method and we get the functionality we want. <strong>Note:</strong> If we log our descriptor inside our autobind method, we can see that configurable is already set to true, meaning that we can remove that from our adjustedDescriptor. We can see that value holds the method we are targetting. Unfortunately there is no place where we can see what we set <em>bind</em> to. So it is an act of fate, and we can just assume that it sets the execution context of everything inside the method to the context of the parent method. In our case we use it in submitHandler() that is inside our class, meaning that this is going to be set to our class. 
+                </p>
+                <p class="paragraph">
+                    In our case it is a lot of code for just this, however if we were to need to do this bind in other methods, we could repeatedly use our decorator and know it will work and prevent potential errs where we forget to set bind ourselves. 
+                </p>
+                <a id="05" href="#00">Index</a>
+                <h2 class="subtitle">Fetching User Input</h2>
+                <p class="paragraph">
+                    We have already set up the listener to our submit button and seen that we have access to our input values, but we want to store those values, not just log them. To handle the logic we create another method in our class that gathers the values, validates the input, and then returns them so we can store them when our event triggers. We create the <code>private gatherUserInput()</code> method. We know that we have 3 inputs and what types they should be, so we can be explicit on what our return will be, and we can use the TS <strong>Tuple</strong> <code>private gatherUserInput(): [string, string, number] { ... }</code> which we tell TS that, if successful, this method will return an array of 3 values, 2 strings, and a number. 
+                </p>
+                <p class="paragraph">
+                    Inside our method we want to access the values of our elements <code>const titleValue = this.titleInputElement.value;</code> and do that for our inputs. Now we do very basic validation through an if statement that will only check if we submitted a value <code>if(titleValue.trim().length === 0 || ...</code> where we trim the whitespace from beggining or end of the value and check if it has a lenght for every value. If any statement fails we send an alert <code>alert('invalid input, please try again'); return;</code>. If we do get valid inputs we return our Tuple <code>else { return [titleValue, descriptionValue, +peopleValue]</code> where we convert our people input into a number using <strong>+</strong>. 
+                </p>
+                <p class="paragraph">
+                    This will err in TS because we set a return type of Tuple, however in our validation return we are not returning a tuple, but undefined instead. We fix this by adding <strong>void</strong> to our return for this case <code>gatherUserInput(): [string, string, number] | void { ... }</code> which will allow us to return after invalid input through the use of a <strong>Union</strong>. <strong>Note:</strong> our validation is loose, we will get a runtime err if our people input gets a value that is not a number as JS will fail to convert it to a number, however TS will not show us this because it cannot know that. We will handle this validation in the future. 
+                </p>
+                <p class="pargraph">
+                    Now we can go back to our handler <code>sumbitHandler()</code> where we store our userInput. We have <code>userInput = this.gatherUserInput()</code> now we want to use it. We do an if statement where we must check whether we get a return Tuple or if we get null or TS will err. We use an if statement <code>if(Array.isArray(userInput){ ... }</code> Which is a JS method that checks wether something is an array. Since we cant use typeof, or isntanceof, we have to rely on array due to the only possible Tuple return has to be an array. Now TS will know that what we handle there will not be the void return and will not err. Inside we <strong>desctructure</strong> the array and store the values separately <code>const [title, description, people] = userInput;</code> which will store the values of our tuple in separate constants. We now log them to see if our logic is working properly. 
+                </p>
+                <p class="paragraph">
+                    We want to empty the inputs upon submission, which we will do with another private method <code>private clearInputs(){ this.titleInputElement.value = "" .... }</code> which will clear the inputs by setting their values to an empty string. We call this method in our submit handler if we get valid inputs, therefore in the if statement that checks we got a valid userInput tuple <code>if(Array.isArray...){ ... this.clearInputs()}</code> Now when we submit, we log our input values, and our form clears. 
+                </p>
+                <a id="06" href="#00">Index</a>
+                <h2 class="subtitle">Creating Re-usable Validation Functionality</h2>
+                <p class="paragraph">
+                    We want to improve our validation, and we do this by first thinking of our desired end result. We want to have a separate validation function to which we can pass our inputs and see if the validation meets our criteria. We want to have a configuration object that tells our validation if other criteria is met such as required: true, minLength: 5 or etc... We do that for all our inputs, and if this method retunrns true, we can then proceed to store the values.
+                </p>
+                <p class="paragraph">
+                    We create an interface for our configuration object that we will pass to our validate method. <code>interface Validatable { value: string | number; ... }</code> inside we will set properties we want to include in our validation: required, min/maxLength, min/max. We set these porps to optional becaues depending on the input, they will differ. Now that we have this, we create our <code>function validate(input: Validatable){ ... }</code> which will take our validation confing object and check if we met our requirements. If this method returns true, it means that the inputs met our criteria. We create a local value <code>let isValid = true;</code> which will be modified to false if one of our conditions is not met. 
+                </p>
+                <p class="paragraph">
+                    We use JS's <strong>Logical AND (&&)</strong> which takes a variable and returns either true or false if both conditions are met <code>isValid = isValid && condition</code>. This means that isValid will check if it is true or false, if false it will retrun false, and if it is true, check for a condition for our validation. If both conditions are met, isValid will remain true. We then check for all the condition values of our Validatable object. <code>if(input.required){ isValid = isValid && input.value.toString().trim().length !== 0;</code> will check for this condition if our required flag is true, and will check if our input has a value after we trim whitespace (We convert all inputs to string to use trim()). Next we check for min/maxLength <code>if(input.minlength != null && typeof input.value === 'string'){ ... }</code> where we check if our object has a minlength value and if the value is a string, because we don't want to do a minlength check for our numbers. Inside we do <code>isValid = isValid && input.value.length > input.minlength;</code> Where we do another Logical AND and check if the value met our minlength. We do exactly the same for maxLength.
+                </p>
+                <p class="paragraph">
+                    We then check for min/max, which will only check for numbers <code>if(input.min != null && typeof... === 'number'){ ... }</code> inside we check <code>isValid = isValid && input.value >= input.min</code> which will check if the minimum value is met. We copy and do the same for max. If our input passes through all these checks, the return will be true and our script will proceed. 
+                </p>
+                <p class="paragraph">
+                    With the logic done, we want to use our method and interface in our <code>gatherUserInput()</code> method. We start by creating our validatable objects <code>const titleValidatable: Validatable = { value: titleValue, required: true }</code> which meets our criteria. We then do the same for description and people. Then we have the objects we can pass to our validate() method to check in our if statement: <code>if(!validate(titleValidatable) || !validate... || !validate...){ ... }else{ ... }</code> which will now use our re-usable validation logic. We set ! before each call because validate will return true if our input is valid. Therefore if one input is valid it will execute our if without checking the others. This sets it so that if any of our validate calls returns false, it will get turned to true and trigger our logic for an invalid input. Alternatively, and less confusing, we could just move our else statment to our if and remove the ! and use && to check for all returns as true. <code>if( validate... && validate && validate ...){ return Tuple }else{ alert... return; }</code>
+                </p>
+                <a id="07" href="#00">Index</a>
+                <h2 class="subtitle">Rendeing Project Lists</h2>
+                <p class="paragraph">
+                    We now fetched our user input and validated. Now we move un to render the list based on the inputs. We are don with our ProjectInput class, now we will create a new class to handle our ProjectList. This class has the same objective as the one for our ProjectInput, getting the template element, host element, and the element itself to render it in our HTML. We use the same properties but alter element to <code>element: HTMLElement;</code> because we are not targetting a form, rather a section. There is no specific <em>section</em> type, therefore we have to go with the generic HTMLElement type. 
+                </p>
+                <p class="paragraph">
+                    The constructor is almost the same, we just copy and paste the code into our constructor but we change the typecasting of element to <code>this.element = importedHTML.firstElementChild as HTMLElement</code>. Also, we will have a dynamic id depending on the type of project we are handling. Here we think about the overall goal, we are goin to have two lists, active projects and finished projects, and we want the <em>id</em> to match the list we are rendering. Since we will use this class to create both lists, we are going to add an argument to the constructor to set the list we will be creating. We do this through the use of <strong>literal types</strong>. <code>constructor(private type: 'active' | 'finished; ){ ... }</code> There we will be able to pass one of the two arguments which we will use to label the id with <code>this.element.id = `${this.type}-projects`</code>.
+                </p>
+                <p class="paragraph">
+                    In our class we also have an attach() method that will render the HTML to our hostElement using our element property. <code>private attach(){ this.hostElement.insertAdjacentElement('beforeend', this.element) }</code> Which will render our project list from the bottom up of our template container. We now have placed our element in our template, but we have not rendered any content to our list.
+                </p>
+                <p class="paragraph">
+                    We start by creating an id const that we are going to set to our list: <code>const listId = `${this.type}-projects-list`</code> which will create a custom type based on the type property created by the constructor. We will then push this into our <em>UL</em> tag <code>this.element.querySelector('ul')!.id = listId</code>. We select it through querySelector as it is the only ul we will find in our list, and we add an exclamation ! to tell TS that we will always find this item. We then select our H2 tag and add the text content that will label our list header: <code>this.element.querySelector('h2')!.textContent = this.type.toUpperCase() + ' PROJECTS'</code> which will label our list in uppercase on both cases <em>Active</em> and <em>Finished</em>. We now call the attach() and renderContent() methods in our constructor after setting the element id <code>this.attach(); this.renderContent()</code> and we have finished our class.
+                </p>
+                <p class="paragraph">
+                    When this is done we instanciate our classes with <code>projectList = new ProjectList('active')</code> and <code>const finishedProjectList = new ProjectList('finished')</code> which are both udnerstood and aided by TS intellisense, and if we open our browser we have our labeled, styled, and rendered active and finished projects list. 
+                </p>
+                <a id="08" href="#00">Index</a>
+                <h2 class="subtitle">My go at Rendering the LI</h2>
+                <p class="paragraph">
+                    What we want to do now is to take the content from our form, and use it to create a new list item for our project list. I will opt yo do this on my own. I start by checking the <em>app.css</em> file to look for the styling used for the list items and find that there is styling for list items using the class "projects" which means that I could add a class for styling to my list items. Additionally we added an id to the ul tag with our constructor as active-projects-list or finsihed-projects-list which we will use to get the element in our class. 
+                </p>
+                <p class="paragraph">
+                    I create a class for my list item <code>class ProjectListItem{ ... }</code> that will get the input values and render the list item. This class doesn't need a template element beacuse the hostElement is the same element we will be rendering to. I created the properties <code>hostElement: HTMLUListElement;</code> and then I googled what type is a list item and got that the DOM Interface type for li was <code>HTMLLIElement</code> so I created the prop <code>element: HTMLLIelement;</code> I proceeded to create the constructor, I have to select the hostElement which is our ul. In our index.html the unordered list has no id to select by, however we added the id through our list creation, meaning that the ID for this UL was going to be 'active/finished-projects-list'. I used <code>this.hostElement = document.getElementById(`${this.type}-projects-list`) as HTMLUListElement</code> type cast as HTMLUListELement.
+                </p>
+                <p class="paragraph">
+                    I then I also need an element, but in our index.html there is no li inside our ul. I looked up how to create an element and I used <code>this.element = document.createElement('li')</code> which created a new list item. I then want to get that list item and attach it to our hostElement <code>attach(){ this.hostElement.insertAdjacentElement('beforeend', this.element) }</code> Here I will insert my ul at the end of the list, since the older projects should remain at the top of the list, which of course is subject to later change. Having that done, I need to add the content to my list item element. I create a new method renderContent() that will use the data from our form. I want to get the content from the form and see if I get it. <code>renderContent(content: [string,string,number]){ const [title,description,people] = content; this.element.innerText = ... }</code> I am using this Tuple often, so I create a custom type for it <code>type ValidInput = [string,string,number]</code> and use it. 
+                </p>
+                <p class="paragraph">
+                    Now I would need to call this method in my constructor <code>this.renderContent(this.content)</code> after attach(), but to get this.content I need to add it to the constructor <code>private content: ValidInput</code> which will be the second argument of my constructor, and must be my custom Tuple. Now I need to get it rendered once the form is submitted. I go to my ProjectInput class and look for the method that is processing the input data after it is submitted. The method we need is <code>private submitHandler(event: Event){ ... }</code> Inside we get our userInput data and verify that it is there <code>if(Array.isArray(userInput){ ... }</code> and inside of that if I create my new instance of ProjectListItem <code>new ProjectListItem('active', userInput)</code>. It is of type active because we can only create active projects on our form, and userInput is our Tuple because our logic and validation verifies that if the script gets here we have our valid Tuple.
+                </p>
+                <p class="paragraph">
+                    Having that done, when I submit the form the inputs should clear and we should get a new list item rendered inside our list. I go to the browser and submit the form and I effectively get a very crude list item rendered with the data that was submitted: Great success! Now I need to style this LI for which I look into the app.css file for clues. I see that there is styling for an h3, h2, and p inside projects li. I will then modify the renderContent() method inside my ProjectListItem class.
+                </p>
+                <p class="paragraph">
+                    I need to create an h2, and h3, and a p element. I do it through <code>const h2Element = document.createElement('h2')</code> for every element. Then I use innerText to add the content from our inputs <code>h2Element.innerText = title.toUppercase()</code> with different handling of the string for each element. Then I add them to the li element through appendChild and insertAdjacentElement. <code>this.element.appendChild(h2Element).insertAdjacentElement('afterend', h3Element)!.insertAdjacentElement('afterend', pElement)</code> we use the ! to tell TS that the value will not be null. We first appendChild to place the h2 nested <strong>inside</strong> the UL and then we use <em>insertAdjacentElement()</em> to insert the elements after the h2 successively. Now we submit the form and get our semi-styled li. The end result should be subject to change depending on how Max shows it should look like.
+                </p>
+                <a id="09" href="#00">Index</a>
+                <h2 class="subtitle">Managing Application State with Singletons</h2>
+                <p class="paragraph">
+                    Max wants to create a class that manages the <em>State</em> of our application. This allows us to set listeners in the different parts of the app that are interested. This is a pattern used by React, Redux, and Angular. They have a state management object and they just listen to changes.
+                </p>
+                <p class="paragraph">
+                    We start by creating a class for our State object <code>class ProjectState{ ... }</code> inside that state we want to have an array of projects for each project that gets created when we submit. <strong>Note:</strong> There can be multiple <em>State Objects</em>, this one will be in charge of state changes regarding <strong>Proejcts</strong> only. We create a prop <code>private projects: any[] = []</code> which will temporarily be set as any, where we will push projects when they are created. We create a method to add projects to our prop <code>addProject(title:string, description: string, people: number){ ... }</code> which will take what we get from the form and create a project object. We want the object to have an id and one property of each of the values from the form <code>const newProject = { id: Math.random().toString(), title: title .... }</code> then we push it, <code>this.projects.push(newProject)</code> We use Math.random() to generate an ID, there are better ways to do this, but in our case it is very unlikely that we will get repeated ids.
+                </p>
+                <p class="paragraph">
+                    Now, how do we access the addProject property from our state from other classes? We must create an instance of the state that will be accessable by our classes so they can access it. However, we want to eliminate the possiblity of having multiple states, as our single state object should handle everything. We use the <strong>Singleton Pattern</strong> so that only one state object can exist. We create a private static instance for our state <code>private static instance: ProjectState;</code> that has our data and is of the type of our class. <strong>Note:</strong> <em>static</em> properties and methods refer to properties and methods that are only accessible by the class and by other static methods. Then to access it we create a static method <code>static getInstance(){ if(this.instance){ return this.instance } this.instance = new ProjectState(); return this.instance; }</code> which when called, will check if an instance of our class exists, and if it does it returns it. If there is no instance, it will create a new one. Since it is the only way of accessing the constructor since we set it to <code>private constructor() {}</code> our logic prevents this class from being instanced twice. 
+                </p>
+                <p class="paragraph">
+                    We then create our state object globally through our method <code>const projectState = projectState.getInstance()</code> which will create our Singleton Pattern state instance. We proceed by going to our ProjectInput class and sending the data to our state object. I modified the code to use our custom Tuple pattern. Now we want to go to our ProjectList class and work the logic to create our list item, since it is the one responsible for handling the list rendering. Here we want to set a <strong>subscription pattern</strong> where in our <strong>ProjectState</strong> we handle a list of <em>listeners</em> which should be called whenever there is a change to any project.
+                </p>
+                <p class="paragraph">
+                    <strong>Subscription Pattern</strong>
+                    <br>
+                    The subscription pattern requires two things: An array of functions, or listeners, and the logic to go through these listeners whenever the state of any project is altered. In our ProjectState class we add a property to store these listeners <code>private listeners: any[] = [];</code> which will be an array of functions. Now we go to our <code>addProject()</code> method, that is in charge of storing the projects array in our projects prop. Here we do a few things: Create the project object (id,name,title,people), push it into our projects array, and now the new step: Running that project through all listeners that handle projects. We have these functions in our <em>listeners</em> prop, so after we push the project we run the projects array throguh our listeners <code>for(const listenerFn of this.listeners){ ... }</code> where <em>listenerFn</em> is each function from our array, and then we run the array through these listeners <code>listenerFn(this.projects.slice())</code>. 
+                </p>
+                <p class="paragraph">
+                    <strong>Keeping our data safe through slice()</strong>
+                    <br>
+                    Why <strong>slice()</strong>? We want to manage our project array <em>ONLY</em> in our ProjectState, through our addProject() method. This data should remain unaltered through any other means, however we might want to do something with that data on one of our listener functions. If we do this on the projects array from our <em>State Object</em>, we might end up altering the project objects in our array from outside our class. The <strong>slice()</strong> method returns a <em>shallow copy</em>  of an array into a <em>NEW</em> array. It takes 2 arguments, beggining index, and end index. However these, two are optional, and if no argument is added it defaults to a starting index of 0 and an end to the last index of the array. Meaning that in our script <code>listenerFn(this.projects.slice())</code> we are passing a complete copy of the array of projects that <em>WILL NOT</em> alter the original, as it is a <em>copy</em> of the array. Preventing us from altering the projects from anywhere that is not addProject() which would bypass our listeners and cause no changes even though there was a change in the <em>State</em> of projects. 
+                </p>
+                <p class="paragraph">
+                    <strong>Listeners</strong>
+                    <br>
+                    Now every single listener is being called with a copy of our projects array. Now we go the places we want to be informed about changes, in our case the <strong>ProjectList</strong> class, and set up the listener. In our constructor, before we attach() and renderContent() we will add our listener to ProjectState to send a listener function there. <strong>Note:</strong> max passed an anonymous function to this method, I got confused and decided to declare the listener in the class and then pass it to the addListener(): <code>projectState.addListener(this.assignedProjects)</code> where assignedProjects is my listener. What we want to do with the listener is set the projects inside our object to the ones in our <em>Project State Object</em>. For this we create a prop <code>assignedProjects: any[] = []</code> where we can override the projects every time there is a state change, and in our method we re-declare (override) our projects every time <code>private assignProjects(projects: any[]){ this.assignedProjects = projects }</code> 
+                </p>
+                <p class="paragraph">
+                    <strong>Listener and Project State Interaction</strong>
+                    <br>
+                    In our ProjectList class we have created a method that gets the projects from our ProjectState and sets them to a prop inside its class. This method was then sent to the ProjectState object to be called from in there. When is it called? Whenever the <strong>addProject()</strong> method is called. Now we have a pretty complex interaction between our classes: Our ProjectInput class gets the input data from our form, validates it to ensure it can pass through, and if it does, it sends the new project to our <strong>projectStae Object</strong> through <code>projectState.addProject(userInput)</code>. This calls addProject in our ProjectState class, project state class takes the data and creates a custom project object <code>const newProject = { ... }</code> and then pushes that into the <code>private projects: any[] = []</code> to keep track of the projects being handled in our app. After that it calls every listener function in the prop <code>private listeners: any [] = [];</code> and passes our updated <code>private projects: any [] ...</code> array, that holds ALL of our projects. When our ProjectList class is instanciated, it adds a listener function to this array. In our case it is the <code>private assignProjects(projects: any[]){ ... }</code> that takes in an array of projects (a copy of the Project State projects property), and overwrites the prop <code>assignedProjects: any [] = []</code> with the projects from our Project State object. <strong>Note:</strong> This all happens before any code is executed, as the listener is added when the list is first instanciated. Back in our <strong>ProjectState</strong> class, since <code>addProject()</code> was called, we run our projects[] array copy through all our listeners <code>listenerFin(this.projects.slice())</code>. This executes our <code>assignProjects()</code> method, and overrides the assignedProjects prop with the updated properties. 
+                </p>
+                <p class="paragraph">
+                    <strong>Rendering the updated data</strong>
+                    <br>
+                    Now we have the updated project list in our ProjectList instance, what we want to do now is render these projects in our ul. We create a method to render these projects <code>renderProjects(){ ... }</code> Inside we get our UL <code>const ulElement = document.getElementById(`${this.type}-projects-list`) as HTMLUListElement</code> which uses the custom Id we set when first rendering the list to select the UL. Now we need to go through the project array and create a list item for each <code>for(const project of this.assignedProjects){ ... }</code> Since we don't have a li element in our template, we have to create one <code>const liElement = document.createElement('li')</code> after that we add the project title to it <code>liElement.textContent = project.title</code> and then we add it to our ul <code>ulElement.appendChild(liElement)</code>. <strong>Note:</strong> <strong>appendChild()</strong> is a method that is called on an <strong>element</strong>, and takes an element, or node, as an argument and adds it to the <strong>end</strong> of the list of children of the parent element. This means that our parent element ul, takes the element li, and then adds it as a nested element inside itself. If another child is appended, it will add it at the bottom. Now that we crete an element and add it to our list, we need to call it. Since we want it to happen when we input a project from our form and trigger the <strong>addProject()</strong> method, which triggers a change in our <strong>ProjectState</strong> object, which then calls all listeners and runs their functions, we need to set our <strong>renderProjects()</strong> method in our listener <strong>assignProjects()</strong> So at the end of assignProjects we call our render method <code>this.renderProjects()</code> which will render the objects when there is a state change in <strong>ProjectState</strong>. <strong>Note:</strong> Since I didn't use an anonymous function, I had to change the context of this, I first did it throuhg <code>projectState.addListener(this.assignProjects.bind(this))</code> but then remembered we had a <strong>Decorator</strong> that autobinds our method, so I called it on top of assignProjects <code>@autobind</code> and my code ran flawlessly. 
+                </p>
+                <a id="10" href="#00">Index</a>
+                <h2 class="subtitle">Enhancing Type Safety and TS Intellisense</h2>
+                <p class="paragraph">
+                    Up to now we have everything working, but we can be more specific about types in our code, we have use any[] numerous times, and we also have a rendering error that renders every list item withour removing the previous list items. We will focus on the firs problem, using specific typing. TS will not err, but will not help us either, if we set a type to any. We will start with the structure that our project objects should take. We already have a blueprint of what it should look like in our ProjectState, but we want to be able to use it as a Type. We create a class <code>class Project{ ... }</code>, why a <em>class</em> and not an <em>interface</em>? Becasue we want to instanciate Projects, and interfaces are structures but they cannot be instanciated through <em>new</em>. We use the constructor shortcut that uses an accessor, a name, and a type and infers the logic. We keep the structure the same, but we add a new prop: <code>public status: 'active' | 'finished'</code> which tells our script whether a project is active or finished. we can take this one step further and use the <strong>enum</strong> TS type, which assigns <em><u>numbers to idenfiers</u></em> <code>enum ProjectStatus { Active, Finished }</code> which assigns 0 to active, and 1 to Finished. We call these values through human readable code <code>ProjectStatus.Active</code>. We set this <strong>enum</strong> to our status prop <code>public status: ProjectStatus</code>
+                </p>
+                <p class="paragraph">
+                    Now that we have our Project class we want to use it in our ProjectState. We start by setting the array of projects <code>private projects: Project[] = [];</code> which will now only accept objects that fit into our Project structure. And now we go to our <strong>addProject()</strong> method and use that class. We erase our object declaration and replace it with an instance of project, <code>const newProject = new Project(Math.random.toString(), ..., ProjectStatus.Active)</code> which creates a new instance of Project that uses our <strong>enum</strong> to set it as active. We hard code this because if we create a project it is automatically active. Now we go down to our <strong>ProjectList</strong> class and use the Project type as well <code>assignedProjects: Project[] = [];</code> which will get overwritten when by the listener <strong>assignProjects()</strong>. We use the type here to ensure that it only recieves projects that match our type <code>private assignProjects(projects: Project[]){ ... }</code> which will give us type safety. Now that we have fixed this type, we get TS intellisense and enhanced error detection.
+                </p>
+                <p class="paragraph">
+                    <strong>Listener type</strong>
+                    <br>
+                    The other instance of <code>any[]</code> we have is with properties and methods related to listeners. We want to fix this, we create a structure for our listener that should onyl accept an array of the type Project. <code>type Listener = (projects: Project[]) => void;</code> which tells TS that we want to be strict about the kind of data that gets passed to the method, but not the return. We add this to our ProjectState <code>private listeners: Listener[] - [];</code> and to <code>addListener(listenerFn: Listener){ ... }</code> Now only Listener functions that meet our criteria can be added to our class, which will ensure that we always have a valid function in our listener array. 
+                </p>
+                <a id="11" href="#00">Index</a>
+                <h2 class="subtitle">Filtering Projects with Enums</h2>
+                <p class="paragraph">
+                    First we will introduce some filtering so that our projects don't show up in both lists, as they are active projects, not finished. The best place to filter is in our listener function . We go to <code>private assignProjects()</code> that is the function we pass to our listeners in the Project Status Object. And inside we filter the projects we pass through the list. To create the filter, we have to take into account that <em><u>we have a single class for the Active Projects list and the Finsihed Projects List</u></em> therefore we need to have the method return something for both types of list. Right now, we are not filtering at all, so we want to use the <code>private type: 'active' | 'finished';</code> prop from our list to do this filter. <strong>Note:</strong> We do not use the Enum here because we are using the string literal to add id's to our elements. 
+                </p>
+                <p class="paragraph">
+                    <strong>Filter the projects by their status</strong>
+                    <br>
+                    We go into our <code>assignProejcts(projects: Projects[]){ ... }</code> and filter the projects array copy, which holds every single project in the app. We use the <em>filter()</em> method. <strong>Note:</strong> the <code>Array.filter((arrayItem)=>{condition})</code> is a default method for Array types, it takes a callback function as an argument, where we return the item of the array if it meets the condition we set in the callback. The callback takes 3 arguments: value, index, and the full array, in our case we just want to use the array item value for comparison. Since will be using more than one condition in our method, we must specify the <em>return</em>. Inside we check if the list is of type 'active'/'finished' and filter based on that <code>const compatibleProjects = projects.filter(project => { ... })</code> In our filter we do our if check <code>if(this.type === 'active'){ ... }</code> which checks what kind of list we are working with, inside we return <code>return project.status === ProjectStatus.Active</code> which checks the state of the project using our <strong>Enum</strong> property. And outside this if, we return <code>return project.status === ProjectStatus.Finished</code> which means that if we are working with an 'active' list, we will pass only active projects to the renderProjects() method, and vice/versa for 'finished'. We set this new array to our <code>this.assignedProjects = compatibleProjects</code> which will be the prop used in <code>renderProjects()</code>.
+                </p>
+                <p class="paragraph">
+                    Now we got our projects to render on the list they are meant to render. Now we need to fix the duplication bug. This has to do with how we render our projects in <code>renderProjects()</code>. Every time we call this function we go through every single project in our object, and append them to our list. The problem being that we might already have a list item rendered in our list. The best case scenario would be to check for what has already been rendered and what you need to render, to avoid rendering items you don't have to re-render. However running this comparison by looking at the <em><u>Real DOM</u></em> also costs quite a bit of performance. Therefore, for this application it is perfectly fine to just re-render the whole list. So we can just clear it all by <code>ulElement.innerHTML = ''</code>, so we remove all the HTML inside our UL and then re-render.
+                </p>
+                <a id="12" href="#00">Index</a>
+                <h2 class="subtitle">Adding Inheritance and Generics</h2>
+                <p class="paragraph">
+                    We have successfully rendered our list, but we have a few things to take care of still. We will start by cleaning up our code where we have code duplication, specifically in our <em>ProjectList</em> class and <em>ProjectInput</em> class. We have some overlapping properties and methods in both classes, therefore it is better if we set a base class and use <strong>inheretance</strong> to handle these overlapping features through <strong>extends</strong>. Then we want to have a dedicated <em>ProjectItem</em> class, where we just have to instanciate the class inside of ProjectList instead of appending a list item manually like we have done, and display more information about every list item. 
+                </p>
+                <p class="paragraph">
+                    <strong>Generics and the Properties</strong>
+                    <br>
+                    We create our base class <code>class Component { ... }</code> which will hold the common items of our classes. We add 3 props: templateElement, hostElement, and element. However, if we look at our class, hostElement and element, vary depending on our class, which is where <strong>generics</strong> come into play: <code>class Component &lt;T extends HTMLElement, U extends HTMLElement&gt;{ templateElement: HTMLTemplateElement; hostElement: T; element: U }</code> Here we set 2 generics with the constraint HTMLElement, meaning that they can be any type that inherits from HTMLElement. Inside the class we set the hostElement to be T and element to be U, so now when we use the generic, it will pick and lock in the specific type of HTMLElement we are working with. 
+                </p>
+                <p class="paragraph">
+                    <strong>The constructor</strong>
+                    <br>
+                    Now we create the constructor <code>constructor(templateId: string, hostElementId: string, newElementId?: string){ ... }</code> which will be the 3 arguments we need to take in our constructor to handle the specific instance. We set newElementId? as optional, because we might not get that argument with every call. We copy code from our ProjectList class to handle the <em>templateElement</em> prop and <em>hostElement</em> prop. <code>this.templateElement = document.getElementById(templateId) as HTMLTemplateElement;</code> this will use our DOM selection logic and select the template based on the id we pass to the constructor. For hostElement we use <code>this.hostElement = document.getElementById(hostElementId) as T</code> we use the same logic, but we <strong>type cast</strong> using our generic T. Now we just need to handle our element. We use the same logic using importNode() based on our templateElement <code>const importedHTML = document.importNode(this.templateElement.content, true)</code> now we set the element with <code>this.element = importedHTML.firstElementChild as U;</code> which selects the first child of our host and sets it as the specific type of element we will be working with. We then set a condition to set the id of element if we get one passed <code>if(newElementId){ this.element.id = newElementId }</code> Which finishes our constructor.
+                </p>
+                <p class="paragraph">
+                    <strong>The attach() method</strong>
+                    <br>
+                    We copy the attach method from our ProjectList class <code>private attach(){ this.hostElement.insertAdjacentElement('afterbegin', this.element) }</code> which faces us with a problem. Depending on the class, the insertion might be 'afterbegin' or 'beforeend' depending on which class calls the method. Here we use a very interesting line of code called the <strong>Conditional (ternary) operator</strong>. This is the only JS operator that takes three operands. The operator can have one of two values based on a condition: <code>condition ? value1 : value2</code> if the base condition returns true, value1 is used, if false, value 2 is used. It is a condensed if <code>if(condition){ value1 }else{ value 2}</code>. We use it in <code>this.hostElement.insertAdjacentElement( insertAtBeginning? 'afterbegin' : 'beforeend', this.element)</code> which means that if true is passed as our <code>insertAtBeginning: boolean</code> constructor paramenter, insertAdjacentElement() will use 'afterbegin', if set to false, it will use 'beforeend'. 
+                </p>
+                <p class="paragraph">
+                    <strong>abstract class Component</strong>
+                    <br>
+                    Since our Component class is not meant to be instanciated, just for inheretance <em>extends</em> purposes, we will make it an abstract class: <code>abstract class Component { ... }</code> will now make TS err if we try to instanciate Component with <em>new</em>. We add two abstract methods to our class <code>abstract configure(): void;</code> and <code>abstract renderContent():void;</code> which means that classes that inherit from Component <em>MUST</em> have these methods, but the independent implementation will be handled inside the child class. In our methods we already have the renderContent() method, however we are adding a configure() method to our class.
+                </p>
+                <p class="paragraph">
+                    <strong>configure()</strong>
+                    <br>
+                    The configure method will hold the logic for our addListener(), which will allow us to remove that logic from the constructor. Unfortunately, I had already done that through my assignProdjects() method, which I added to the addListener() call in the constructor. I will keep that logic and just move it to the configure method: <code>configure() { projectState.addListener(this.assignProjects) }</code> which we will now call inside the constructor before renderContent() <code>this.configure(); this.renderContent()</code> Now our constructor just takes 
+                </p>
+                <p class="paragraph">
+                    <strong>ProjectList constructor</strong>
+                    <br>
+                    We have the basic setup complete, however we need to alter the constructor because we are now using the constructor from Component <code>constructor(private type: 'active' | 'finished'){ ... }</code> takes in a single argument to create an active or finished projects list. Inside we need to call <code>super()</code> which calls the constructor of our parent class Component. Now we must take the parameters from our ProjectLiss class to pass through this constructor. We take snippets from our previous code: <code>super('project-list', 'app', false, `${type}-projects`)</code> which will select our properties, the template through 'project-list' id, the host through 'app' id, our positioning based on our attach() method logic set to false, and the element id through what we pass to the direct constructor for ProjectList. Now our constructor has 3 lines of code in it <code>super(...); this.configure(); this.renderContent()</code> <strong>Note:</strong> I used the <strong>Conditional operator</strong> to refactor my listener logic: <code>return this.type === 'active'? project.status === ProjectStatus.Active : project.status === ProjectStatus.Finished</code> to replace the if statement I had. Now we remove the attach() method from ProjectList since Component takes care of it, and our ProjectList class is set. <strong>Note:</strong> As a compromise using static methods in our Component class makes it so that the inherited classes with the <em>static</em> keyword can <em>NOT</em> be private. 
+                </p>
+                <p class="paragraph">
+                    <strong>Why not call configure() or renderContent() in component?</strong>
+                    <br>
+                    If we call them in the component class we might call a method in the inheriting class that may need values that are only available after the <em>constructor</em> of the parent class is called via <code>super()</code>. This means that these methods will not have the properties to run properly, therefore the child class must instanciate before these methods can be called and function. 
+                </p>
+                <p class="paragraph">
+                    <strong>Doing the same for ProjectInput</strong>
+                    <br>
+                    The process is pretty standard, we use <code>class ProjectInput extends Compontent &gt;HTMLDivElement, HTMLFormElement</code> which sets the types for our hostElement and element props. We can now remove the 3 Component properties from this class, but we keep the ProjectInput exclusive props. We proceed to replace the code in the constructor with our super <code>super('project-input', 'app', true, 'user-input')</code> Which means we can remove all the code for props that are not ProjectInput exclusive. We already have a configure() method here, but it is private which will make TS err, so we remove the accessor. We still get an err because we dont have a renderContent() method, which this class doesn't have. We just create one <code>renderContent(){}</code> so that TS will stop erring. <strong>Note:</strong> by convention public methods go before private methods, and in both of our classes, configure() and renderContent() have to be public becasue of the parent class having the method as <strong>static</strong>, so we move these methods up in the code on both classes so that they are right under our constructor. 
+                </p>
+                <p class="paragraph">
+                    <strong>Parent State class</strong>
+                    <br>
+                    This step is not necessary for our app, however, thinking long term, we might want to have different <em>State Objects</em> that manage individual parts of the app. In this case, we want to have a base State class, <code>class State{ ... }</code> We look at our ProjectState and look for props that every State Object must have, which are a list of listeners, and the addListener() method. We move these to the State class <code>class State { listeners: Project[] = [], addListener(listenerFn: Listener){ ... } }</code> however we are faced with a problem, every State Object manages its own data type, so we add generics: <code>class State &lt;T&gt;{ protected listeners: Listener&lt;T&gt;[] = []; addListener(listenerFn: Listener&lt;T&gt;){ ... }</code> which will now let us sate the type in the specific state for our base class State props and methods.
+                </p>
+                <p class="paragraph">
+                    <strong>Refactoring ProjectState</strong>
+                    <br>
+                    We need to later our custom function type Listener, and add a generic to it so that our classes can use it <code>type Listener &lt;T&gt; = (projects: T[]) => void;</code> which will make our listener methods accept parameters depending on the class. Now that we have the class we do <code>class ProjectState extends State &lt;Project&gt;{ ... }</code> which locks in the type of our listeners and addListener methods to the Project type. Since this class now inherits from State, we need to call the constructor in our constructor with <code>super()</code>. Now, if we had to manage more states, we could re-use the prop and method for every state object.
+                </p>
+                <p class="paragraph">
+                    <strong>protected accessor</strong>
+                    <br>
+                    We use the <strong>protected</strong> accessor in our class State, which is similar to <strong>private</strong>. When a prop or method is set to protected it means that it cannot be accessed from the outside, but can be accessed from inside the class and classed that inherits from it. After seeing this I thought about our abstract class that had static methods that we wanted to set to private. I found out that you can make methods <code>protected abstract</code> which I added to our <code>abstract class Component</code> which allowed me to set configure() and renderContent() inside all of the inheriting classes to <strong>protected</strong> as well, which means that they can no longer be accessed from the outside :D. 
+                </p>
+                <a id="13" href="#00">Index</a>
+                <h2 class="subtitle">Rendering Project Items with a Class</h2>
+                <p class="paragraph">
+                    Now we have refactored our code, created flexible classes for scaling through base classes, generics, and inheritance, and we have also made our methods <em>protected</em>. Now we want to go back to our list items, where we want to render more details and render them differently. We have followed an <em>Object Oriented Approach</em>, which we want to continue doing. The next step would be to instanciate our list items and have them render, separating the logic of the ProjectList from the items. 
+                </p>
+                <p class="paragraph">
+                    <strong>ProjectItem class</strong>
+                    <br>
+                    We want to create a separate class that will handle all the creation and rendering logic for our list items. <code>class ProjectItem extends Component&lt;HTMLUListElement, HTMLLIElement&gt;{ ... }</code> which sets our host element as the UL from our ProjectList, and the element as an HTMLIElement. This however, leaves us with the question, which template because we need an ID for a template to meet the Component requirements. We move into the index.html and see that there is a template with a list item in it. We add an h2, h3, and p tag as well because we want them to render our list item better. We also want to set a <code>priavate project: Project;</code> property in our class because when we instanciate it we will be passing a project to it in our ProjectList class.
+                </p>
+                <p class="paragraph">
+                    <strong>Constructor</strong>
+                    <br>
+                    Now we move un to the constructor <code>constructor(){ ... }</code> where we need to call <code>super()</code> Here we need to get the template id, host id, positioning, and element id. We don't have access to them in our class, so we call them in our constructor so we get them when we instnaciate the class <code>constructor(hostId: string, project: Project){ ... }</code> now we <em>KNOW</em> we will have enough information to call super() <code>super('single-project', hostId, false, project.id)</code> we get the template id from the html file. Having that done we need to set our project prop <code>this.project = project</code>, which means we are all set for the rest.
+                </p>
+                <p class="paragraph">
+                    <strong>renderContent()</strong>
+                    <br>
+                    A requirment of Component is to have a configure() and renderContent() method, we declare an empty configure method because we don't need to use it. And then we create the renderContent() method. We call it at the end of our constructor <code>this.renderContent()</code> and proceed to create it. We select the elements in our list item element (Which we know because of the template, that it has an h2,h3, and p) we use <code>this.element.querySelector('h2')!.textContent = this.project.title</code> we do this for all our elements, setting the people number as a string in the h3, and the description in the p. Having this done we have now created our list item. 
+                </p>
+                <p class="paragraph">
+                    <strong>Instancing ProjectItem</strong>
+                    <br>
+                    We want to isntanciate this inside our ProjectList class, we already set up the logic in the <code>renderProjects()</code> method, where we iterate through all the projects in the <code>assignedProjects</code> prop. Now we instanciate inside the for loop with <code>new ProjectItem(this.element.querySelector('ul')!.id, project)</code> where we access the ul element in the element rendered by ProjectList and take its id to target in our ProjectItem class. Then we pass the second argument, the project. Having this set it will run all our logic and render the content inside the correct UL.
+                </p>
+                <a id="14" href="#00">Index</a>
+                <h2 class="subtitle">Using a Getter</h2>
+                <p class="paragraph">
+                    Now we want to improve what we show in the card, starting by the people value, where we want to add additional information. Here we want to output text and the number of people, however when we have 1, the message wont make sense, which we are going to use as a reason to create a getter to give us the right text depending on the number of people. We create the getter <code>get persons(){ return this.project.people === 1? '1 Person' : `${this.project.people} People. }`</code> which uses the <strong>Conditional Operator</strong>. Now in our renderContent() method we use <code>...textContent = this.persons + ' assigned.'</code> Since we are using a getter, the value gets called as a property, which returns something different depending on the logic inside the getter.
+                </p>
+                <a id="15" href="#00">Index</a>
+                <h2 class="subtitle">Utilizing Interfaces to Implement Drag & Drop</h2>
+                <p class="paragraph">
+                    We want to be able to use drag and drop to move the projects from active to finished and alter our state as we do it. We need to implement drag and drop, and the status data update. We will start with Drag and Drop as we would do it in vanilla JS, but enhance it with TS. We will create two interfaces that ensure that our objects meet all the criteria to be draggable, or to be a drag target. 
+                </p>
+                <p class="paragraph">
+                    <strong>The intrefaces</strong>
+                    <br>
+                    We create two interfaces <code>interface Draggable { ... }</code> and <code>interface DragTarget { ... }</code>. We start working with Draggable where we want to set a few listeners for when the element starts dragging and when it is dropped <code>dragStartHandler(event: DragEvent): void;</code> and a same one labeled <code>dragEndHandler()</code>. The type <strong>DragEvent</strong> is part of JS which we have access to thanks to our libs. For the <code>interface DragTarget {}</code> we need three handlers. <code>dragOverHandler()</code> to signal JS that the thing you are draggin something over is a valid drag target. If this is not handled, dropping will not be possible. We need <code>dropHandler()</code> to react to the actual drop that happens. And the <code>dragLeaveHandler()</code> if we want to give visual feedback to the user and revert our visual upgrade. The all follow the same structure <code>dragOverHandler(event: DragEvent): void;</code>
+                </p>
+                <p class="paragraph">
+                    <strong>Using our interfaces</strong>
+                    <br>
+                    We start by adding it to our ProjectItem class with <code>class ProjectItem extends Component (generic) implements Draggable</code> where we can use the keyword <strong>implements</strong> to add the Draggable structure into our class. We create the methods for drag starting and ending into our class. Now we have to set listeners for these events in our <code>configure()</code> method. We set event listeners inside using <code>this.element.addEventListener('dragstart', this.dragStartHandler)</code> which uses the default JS event <strong>dragstart</strong> and calls our drag start handler as a callback. We do the same for the JS event <code>dragend</code> and use our drag end handler as a callback. Now we know that this inside the callback will not point to our class, so we use the <strong>Decorator</strong> <code>@autobind</code> to fix that. Inside dragStartHandler() we just log the <em>event</em>, and we set the dragEndHandler() parameter to _ so that TS doesn't err, and create a log 'DragEnd'. Now we have no errs, however we cannot drag the elements in our browser. We enable this by going into our <em>index.html</em>, going to our li and setting <code>draggable = "true"</code>. Now we can drag our list item and see that the listeners are triggered by the drag event and drag end. We also set the background-color property to white in our css for list items inside projects so that we can see the LI well when we drag.
+                </p>
+                <a id="16" href="#00">Index</a>
+                <h2 class="subtitle">Drag Events & Reflecting the Current State in the UI</h2>
+                <p class="paragraph">
+                    To make the item droppable, we must set the drag target, the ProjectList class. We add it through <code>implements DragTarget</code> and we add the three methods: dragOverHandler, dropHandler, and dragLeaveHandler. We will start with <code>dragOverHandler(event: DragEvent){ ... }</code> where we want to add visual feedback as to what area is a valid drop target. In our css we have a class <code>droppable</code> that adds a background, which we will use to change the list. We use our decorator to ensure that this is where we want it. Inside the method we select our list element, and add the css class <code>const liElement = this.element.querySelector('ul'); liElement.classList.add('droppable')</code> <strong>Note:</strong> we use classList.add() to push that class an not override any other possible class, which could happen if we just used <code>liElement.className = 'droppable'</code> 
+                </p>
+                <p class="paragraph">
+                    <strong>Adding the listeners in configure()</strong>
+                    <br>
+                    We now set the listeners inside our configure() method with <code>this.element.addEventListener('dragover', this.dragOverHandler);</code> and do the same for the other three methods, using the events <em>'dragleave'</em> and <em>'drop'</em>. We set our params in our methods to _ so that we can compile and check our progress. We see that if we create a LI and drag it, the background of the list where it is moving over changes, light red for active, light blue for finished. They remain like that because we have only handled the dragover event. We now proceed to update the styling with our <code>dragLeaveHandler(){ ... }</code> using the same logic from our dragOverHandler() but changing <code>listEl.classList.remove('droppable')</code> which will remove our class on the <em>'dragleave'</em> event, effectively removing the styling.
+                </p>
+                <a id="17" href="#00">Index</a>
+                <h2 class="subtitle">Adding a Droppable Area</h2>
+                <p class="paragraph">
+                    We have the desired effect on our dragging and styling, however we have no way for our code to know what is getting dragged and where, and how our state will change. We have to go back to the class of our draggble item <code>class ProjectItem</code>. Here we go to our dragStartHandler() and set our script going <code>event.dataTransfer!.setData('text/plain',this.project.id)</code> here we are using the <code>dataTransfer</code> property, which is a property of <em>SOME</em> drag events, 'dragstart' which is the event we handle in this method does include it. This method allows us to transfer some data accross the event. <strong>setData()</strong> takes two argumetns: the format, and the data. For format, there are some set formats we can use, for this case we will use 'text/plain' and then the second argument is the data. We are <em>NOT</em> going to send the whole project object through, we are just going to send the id which will let us <em>FETCH</em> the data we want from our <em>ProjectState</em> object. We then set <code>event.dataTransfer!.effectAllowed = 'move'</code> which sets how the cursor will behave during our event and tells the browser about our intention, which is to move data from one point to another. There are a few set alternatives that TS will show us, an alternative would be 'copy' which gives us a different cursor. 
+                </p>
+                <p class="paragraph">
+                    <strong>dragOverHandler()</strong>
+                    <br>
+                    We must now go to our <code>class ProjectList</code> where we have the droppable area to set the drop area. Here we have three methods, and we will start with <code>dragOverHandler()</code>, which fires when you <em>ENTER</em> a draggable area, we want to check if a drag is allowed here. We restore the parameter <code>dragOverHandler(event: DragEvent){ ... }</code> and inside we check if there is data being dragged and if it matches the format we are allowing to be dragged and dorpped <code>if(event.dataTransfer?.types[0] === 'text/plain'){ ... }</code> which checks if there is dataTransfer in the event, and if there is, it checks what type of data it is, which we set as 'text/plain'. <strong>Note:</strong> the 'dragover' event also has access to the dataTransfer property. This sets it so that we can only drop data of that type, no images or things like that. 
+                </p>
+                <p class="paragraph">
+                    If this is true, then we want to allow a drop, so we move our styling logic into this check. But the first thing we must do after the check is <code>event.preventDefault()</code> beacuse in JS the deafult setting for drag and drop events is to <strong>NOT</strong> allow them. Therefore we need to tell JS that for this element you want to allow a drop event. Since we are allowing it by overriding the default behaviour, now we can handle the drop event in <code>dropHandler()</code>. 
+                </p>
+                <p class="paragraph">
+                    <strong>dropHandler()</strong>
+                    <br>
+                    We enable the event <code>dropHandler(event: DragEvent){ ... }</code> and we start by checking if we are getting the data by logging the event <code>console.log(event.dataTranser!.getData('text/plain')</code> which will look at the dataTransfer event and get the data with the format 'text/plain'. When we drop, we should get the id printed. <strong>Note:</strong> This was not working for me, I was getting a function declaration, I went through the chain and realized that in my constructor I was not creating the ID but instead converting the <code>Math.random.toString()</code> method to string instead of calling it, I fixed it with <code>Math.random().toString()</code> and the id was logged. This is what we want, now we just have to update our state behind the scenes.
+                </p>
+                <a id="16" href="#00">Index</a>
+                <h2 class="subtitle">Finishing Drag & Drop</h2>
+                <p class="paragraph">
+                    Here, we can focus on moving our data now. We store the id instead of logging it, and we create a new method in our ProjectState class <code>moveProject(){ ... }</code> to handle the changing of a project status, which will in turn, move it to the appropriate list. This method will take two arguments <code>moveProject(id: string, newStatus: ProjectStatus){ ... }</code> The id is the data we transfer through the DragEvent and the newStatus will check wether we are moving the data to a new list or not. We first find the project with the matching id <code>const project = this.projects.find(project => project.id === id)</code>
+                </p>
+                <p class="paragraph">
+                    <strong>Listeners</strong>
+                    <br>
+                    Now we have to inform all our listeners that something changed about or project and they shoudl re-render. We create a new method <code>private updateListeners(){ ... }</code> where we move in our logic from addProject() where we iterate through all of our listeners <code>for(const listenerFn of this.listeners){ ... }</code> and call <code>this.updateListeners()</code> in our addProject() method. Now we can go through the listeners when we addProject() or moveProject(), where whe now call updateListeners after updating the status <code>project.status = newStatus; this.updateListeners()</code> Now we have everything set, because when we call our listeners it causes our app to re-render the items in the list.
+                </p>
+                <p class="paragraph">
+                    <strong>Updating the state</strong>
+                    <br>
+                    We go back to our ProjectList class and update our dropHandler() to use our ProjectState method. We call <code>projectState.moveProject( ... )</code> Inside we must pass the id, which we already have, and the newStatus for our list item, which depends on the list we are dropping to. We have a type property in our ProjectList object which we will use to pick the appropriate <strong>enum</strong> for our list item drop, we use the conditional operator inside our function call <code>projectState.moveProject( projectId, this.type === 'active'? ProjectStatus.Active : ProjectStatus.Finished )</code>. Now we can go to our browser and test it out, and it works! There is however one thing I was noticing when we were writing our code, and it is that we re-render everything even if we don't move the list item to a new ProjectList, it re renders if we just drop it back into the same dropabble area. We fix this with a small line of code in our ProjectState class, <code>if(project && project.status !== newStatus){ ... }</code> which will trigger the update only if the item is changing status by moving into a new project list.
+                </p>
+            </li>
+        </ul>
+    </div>
+
+    <!-- Optional JavaScript -->
+    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+    <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js" integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>
+    </body>
+</html>
