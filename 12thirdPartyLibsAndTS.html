@@ -1,0 +1,165 @@
+
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+    <style>
+        code{
+            background-color: rgba(0,0,0,.075);
+            font-weight: bold;
+        }
+        .subtitle{
+            font-size: 1.3rem;
+            font-weight: bold;
+            margin: 0;
+            padding: 5px;
+            margin-top: 5px;
+            background-color: rgba(0,0,0,.075);
+            text-align: center;
+        }
+        h3{
+            font-size: 2rem;
+            font-weight: bold;
+            margin: 0;
+            padding: 5px;
+            margin-top: 10px;
+        }
+        .paragraph{
+            margin: 0.5rem 0 0.5rem;
+        }
+        .tab{
+            margin: 0 1rem;
+        }
+        html{
+            scroll-behavior: smooth;
+        }
+        </style>
+
+    <title>12 Thrid Party Libraries & TypeScript</title>
+  </head>
+  <body>
+      
+    <div class="container">
+        <h1 class="display-3 text-center">12 Thrid Party Libraries & TypeScript<hr></h1>
+        <header>
+            <p class="paragraph">
+                How to use the power of TS with JS only libraries. Using the @types packages to add TS support for packages, using <strong>declare</strong> if no TS support is available. And two packages that use TS power to enhance our code <em>class-transformer</em> and <em>class-validator</em>
+            </p>
+        </header>
+
+        <h2 id="00" class="subtitle">Index</h2>
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th scope="col">#</th>
+                    <th scope="col">Topic</th>
+                    <th scope="col">Description</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <th scope="row">1</th>
+                    <td>
+                        <a href="#01">Using JavaScript (!) Libraries with TypeScript</a>
+                    </td>
+                    <td>
+                        Adding TS support to JS Vanilla native libraries like <strong>lodash</strong>. Using <strong>*.d.ts</strong> files and <strong>@types</strong> packages to add TS support to third party libraries.
+                    </td>
+                </tr>
+                <tr>
+                    <th scope="row">2</th>
+                    <td>
+                        <a href="#02">Using "declare" as a "Last Resort"</a>
+                    </td>
+                    <td>
+                        Using the <strong>declare</strong> command to add mandatory support to global variables or unsupported packages without <em>@types</em>
+                    </td>
+                </tr>
+                <tr>
+                    <th scope="row">3</th>
+                    <td>
+                        <a href="#03">No Types Needed: class-transformer</a>
+                    </td>
+                    <td>
+                        Using the <strong>class-transformer</strong> package to convert fetched data to instances of our TS classes. This package doesn't need @types because it includes it natively. 
+                    </td>
+                </tr>
+                <tr>
+                    <th scope="row">4</th>
+                    <td>
+                        <a href="#04">TypeScript-embracing: class-validator</a>
+                    </td>
+                    <td>
+                        Using the <strong>class-validator</strong> package to use TS decorators to include validation logic to your classes. Could not get it to work or compile succesfully. 
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+
+        <ul class="list-group">
+            <li class="list-group-item">
+                <a id="01" href="#00">Index</a>
+                <h2 class="subtitle">Using JavaScript (!) Libraries with TypeScript</h2>
+                <p class="paragraph">
+                    We may want to use libraries like JQuery or Lodash in our projects. These are JS libraries, but there are ways to make them work with TS. We start by installing <code>yarn add lodash</code>. We try to import <code>import _ from 'lodash';</code> but TS errs and if we <code>yarn start</code> it will err. This happens beacuse lodash is a JS library, and inside node_modules all we get are JS files. Even if we compile our code with the TS errs, our code will still work in compilations. However we get no TS support.
+                </p>
+                <p class="paragraph">
+                    <strong>DefinitelyTyped, @types, and *.d.ts files</strong>
+                    <br>
+                    <strong>lodash</strong> is a JS only library. For TS Support we just need to translate it to TS. We can install <strong>@types</strong> of a third party library. If we google 'lodash types' we see the @types/lodash npm package. If we open this we also see a link to a github project <strong>DefinitelyTyped</strong>, a huge repositry with tons of translation of 3rd party JS libraries to TS. These have <strong>*.d.ts</strong> files. These are <em><u>declaration files</u></em>, they don't contain logic, but they contain instructions to TS. They tell TS how something works and what is incluede in a package. They define the types the library works with, what types it can get in and what the output should be. We can write .d.ts files on your own, but a lot of third party libraries have them. 
+                </p>
+                <p class="paragraph">
+                    We install <code>yarn add @types/lodash -D</code> to install the lodash d.ts files as a Dev dependency. And once we have this our errs in TS are gone. Now we don't get errs in compilation and browser. We also get Intellisense in VSCode as we would with a native TS script. We definitely have to be aware of this to use vanilla JS libraries with great support and no errs. 
+                </p>
+                <a id="02" href="#00">Index</a>
+                <h2 class="subtitle">Using "declare" as a "Last Resort"</h2>
+                <p class="paragraph">
+                    Most 3rd party libraries will have a @types package. What do you do if we don't have this support, or if you have scripts in your HTML that declare global variables that should be available in TS. We create <code>const GLOBAL = 'THIS IS SET'</code> in a script tag in our index.html file. We try to log it in TS and we get an err and it won't compile. In these cases we can use the <strong>declare</strong> command. 
+                </p>
+                <p class="pargraph">
+                    <strong>declare</strong>
+                    <br>
+                    In our case we use <code>declare var GLOBAL: any</code> Which allows us to use it because we tell TS not to worry because it will exist. This command allows us to declare vars and features that you know are there but TS doesn't get.
+                </p>
+                <a id="03" href="#00">Index</a>
+                <h2 class="subtitle">No Types Needed: class-transformer</h2>
+                <p class="paragraph">
+                    You'll find Thrid Party libraries that embrace TS features and only work with TS. Two are class-transformer, and class-validator. We start with class-transformer. <strong>Note:</strong> DO NOT RUN tsc in our webpack setup we don't have <code>rootDir</code> set to dist, so it WILL compile all the TS files from the root and create massive errors. I had to reset everything. We create a <strong>product.model.ts</strong> file where we create a Product class with name and price, and a method to getInformation(). We then <code>export class Product { ... }</code> and <code>import { Product } from './product.model.ts'</code> instanciate the class and call the method and we get everything working. This is nothing we haven't done yet.
+                </p>
+                <p class="paragraph">
+                    <strong>Fetching data from a server scenario</strong>
+                    <br>
+                    A common scenario from bigger apps is that we are fetching data from a server in JSON that we parse. A case might be a list of products that match our Product class, however these are JS Objects, <em>NOT</em> instances of our <em>Product class</em>. Your server doesn't know what constructor function in your front end code it belongs, and JSON is a format that transports basic data, not metadata. Therefore what we import doens't have our getInformation() method. We would have to do this mandually. We create an array of JSON objects that match our 'server data' return. We then create <code>const loadedProducts.map(product => { return new Product(product.title, product.price) })</code> which will return a new array that creates instances of our class using our fetched data. Then we would loop through and log <code>for(const product of loadedProducts){ console.log(prodict.getInformation()) })</code> which would call our method on everey element of our new instanciations. This is a bunch of extra steps and this is just a basic scenario.
+                </p>
+                <p class="paragraph">
+                    <strong>class-transformer</strong>
+                    <br>
+                    The <strong>class-transformer</strong> package makes this very very easy. We follow the instructions and <code>yarn add class-transformer reflect-metadata</code> Then we follow the package instruction for Node.js and <code>import 'reflect-metadata'</code> There were some browser instructions that Max said we don't need to install because we are using webpack. We <code>import { plainToClass } from 'class-transformer'</code> which will give us access to the plainToClass() method. <strong>Note:</strong> I was getting an error <code>Cannot find module 'class-transformer'</code> that didn't allow me to use the package. In the course Q&A I found that I needed to set the <strong>tsconfig.json</strong> <code>module</code> to <code>commonjs</code>. This makes <strong>moduleResolution</strong> automatically use <strong>node</strong> and the issue was fixed. I had <strong>es2015</strong> which uses the <code>Classic</code> resolution strategy. I re-started <code>yarn start</code> which uses our new settings and everything functioned perfectly.
+                </p>
+                <p class="paragraph">
+                    <strong>plainToClass()</strong>
+                    <br>
+                    We now change our code to <code>const loadedProducts = plainToClass(Prodict, products)</code> which takes our <em>Class</em> as a first argument, and what we want to convert to that class a second argument <em>products</em>. And now we use or for loop and everything runs as before but with less code. This works great with TS but doen't use TS specific features becase it works with <em>class</em> which exists in modern JS. There are many more useful methods in this package that can be looked into in the <a href="https://github.com/typestack/class-transformer">class-transformer Github Repo</a>. This package has it's default @types added.
+                </p>
+                <a id="04" href="#00">Index</a>
+                <h2 class="subtitle">TypeScript-embracing: class-validator</h2>
+                <p class="paragraph">
+                    This package uses TS Decorators and gives us a brand new way of working with them. We <code>yarn add class-validator</code> <strong>Note:</strong>every time we install a package we need to restart our server with <code>yarn start</code>. Class validator uses decorators to implement validation through placing decorators in classes very easy. However, I cannot get it to compile. I get errors palcing the decorators, and I tried absolutely everything and couldn't get it to work at all. May try again later, but I missed out on everything this package can do. 
+                </p>
+            </li>
+        </ul>
+    </div>
+
+    <!-- Optional JavaScript -->
+    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+    <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js" integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>
+    </body>
+</html>

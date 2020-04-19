@@ -1,0 +1,181 @@
+
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+    <style>
+        code{
+            background-color: rgba(0,0,0,.075);
+            font-weight: bold;
+        }
+        .subtitle{
+            font-size: 1.3rem;
+            font-weight: bold;
+            margin: 0;
+            padding: 5px;
+            margin-top: 5px;
+            background-color: rgba(0,0,0,.075);
+            text-align: center;
+        }
+        h3{
+            font-size: 2rem;
+            font-weight: bold;
+            margin: 0;
+            padding: 5px;
+            margin-top: 10px;
+        }
+        .paragraph{
+            margin: 0.5rem 0 0.5rem;
+        }
+        .tab{
+            margin: 0 1rem;
+        }
+        html{
+            scroll-behavior: smooth;
+        }
+        </style>
+
+    <title>13 Select & Share a Place App</title>
+  </head>
+  <body>
+      
+    <div class="container">
+        <h1 class="display-3 text-center">13 Select & Share a Place App<hr></h1>
+        <header>
+            <p class="paragraph">
+                This module focuses on a project using third party libraries and the Google API to get location data through a seach input field, and rendering a map in our screen. We harness TS support through the use of third party @types, setting our own types/interfaces, and learn how TS can help us during development. This concise project is very effective and powerful as we integrate calling an API for data with sending that data back to another API to get the map we want to render. There are plenty more things that can be done if you dig through the DOCS and understand what is trying to be accomplished.
+            </p>
+        </header>
+
+        <h2 id="00" class="subtitle">Index</h2>
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th scope="col">#</th>
+                    <th scope="col">Topic</th>
+                    <th scope="col">Description</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <th scope="row">1</th>
+                    <td>
+                        <a href="#01">Project Setup</a>
+                    </td>
+                    <td>
+                        We set our index.html to handle our project's intention.
+                    </td>
+                </tr>
+                <tr>
+                    <th scope="row">2</th>
+                    <td>
+                        <a href="#02">Getting User Input</a>
+                    </td>
+                    <td>
+                        We use DOM selection and JS browser events to stop the form from submitting and set it up to send to the API.
+                    </td>
+                </tr>
+                <tr>
+                    <th scope="row">3</th>
+                    <td>
+                        <a href="#03">Setting Up a Google API Key</a>
+                    </td>
+                    <td>
+                        We set up a google API key to use the services we need to use the Google Geocoding API.
+                    </td>
+                </tr>
+                <tr>
+                    <th scope="row">4</th>
+                    <td>
+                        <a href="#04">Using Axios to Fetch Coordinates for an Entered Address</a>
+                    </td>
+                    <td>
+                        We forgo using the JS fetch module and use <strong>axios</strong> to use a third party library and see it's TS support. We do our API call and see what we get in our response from the API. We take the coordinates that we want to use to render the map. We use <strong>generics</strong> to set a custom <strong>interface</strong> to our response to get TS support for what we want. 
+                    </td>
+                </tr>
+                <tr>
+                    <th scope="row">5</th>
+                    <td>
+                        <a href="#05">Rendering a Map with Google Maps (incl. Types!)</a>
+                    </td>
+                    <td>
+                        We use the <strong>Google Maps API</strong> to use the data we got to search for a map and render it. We add a script to our index.html which is required to enable the google methods on the client side. We set everything up and use the <strong>declare</strong> command to stop TS errs just to show. We then add type support by installing <code>@types/googlemaps</code> as a dev dependency, giving us incredible docs and TS intellisense when using our google global object. 
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+
+        <ul class="list-group">
+            <li class="list-group-item">
+                <a id="01" href="#00">Index</a>
+                <h2 class="subtitle">Project Setup</h2>
+                <p class="paragraph">
+                    We check the setup and match Max's configs. The objective is to have a user search for an address, use the google maps API to search it, and then render the map. We start with our <strong>index.html</strong> file, we create a div with id="map" and a form with no action or method. Inside the form we have a text input for the address, id="address" and a submit button. We set up basic CSS styling throuhg an app.css file, and we have our setup complete to start working on the actual code.
+                </p>
+                <a id="02" href="#00">Index</a>
+                <h2 class="subtitle">Getting User Input</h2>
+                <p class="paragraph">
+                    We get the information from our HTML, we select the <code>form</code> throuhg querySelector and add a listener <code>form.addEventListener('submit', ...)</code> We now need a callback for this listener. We want to get the information from our input here so we get the input <code>const addresIn = document.getElementById('address')! as HTMLInputElement</code> where we tell TS that we will get something through <code>!</code> and to treat it as an input. Then we create our function <code>function searchAddressHandler(event: Event) { event.preventDefault(); const enteredAddress = addresInput.value }</code> where we stop the form from submitting, and get the value from the input. Now we need to send that to the google API.
+                </p>
+                <a id="03" href="#00">Index</a>
+                <h2 class="subtitle">Setting Up a Google API Key</h2>
+                <p class="paragraph">
+                    We will use the Google <strong>Geocoding API</strong> which translates an address to coordinates or vice-versa. <a href="https://developers.google.com/maps/documentation/geocoding/start">Geocoding API DOCS</a> We get the address to send the request to, but we need an API Key to do this. We enbale the API key by adding billing information and we get it. <strong>Note:</strong> I created a separate file for my keys and added it to a .gitignore just in case. I then exported it with TS syntax and imported it into my file with <code>import * as keys from './keys'</code>. The <strong>dotenv</strong> package doesn't work because we are calling it in the front end, where dotenv will never have access to it, this package works for the backend of a webapp.
+                </p>
+                <a id="04" href="#00">Index</a>
+                <h2 class="subtitle">Using Axios to Fetch Coordinates for an Entered Address</h2>
+                <p class="paragraph">
+                    Sending requests is possible without a package. JS has a built in fetch() API. Err handling is clunky with it but it works fine. We want to practice using third party libraries, therefore we will use <strong>axios</strong>. This is a JS package to send HTTP requests, we run <code>yarn add axios</code> We import it using <code>import axios from 'axios'</code> which gives us TS intellisense by default. In the axios package inside node_modules, there is an <em>index.d.ts</em> file, which is a bundled TS translation package. We use <code>axios.get('url')</code> and pass the URL from the Geocoding API. We replace the API key with our imported one, and then remove the dummy address and add <code>${enteredAddress}</code> to use the user input. However, we don't know what string they will pass, and we need a browser compatible string, fortunately Vanilla JS provides us with a method to convert this to a valid URL string <code>${encodeURI(enteredAddress)}</code> which will now send a valid string to our API call.
+                </p>
+                <p class="paragraph">
+                    <strong>The API Call</strong>
+                    <br>
+                    We use the axios get() method, which returns a promise. We use JS Promise syntax <code>.then(response => { console.log(response) }).catch(err => {...})</code> I will refactor to async await later. We go to the browser and run a search, we get an object back. We should get a <code>status:200</code> and a <code>data</code> prop that holds what the server replied with. Inside we have a <code>results: []</code> which holds what google found, the first one generally being the best one. Inside of this first item we can see a few props. In <code>anddress_components</code> we can see the <code>formatted_address</code> which is the address that google found for what we entered. And the <code>geometry</code> prop that has other props in it, the one we want is here under <code>location</code> which has <code>location: {lat: ..., lng: ...}</code> which are what we will use to render on a map later.
+                </p>
+                <p class="paragraph">
+                    <strong>Accessing and using TS types in our response</strong>
+                    <br>
+                    We get the data in our response and store it <code>const coordinates = response.data.results[0].geometry.location</code>. We don't have TS support here, because TS cannot know what is in the response of any URL. However, we can tell TS what we expect to get in the response. We do this through using <strong>generics</strong> in our <strong>axios.get()</strong> method. We do it the hard way, but we want to use the TS way through <code>type</code> or <code>interface</code>. We create the interface <code>interface GoogleGeocodingResponse{
+                        results: {
+                            geometry: {
+                                location: {
+                                    lat: number,
+                                    lng: number
+                                }
+                            }
+                        }[]
+                    }</code> and then use it in a generic next to our axios.get. Now if we type, we get TS intellisense that assumes that our type was correctly set but ignores anything we might have not set there and will err if we try to access it. 
+                </p>
+                <p class="paragraph">
+                    We add another prop to our interface, <code>status:</code> which will contain literals for the google response. We can see more about the possible answers in the DOCS under <em>understanding the response</em>, and under Geocoding Responses we can go to Status Codes to see all the codes and what they mean. We set our prop to <code>status: 'OK' | 'ZERO_RESULTS';</code> which are the ones we will use. We now use our status for additional logic <code>if(response.data.status !== 'OK'){ throw new Error('Could not fetch location!')}</code> which we send in our catch block with <code>alert(err.message)</code>. We have everything set to get the coordinates to render on a map. 
+                </p>
+                <a id="05" href="#00">Index</a>
+                <h2 class="subtitle">Rendering a Map with Google Maps (incl. Types!)</h2>
+                <p class="paragraph">
+                    To render the map we will need to use another Google API. Of you search <em>google js maps</em> we will get the JS section of the <a href="https://developers.google.com/maps/documentation/javascript/tutorial">Google Maps API DOCS</a>. Here we will learn how to use this API to render a map in our page. We copy the script from the example and put it on our index.html file <code>src="https://maps.googleapis.com/maps/api/js?key=YOUR_API_KEY&callback=initMap"</code> we remove the &callback part so we don't trigger a function when we load. We copy the script from the goolge maps DOCS into our response .then and store it into a const <code>map = new google.maps.Map(...)</code> that will instaciate the map using our coordinates. However we get an err next to google <code>cannot find name 'google'</code>
+                </p>
+                <p class="paragraph">
+                    <code>google</code> will be available globally beacise of the JS SDK we are importing with our script. However TS doesn't know this. We use <code>declare var google: any</code> which will stop this err. Now if we want to add a marker we can go to the add a marker part in the DOCS and copy the relevant code snippet <code>new google.maps.Marker({position: coordinates, map: map})</code> Now we will render a map and place a marker on it. <strong>Note:</strong> Make sure that your targetting is correct, it looks for id map by default, which we do have, but if you had another name you would need to change this. Now if we go to our app and enter an address, it will render our map with an address! This works but it is <em>NOT OPTIMAL</em> Because we declared google as any we have no type support, which would make err handling done at runtime. 
+                </p>
+                <p class="paragraph">
+                    <strong>Adding Type Support</strong>
+                    <br>
+                    We didn't install the google maps package through NPM but we can install the @types for it <code>yarn add @types/googlemaps -D</code>. This is fantastic because we get full google maps TS support for errs and we also get intellisense that tells us more about our methods and data types. Now we have a working app with type support. This is especially useful when we are running packages like this one that cannot be run server-side through a node_modules module since it is client side. Now we get type support through development and can still execute our code safely at our client side. 
+                </p>
+            </li>
+        </ul>
+    </div>
+
+    <!-- Optional JavaScript -->
+    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+    <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js" integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>
+    </body>
+</html>
