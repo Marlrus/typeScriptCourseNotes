@@ -1,0 +1,217 @@
+
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+    <style>
+        code{
+            background-color: rgba(0,0,0,.075);
+            font-weight: bold;
+        }
+        .subtitle{
+            font-size: 1.3rem;
+            font-weight: bold;
+            margin: 0;
+            padding: 5px;
+            margin-top: 5px;
+            background-color: rgba(0,0,0,.075);
+            text-align: center;
+        }
+        h3{
+            font-size: 2rem;
+            font-weight: bold;
+            margin: 0;
+            padding: 5px;
+            margin-top: 10px;
+        }
+        .paragraph{
+            margin: 0.5rem 0 0.5rem;
+        }
+        .tab{
+            margin: 0 1rem;
+        }
+        html{
+            scroll-behavior: smooth;
+        }
+        </style>
+
+    <title>11 Webpack with TS</title>
+  </head>
+  <body>
+      
+    <div class="container">
+        <h1 class="display-3 text-center">11 Webpack with TS<hr></h1>
+        <header>
+            <p class="paragraph">
+                Webpack is a third party <strong>core</strong> tool for code bundling and optimization. We create a basic setup for webpack implementation with TS with separate configurations/workflows for <em>development</em> and <em>production</em> and launch our dev server through the <em>webpack-dev-server</em> which offers improved development features. Webpack reduces the ammount of HTTP requests that must be done to the server, reduces the size of our files, and optimizes our code for production. This is a <em><u>must use</u></em> tool for any modern project. Webpack has plenty more features and power like bundling other types of files like CSS, which can be dived in further. More information available in code <a href="https://webpack.js.org/concepts/">the WebPack Official DOCS</a>.
+            </p>
+        </header>
+
+        <h2 id="00" class="subtitle">Index</h2>
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th scope="col">#</th>
+                    <th scope="col">Topic</th>
+                    <th scope="col">Description</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <th scope="row">1</th>
+                    <td>
+                        <a href="#01">What is Webpack and Why do we need it?</a>
+                    </td>
+                    <td>
+                        We will apply webpack to our Drag and Drop Project. Webpack is a <em>MUST USE</em> third party tool for bundling and optimization that we will learn to configuer to work with TS and create a <em>development</em> workflow and a <em>production</em> workflow.
+                    </td>
+                </tr>
+                <tr>
+                    <th scope="row">2</th>
+                    <td>
+                        <a href="#02">Installing Webpack & Important Dependencies</a>
+                    </td>
+                    <td>
+                        The 5 packages needed for our webpack setup and what each of them is responsible for.
+                    </td>
+                </tr>
+                <tr>
+                    <th scope="row">3</th>
+                    <td>
+                        <a href="#03">Adding Entry and Output Configuration</a>
+                    </td>
+                    <td>
+                        Changes required in our <strong>tsconfig.json</strong> file and creating our <strong>webpack.config.js</strong> file. We go over the basic setup for <code>entry</code> and <code>output</code> for webpack.
+                    </td>
+                </tr>
+                <tr>
+                    <th scope="row">4</th>
+                    <td>
+                        <a href="#04">Adding TypeScript Support with the ts-loader Package</a>
+                    </td>
+                    <td>
+                        How to set a new configuration in WP config <code>rules</code> and set up the interaction with the <code>ts-loader</code> package. A slight side-track about <strong>Regular Expressions</strong>. How to set up tsconfig and WP config for debugging. How to set a script to run webpack. 
+                    </td>
+                </tr>
+                <tr>
+                    <th scope="row">5</th>
+                    <td>
+                        <a href="#05">Finishing the Setup & Adding webpack-dev-server</a>
+                    </td>
+                    <td>
+                        Switching out <strong>lite-server</strong> for <strong>webpack-dev-server</strong>. Setting up our WP config to use our new development server with our current setting for our <em>development environment.</em> <strong>Note:</strong> this would replace nodemon in a TS project and incorporate webpack from the start.
+                    </td>
+                </tr>
+                <tr>
+                    <th scope="row">6</th>
+                    <td>
+                        <a href="#06">Adding a Production Workflow</a>
+                    </td>
+                    <td>
+                        Creating a new custom-named file <strong>webpack.config.prod.js</strong> to store our settings for webpack for <em>production</em> and <em>deployment</em>. The use of <strong>plugins</strong> for webpack with a new package <code>clean-webpack-plugin</code> and how to use it. Adjusting our <strong>package.json</strong> script to create a <em>build</em> using our <strong>production</strong> settings. 
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+
+        <ul class="list-group">
+            <li class="list-group-item">
+                <a id="01" href="#00">Index</a>
+                <h2 class="subtitle">What is Webpack and Why do we need it?</h2>
+                <p class="paragraph">
+                    We start with our previous app that we split earlier. We start it with <code>yarn start</code> and <code>tsc -w</code> and we go to our browser tab. There we go to the Dev Tools, Network and if we refresh we can see a lot HTTP request. This is a problem. we can see a waterfall diagram on the right, There we can see the download time, but also the time it takes to get this started. Every request has overhead, the time it takes to go to the server and back, and in our file they are stacking. 
+                </p>
+                <p class="paragraph">
+                    <strong>Webpack</strong>
+                    <br>
+                    <a href="https://webpack.js.org/">Webpack</a> is a tool that will help us bundle our files together. They have great DOCS. We will use some select features that help us with TS. Webpack reduces the ammount of hTTP requests by bundling our code into one file to have a single HTTP request. <em>Aditionally</em> Webpack will also optimize our code and allows us to add more build tools for CSS files and other things. Our current setup has multiple .ts files and multiple .js files that cause more hTTP request. We might also have unoptimized code, like shortening names. Webpack allows us to write human readable code, and ship shorter faster code. We have an "External" development server, lite-server, which is an extra package installed. We will use <strong>Webpack</strong> for: Bundling our code into one file to have less imports, Optimize (minfied) code to have less code to download, and we will add more build steps easily. 
+                </p>
+                <a id="02" href="#00">Index</a>
+                <h2 class="subtitle">Installing Webpack & Important Dependencies</h2>
+                <p class="paragraph">
+                    We close live-server and tsc-w. We install 5 packages <code>yarn add webpack webpack-cli webpack-dev-server typescript ts-loader -D</code> webpack is the heart of this setup, it will transform our code to JS and create a bundled JS file. Webpack-cli allows us to run <em>webpack commands</em> in our project. Webpack-dev-server to have our built in dev server that starts webpack under the hood and watches our files for changes automatically triggering re-compilation and serves our page. typescript is installed in our global, however we want to have it in each of our projects so that if we update our global TS, we won't break our existing project code by locking it a specific version of TS for your project. ts-loader is a package that works together with webpack by telling webpack how to convert TS to JS so that webpack can compile our TS and then bundle our emited JS files into one bundled code file.
+                </p>
+                <a id="03" href="#00">Index</a>
+                <h2 class="subtitle">Adding Entry and Output Configuration</h2>
+                <p class="paragraph">
+                    We will go to our <strong>tsconfig.json</strong> file. We comment out <code>outDir</code> because webpack will take over here. We ensure we have our target set to <code>ES5</code> or <code>ES6</code> and module to <code>es2015</code>. We then create a file <code>webpack.config.js</code> which needs that name for webpack to use it. This will tell webpack how to work with our project. This file is a .js file that uses node.js features. So we need to first use the export sytnax for node.js <code>module.exports = {}</code> We need to remove <em>ALL</em> the .js termination in our .ts file import statemets for webpack to work properly.
+                </p>
+                <p class="pargraph">
+                    <strong>webpack.config.js (entry and output)</strong>
+                    <br>
+                    We start filling our module.exports with code. We start with <code>entry: './src/app.ts'</code> which will make webpack look at that file, take all the import statements and everything else, and know our code to compile and bundle. We then set <code>ouput: { filename: 'bundle.js' }</code> We can have a special syntax <code>'bundle.[contenthash].js'</code> that will have webpack create a unique hash for every build of our project which can help with caching in the browser. In our case we don't need it. On our output{} object we also need a path. This path should match your ts.config path, but we need an <em>absolute path</em> to this directory, through node.js sytax. We need to use a node.js module with node.js import sytnax <code>const path = require('path')</code> which gives us the <em>path</em> module, a core node.js module. We then use it in our config <code>path: path.resolve()</code> which allows us to build an absolute path to a folder. We then finish it with the two arguments <code>path: path.resolve(__dirname, 'dist')</code> where __dirname is a constant avaliable globally in a node.js environment, and 'dist' which makes resolve() construct an absolute path to the dist folder for webpack to use to write your output to.
+                </p>
+                <a id="04" href="#00">Index</a>
+                <h2 class="subtitle">Adding TypeScript Support with the ts-loader Package</h2>
+                <p class="paragraph">
+                    <strong>module { rules: [ { } ] }</strong>
+                    <br>
+                    We have the basic webpack setup for JS projects. However, since we are using TS we need to tell it what to do with ts files. We create a new property in our config <strong>module</strong>. A module is just a file. We set a <code>rules[]</code> array that can take multiple values to handle different types of files like CSS, images ... There is more info on this on the official DOCS. We will add a loader (package that tells webpack how to work with different files) through our <strong>ts-loader</strong> installed package that tells webpack how to handle TS. We set our first rules value object <code>{ test: /\.ts$/, use: 'ts-loader', exclude: /node_modules/ }</code> <strong>test</strong> is a test that webpack will perform on any type of file with .ts termination, using regular expression sytnax. Now the test will be applied to all .ts files. <strong>use</strong> will tell webpack what it should do with those files, in our case the <em>ts-loader</em> loader. <strong>ts-loader</strong> knows what to do with those files and takes our <em>tsconfig.json</em> setting into account. <strong>exculed</strong> tells webpack not to look into our node_modules directory, also using regular expression sytnax. 
+                </p>
+                <p class="paragraph">
+                    <strong>Side-track Regular Expressions</strong>
+                    <br>
+                    Regular expressions are patterns used to match character combinations in strings. In JS these are also objects. In vanilla JS they are used with <code>RegExp</code> methods exec(), and test(), and with the <code>String</code> methods match(), matchAll(), replace(), search(), and split(). Regular expressions are used to match patterns and have a complex syntax composed of <em>Assertions, Character classes, Groups and ranges, Quantifiers, and Unicode property escapes.</em> The DOCS on this topic are intense and prety hard to follow. 
+                </p>
+                <p class="paragraph">
+                    <strong>resolve: { }</strong>
+                    <br>
+                    When we are done with modules we create a <strong>resolve</strong> object that tells webpack which file extensions it adds to the imports. We removed all the .js from our imports, and webpack will look for .js by default. We want webpack to look for .ts files. Inside resolve we create <code>extensions: ['.ts','.js']</code> which will include all .ts and .js files and bundle all the files with these extensions together. 
+                </p>
+                <p class="pargraph">
+                    <strong>tsconfig and webpack.config for debugging</strong>
+                    <br>
+                    We need to enable <code>soruceMap</code> in tscofig. In webpack we do <code>devtool: 'inline-source-map',</code> this tells webpack that there will be generated source maps already which it should extract and wire up together correctly with our bundled file. This is the last thing we need to use webpack for our setup.
+                </p>
+                <p class="paragraph">
+                    <strong>How to use webpack</strong>
+                    <br>
+                    To get webpack running we go into our <strong>package.json</strong> file and add <code>"build": "webpack"</code> in our <code>"scripts": {}</code> Now we delete everything in our dist/ directory. Now we run <code>yarn build</code> and webpack runs. Now if we go to dist we have a single file that has all our code minified into a single line. We go to our <strong>index.html</strong> file and link to our bundle.js. We run <code>yarn start</code> and test our app. It works perfectly and in the dev tools network tab we can see that it only does a single import of our bundle.js file. 
+                </p>
+                <a id="05" href="#00">Index</a>
+                <h2 class="subtitle">Finishing the Setup & Adding webpack-dev-server</h2>
+                <p class="paragraph">
+                    We are not using the webpack-dev-server. Fortunately switching from lite-server to this one is done with one line of code in our <strong>package.json</strong> file scripts <code>"start": "wepack-dev-server"</code> If we do some change and save, we can see that the dev-server is re compiling and running in <strong>localhost 8080</strong> successfuly, however our changes are not reflected in our app. This happens becasue we are not wired up correctly yet.
+                </p>
+                <p class="paragraph">
+                    <strong>Wiring our dev-server</strong>
+                    <br>
+                    We go to our <strong>webpack.config.js</strong> file and add a configuration under <strong>output</strong> <code>publicPath: 'dist'</code>. Now if we save and reload, our changes are applied. This is a configuration that we add for our <em>webpack-dev-server</em> so that it understands where the output is written to and where it is relative to the <em>index.html</em> file. We add another config option at the very start <code>mode: 'development',</code> this tells webpack that we are building for development here and it will do fewer optimizitaions to improve our dev experience, make debugging easier, and give us more meaningful error messages. We now have the development workflow finished. 
+                </p>
+                <a id="06" href="#00">Index</a>
+                <h2 class="subtitle">Adding a Production Workflow</h2>
+                <p class="paragraph">
+                    We have finished our <strong>development</strong> workflow with our settings. We want to have a different workflow for <strong>production</strong> which is how our code will work as a finished product with our end users. We create a new file <strong>webpack.config.prod.js</strong> this name is a <em>placeholder</em> as webpack will <em>NOT</em> look for it in default settings. We will copy all our <strong>wepack.config.js</strong> file content to this file to fine tune it. 
+                </p>
+                <p class="paragraph">
+                    <strong>Tweaked production settings</strong>
+                    <br>
+                    We switch <code>mode: 'production'</code> This will tell WP to do these optimizations, minify our code and more. We definitley want to set this here. We remove <code>publicPath</code> as it was required for our <em>dev server</em> which we will not be using in production. For production we want to run the WP script and generate our output written to disc and not served temproarily in a locally running server. We set <code>devtool: 'none'</code> to not generate any <em>source maps</em>.
+                </p>
+                <p class="paragraph">
+                    <strong>plugins</strong>
+                    <br>
+                    We create a plugins[] array at the bottom <code>plugins: []</code>. <strong>plugins</strong> are extensions you can add to your webpack workflow that will be applied to the entire output. Rules and modules are applied at a per file leve, plugns are applied to the general workflow. We want a plugin that automatiaclly deletes everything from the dist folder so that we only have the lastes code in our dist directory. We install a new package <code>yarn add clean-webpack-plugin -D</code> Which will do this. In our WP config we import it <code>const CleanPlugin = require('clean-webpack-plugin')</code> We then instanciate it in our plugins array with <code>new CleanPlugin.CleanWebpackPlugin()</code> Now our production workflow is complete.
+                </p>
+                <p class="paragraph">
+                    <strong>Adjusting the build script</strong>
+                    <br>
+                    We go to our <strong>package.json</strong> file and change our <em>build</em> script <code>"build": "webpack --config webpack.config.prod.js"</code> which tells WP to use the file we created (our custom name) for configuration over the default. Now if we run <code>yarn build</code> it will build our app optimized for production to deploy. 
+                </p>
+            </li>
+        </ul>
+    </div>
+
+    <!-- Optional JavaScript -->
+    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+    <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js" integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>
+    </body>
+</html>
