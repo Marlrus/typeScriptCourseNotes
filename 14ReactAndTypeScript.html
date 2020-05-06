@@ -1,0 +1,235 @@
+
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+    <style>
+        code{
+            background-color: rgba(0,0,0,.075);
+            font-weight: bold;
+        }
+        .subtitle{
+            font-size: 1.3rem;
+            font-weight: bold;
+            margin: 0;
+            padding: 5px;
+            margin-top: 5px;
+            background-color: rgba(0,0,0,.075);
+            text-align: center;
+        }
+        h3{
+            font-size: 2rem;
+            font-weight: bold;
+            margin: 0;
+            padding: 5px;
+            margin-top: 10px;
+        }
+        .paragraph{
+            margin: 0.5rem 0 0.5rem;
+        }
+        .tab{
+            margin: 0 1rem;
+        }
+        html{
+            scroll-behavior: smooth;
+        }
+        </style>
+
+    <title>14 Using React with TypeScript</title>
+  </head>
+  <body>
+      
+    <div class="container">
+        <h1 class="display-3 text-center">14 Using React with TypeScript<hr></h1>
+        <header>
+            <p class="paragraph">
+                How to integrate React with TS using TSX. React supports TS with create-react-app and has it's own types that give us TS support. We use functional components and hooks to create a basic CRUD todo list to see TS and React in action. We learn about the use of <strong>props</strong>, <code>useRef()</code>, <code>useState()</code> and special uses of <code>bind()</code> to cross-communicate between components and how to use @types to get TS support on third party libraries that use React. 
+            </p>
+        </header>
+
+        <h2 id="00" class="subtitle">Index</h2>
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th scope="col">#</th>
+                    <th scope="col">Topic</th>
+                    <th scope="col">Description</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <th scope="row">1</th>
+                    <td>
+                        <a href="#01">Setting up a React + TS Project</a>
+                    </td>
+                    <td>
+                        Starting create-react-app with TypeScript
+                    </td>
+                </tr>
+                <tr>
+                    <th scope="row">2</th>
+                    <td>
+                        <a href="#02">Working with Props and Types for Props</a>
+                    </td>
+                    <td>
+                        We create React functional components and pass values through the use of <strong>props</strong>
+                    </td>
+                </tr>
+                <tr>
+                    <th scope="row">3</th>
+                    <td>
+                        <a href="#03">Getting User Input with "refs"</a>
+                    </td>
+                    <td>
+                        How to use the <code>useRef()</code> hook to get the value from an HTMLInputElement to our component logic. 
+                    </td>
+                </tr>
+                <tr>
+                    <th scope="row">4</th>
+                    <td>
+                        <a href="#04">Cross-component Communication</a>
+                    </td>
+                    <td>
+                        How to use <strong>props</strong> to send data from our nested components to parent components. How to let TS know what is being passed and have added type support through the use of interfaces.
+                    </td>
+                </tr>
+                <tr>
+                    <th scope="row">5</th>
+                    <td>
+                        <a href="#05">Working with State and Type</a>
+                    </td>
+                    <td>
+                        How to handle re-render using <strong>State</strong> using the <code>useState()</code> hook. The inner workings of useState() <code>useState(): [state, setState]</code>. Setting our model in a separate files. Setting the type of our state using Generic. 
+                    </td>
+                </tr>
+                <tr>
+                    <th scope="row">6</th>
+                    <td>
+                        <a href="#06">Managing State Better (More Props & State Work)</a>
+                    </td>
+                    <td>
+                        How to use the <code>setState()</code> function from useState() to update the state without overwriting by using a callback. We also move to the D in our CRUD and send the function using a prop. We use <strong>bind(null, value)</strong> using two arguments to send the proper data through to the function using the child component. 
+                    </td>
+                </tr>
+                <tr>
+                    <th scope="row">7</th>
+                    <td>
+                        <a href="#07">My Refactor and React Testing</a>
+                    </td>
+                    <td>
+                        My go at refactoring the code to use splice() instead of filter() to not iterate over every item in the array. I found that React using functional components works using <em>pure-functions</em> therefore, altering the state directly results in unexpected behaviours as these are <em>side-effects</em> that should not happen in pure functions. I re-factored to handle the logic in a way that the real state would not be altered and learned of React.StrictMode and its double invocation of some functions. 
+                    </td>
+                </tr>
+                <tr>
+                    <th scope="row">8</th>
+                    <td>
+                        <a href="#08">Types for other React Features (Redux or Routing)</a>
+                    </td>
+                    <td>
+                        React uses other libraries for additional functionality and some have documentation on how to use them with TS. Alternitively you can usually find <code>@types/</code> packages for the other libraries and get TS support. 
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+
+        <ul class="list-group">
+            <li class="list-group-item">
+                <a id="01" href="#00">Index</a>
+                <h2 class="subtitle">Setting up a React + TS Project</h2>
+                <p class="paragraph">
+                    React can be used with TS. We need to be able of handling JSX and compiling TS to JS. Create-react-app supports TS out of the box through <code>npx create-react-app . -- template typescript</code> which creates a React app in our current dir. We clean up the file by deleting a few files. We remove app.css, app.test.tsx, logo.svg, serviceWorker. We remove the imports for these files, and code associated with it (serviceWorker in index.tsx). On the index.css we remove everything and set <code>html{ font-family: sans-serif; }</code> and <code>body { margin: 0; }</code> We are left with a clean slate to work on our app.
+                </p>
+                <a id="02" href="#00">Index</a>
+                <h2 class="subtitle">Working with Props and Types for Props</h2>
+                <p class="paragraph">
+                    We still run our project with <code>yarn start</code> which will launch our localhost and watch our changes. I re-write App.tsx to use arrow syntax with <code>const App: React.FC = () => {}</code> which will use the type React.FC from the @types/react that came with CRA.
+                </p>
+                <p class="paragraph">
+                    We will build a <em>to-do</em> App using TS + React. We create a new dir <code>components</code> and a <strong>TodoList.tsx</strong> component. We import react and create our function, and then export it at the bottom <code>export default TodoList</code>. We set the Type of our function with <code>const TodoList: React.FC = () =>{ ... }</code> which will give us TS support for invalid syntax for a React FunctionComponent. 
+                </p>
+                <p class="paragraph">
+                    I don't really understand a lot about React so I will revisit this module again once I finish the React course. Basically we create a component TodoList that renders a UL with LIs inside that we map from data that we are getting. Inside our component we add the data <code>const todos: {}[]</code> which we render in the component, however, we move the data into the App component to use it from there. We put it inside app and set our component inside the Div with <code>&lt;TodoList items={todos}&gt;</code> after we import the component. The items sends the data from the App component to our TodoList component as <strong>props</strong>. 
+                </p>
+                <p class="paragraph">
+                    In our TL component we do <code>const TodoList: React.FC = props =>{ ... }</code> Where props is the data we passed. The strcuture is <code>props.items</code> as we passed the props as <code>items={todos}</code> in our App component. We have to change the map inside our TL to use props with <code>{props.items.map( todo => ( ... ))</code> and inside we use them with <code>{todo.id} {todo.text}</code>. However TS will err because it doesn't know our types. We must pass them to our TL component. We create an interface <code>interface TodoListProps { items: {id: string, text: string}[] }</code> which we pass to the React.FC as a generic so it will know that the expected props are an array of objects of that structure inside <em>items</em>. We save compile and it runs. 
+                </p>
+                <a id="03" href="#00">Index</a>
+                <h2 class="subtitle">Getting User Input with "refs"</h2>
+                <p class="paragraph">
+                    We want to have our user input data into our todoList, so we create a component <em>NewTodo.tsx</em>. We do the same procedure of import, export, and functional type assignment. We then import it to App.tsx and put it over the TodoList component. We create a new function to handle our sumbission <code>todoSumbitHandler = () => { ... }</code> On our component, we have a form, where we set it to trigger onSubmit <code>form onSubmit={todoSumbitHandler}</code> which will exectue when we submit. We just point at it, not execute it with (). On our todoSumbitHandler we get an event object <code>(event:React.FormEvent)</code> which is the type of the event. We do the standard <code>event.preventDeafault()</code> We impot a hook from react <code>{ useRef }</code> in our React import. 
+                </p>
+                <p class="paragraph">
+                    Hooks are special functions that we can execute in function components to add funtctionalities. useRef() gives us a ref object that can be stored and be used to assign it to a DOM element. We go to the <em>input</em> in our form and use the ref property <code>ref={textInputRef}</code> which creates a connection between our input and our hook. useRef errs because we don't have a type set to it, since we are using an input we use the <code>HTMLInputElement</code> type as the generic for useRef. We need to pass a value for the hoisting of our function which we set to <code>(null)</code> Because when the component gets loaded first there will be no value to point to. We go to our todoSumbitHandler and get the value with <code>const enteredText = textInputRef.current!.value</code> We set a console.log and test it out and it works. 
+                </p>
+                <a id="04" href="#00">Index</a>
+                <h2 class="subtitle">Cross-component Communication</h2>
+                <p class="paragraph">
+                    We want to get the data from our NewTodo component to our App component. We do this because this is the component that has a link to the NewTodo component and the TodoList component. We do this by creating a function in our App component that we will pass to our NewTodo component. We create <code>const todoAddHandler = (text: string) => { ... }</code> which will recieve the text from NewTodo and use it in App. We pass it by sending a prop of any name we want to our component inside App <code>NewTodo onAddTodo={todoAddHandler}</code> we are sending a prop called onAddTodo to NewTodo that has our function in it.
+                </p>
+                <p class="paragraph">
+                    Inside NewTodo we pass the prop the same way we did in TodoList. In our function we add <code> = props => { ... }</code> which gives us access to the props we passed from App. Inside of our todoSumbitHandler() we send the value using <code>props.onAddTodo(enteredText)</code> which will run the function from our App component. We get a TS err because TS doesn't know what our prop is so we do the same thing we did on TodoList but this time we will use <em>type</em> although <em>interface</em> is the standard for this operation <code>type NewTodoProps = { onAddTodo: (todoText: string) => void }</code> which will tell TS that we are getting an onAddTodo prop that is a function that text string as an argument and returns nothing. We then have to pass that type using a generic in our functional component using <code>React.FC&lt;NewTodoProps&gt;</code> which will stop TS from erring and accept our parameter. Now if we try to pass a value that is not a string to our prop, TS will err. If we run this now, we see the same console.log we had, but this time it is from our App component and not NewTodo. 
+                </p>
+                <a id="05" href="#00">Index</a>
+                <h2 class="subtitle">Working with State and Type</h2>
+                <p class="paragraph">
+                    We want to handle changes using State, similar to what we did in our TS DOM handling dropdown app. To use State we use a hook called useStat which we import from React. Here we wipe our dummy data state and replace it with use state <code>const todos = useState([])</code> which passes an empty array as our initial state. The <strong>useState</strong> hook <em>ALWAYS</em> returns an array with exactly two elements: The latest state snapshot for the render cycle, and a function to <em>UPDATE</em> that state and re-render the component. 
+                </p>
+                <p class="paragraph">
+                    We use Array destructuring to store these values <code>const [todos, setTodos] = useState([])</code> which will store our state as todos and setTodos as our function to update the state. Since we want to update the state when we get a todo submitted, we add the function to our todoAddHandler() <code>setTodos([...])</code>, however we get an err because TS doesn't know what our state should look like. We do this by creating an interface for each of our Todo items, we do this in a separate file <strong>todo.modle.ts</strong> here we create an interface for our todo <code>export interface Todo { id: string, text: string }</code> which we then import <code>import { Todo } from './todo.model'</code> which we can use in our code. Since useState is a generic we pass the type <code>useState&lt;Todo[]&gt;([])</code> which tells TS that our state is an array of todos, which means we can now handle the state change in our setTodos() <code>setTodos([{id: Math.random().toString(), text: text}]) </code> which will not err. However we are no consistently overwriting our state. 
+                </p>
+                <a id="06" href="#00">Index</a>
+                <h2 class="subtitle">Managing State Better (More Props & State Work)</h2>
+                <p class="paragraph">
+                    With the setup we have going, we overwrite the state every time we submit using NewTodo, we want to add things to our state that will trigger a re-render with our new items. To do this we use the function we alter <code>setTodos()</code>, we do it using a functional approach, we pass a function to setTodos(cb()) that takes the previous state value as its argument and returns an updated value. We do this using the functional method along with array destructuring <code>setTodos(prevTodos => [ ...prevTodos, { ... } ])</code> Here we are taking the previous state which we pass as the argument to the callback, destructuring it, and then adding our new todo item to the sate, which will trigger a re-render.
+                </p>
+                <p class="paragraph">
+                    We have the C in our CRUD, we will now move to the D. We want to create a function that will alter the state and trigger our rendering after removing a Todolist item. To do this we need to create a function that will remove a todo, which we will target using the todo.id property from our <strong>todo interface</strong>. We create <code>const todoDeleteHandler = (todoId: string) =>{ ... }</code> inside we call the function from useState() setTodos() <code>setTodos(prevTodos => { return prevTodos.filter(todo=> todo.id !== todoId )})</code> Here we get the previous state and call the JS .filter high order function, which passes every value of the array and does a check where everything that returns true is pushed to the new array. Here every todo that doesn't match the todoId we passed will get removed. 
+                </p>
+                <p class="paragraph">
+                    We now need to pass this to TodoList as a prop <code>onDeleteTodo={todoDeleteHandler}</code> which will give us access to the todoDeleteHandler inside our TodoList component. However we get an err because TS doesn't accept this function as a property of our <em>TodoListProps</em> interface. We add it in our TodoList component with <code>onDeleteTodo: (id: string)=> void</code> which makes TS understand that this function takes a string as an argument and returns nothing. Now we don't get an err in our App component, but we still need to pass it to the TodoList component.
+                </p>
+                <p class="paragraph">
+                    We re-structure our component by putting our <code>{todo.text}</code> inside a span element, and create a button element. We want to trigger the function when we click which we do with <code>onClick ={ props.onDeleteTodo }</code> which we passed through our App component. However we need to pass our todo.id as an argument to this function, but we cannot call it here, just declare it. We fix this by using <strong>bind()</strong> <code>onClick= { props.onDeleteTodo.nind(null, todo.id) }</code> <strong>Note on Bind:</strong> When using bind() we usually set the context for the <em>this</em> keyword, however if we set it to <em>null</em> and pass a second paramenter, this will be the first argument received by the function when we call it. Now when the function gets called in our App component, it will automatically receive todo.id as its parameter and execute how we want, changing the state and triggering a re-render.
+                </p>
+                <a id="07" href="#00">Index</a>
+                <h2 class="subtitle">My Refactor And React Testing</h2>
+                <p class="paragraph">
+                    <strong>My Refactor Error</strong> 
+                    <br>
+                    I tried to have a go at this problem on my own and didn't want to loop through the whole array as I know for a fact that only one element in the array will be the target of deletion. Therefore I wanted to use the index of that item to splice the element and not go over every single element in the array. I used <strong>splice(startIndex, numberOfDeletions)</strong> which takes an index, and then the number of elements to be removed from that index (1). To get access to the index I used <code>findIndex(element=> condition)</code> which returns the index of the first element in an array that matches the condition set in the callback. <code>prevTodos.findIndex(todo => todo.id === todoId), 1</code> Which will give us what we need to execute splice and alter the array as we want by removing that one item and triggering a re-render. This <strong>DID NOT</strong> work as expected. In fact, it did not work at all and when it did it removed 2 items. 
+                </p>
+                <p class="paragraph">
+                    <strong>Understanding the mistake</strong>
+                    <br>
+                    Even though I tested this in another file and got the functionality I expected, this code was not working. Digging through stack-exchange I found that if you mutate the State <em>DIRECTLY</em> it might not trigger a re-render if you use the same object reference. Also, if we look at our <strong>index.tsx</strong> file we see that there is a tag enclosing the App component: <code>React.StrictMode</code>, strict mode checks for potential problems in an app that may be infrequent or not evident. This mode makes some functions get invoked twice. <em>"It is expected that setState updaters will run twice in strict mode in development. This helps ensure the code doesn't rely on them running a single time (which wouldn't be the case if an async render was aborted and alter restarted). If your setState updaters are pure functions (as they should be) then this shouldn't affect the logic of your application." - Dan Abramov</em> <a href="https://dev.to/mccoyrjm/double-invoke-of-state-functions-in-react-5cl0">Double-Invoke of State Functions in React</a> and in <a href="https://github.com/facebook/react/issues/12856">React.StrictMode causes setState to fire twice</a>
+                </p>
+                <p class="paragraph">
+                    Strict mode ensures that we run <em>pure</em> functions. Pure functions are functions that accept arguments and return a value without modifying anything outside of its scope. Its return value must depend on its arguments and must return a value. In our case, <em>splice()</em> is not a pure function, as it direcly affects a variable outside of its scope as it alters (<em>mutates</em>) its original value, meaning that if it is called twice, it will have a different output even though it had the same arguments. In React, strict mode triggers double invocations in certain situations, one of them is using the useState hook's second return value, setState, called <code>setTodos()</code> in our app. So, if we re write our function to not mutate the original state, we have a <em>pure function</em>.
+                </p>
+                <p class="paragraph">
+                    <strong>Refactor to Pure Function</strong>
+                    <br>
+                    We need to create a function that doesn't alter anything outside of its scope, in our case the parameter it is taking. We can use splice() by creating a copy of the prevTodos (state) and then using splice on it <code>const newTodos = [...prevTodos]</code> and then running the splice method on that and <code>return newTodos</code> This might be less verbose, and still a pure function, but it makes code harder to read, and in operations of a small scale, the performance factor doesn't justify the loss in readability and added complexity. Therefore using filter() is the best method for this case. Another factor is that if we alter the state directly, it doesn't change the pointer in memory, which may cause React to not detect the change in the state and not re-render as expected.This is why In some cases It didn't trigger a change at all. <strong>Note:</strong> Use pure functions, do not alter the state directly ever. Keep in mind for the switch into functional programming, always return the value that you want without altering a value outside of the scope of the function. Also <strong>JS</strong> functions are always <strong>closures</strong> which means that JS functions have access to values or variables <em>OUTSIDE</em> of it's scope, making it easy to write inpure functions that change values and not just execute logic. Separate values from logic, ALWAYS.
+                </p>
+                <a id="08" href="#00">Index</a>
+                <h2 class="subtitle">Types for other React Features (Redux or Routing)</h2>
+                <p class="paragraph">
+                    Redux is a library that applies state management to React. In the DOCS you can find <a href="https://redux.js.org/recipes/usage-with-typescript">how to use Redux with TypeScript</a>. If we use the React Router package <code>yarn add react-router-dom</code> we will have the package, but it has no type instructions, however we can get good type support here. We just need to add the package <code>yarn add @types/react-router-dom</code> which will add type support for React Router. 
+                </p>
+            </li>
+        </ul>
+    </div>
+
+    <!-- Optional JavaScript -->
+    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+    <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js" integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>
+    </body>
+</html>

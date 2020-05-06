@@ -1,0 +1,193 @@
+
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+    <style>
+        code{
+            background-color: rgba(0,0,0,.075);
+            font-weight: bold;
+        }
+        .subtitle{
+            font-size: 1.3rem;
+            font-weight: bold;
+            margin: 0;
+            padding: 5px;
+            margin-top: 5px;
+            background-color: rgba(0,0,0,.075);
+            text-align: center;
+        }
+        h3{
+            font-size: 2rem;
+            font-weight: bold;
+            margin: 0;
+            padding: 5px;
+            margin-top: 10px;
+        }
+        .paragraph{
+            margin: 0.5rem 0 0.5rem;
+        }
+        .tab{
+            margin: 0 1rem;
+        }
+        html{
+            scroll-behavior: smooth;
+        }
+        </style>
+
+    <title>15 Node JS + Express and TS</title>
+  </head>
+  <body>
+      
+    <div class="container">
+        <h1 class="display-3 text-center">15 Node JS + Express and TS<hr></h1>
+        <header>
+            <p class="paragraph">
+                TS and Node can be made to work together by importing @types for TS support for the packages. There is a setup that we need to get proper TS support and to use our TS import and export syntax. This will compile down to JS in the end. The objective is to create a very basic REST API with a CRUD to handle todos. We won't render any html, we will work with Postman. There are specific types for express and node that aid us in using TS, however it is not native. A TS native backend uses Nest.js.
+            </p>
+        </header>
+
+        <h2 id="00" class="subtitle">Index</h2>
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th scope="col">#</th>
+                    <th scope="col">Topic</th>
+                    <th scope="col">Description</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <th scope="row">1</th>
+                    <td>
+                        <a href="#01">Executing TypeScript code with Node</a>
+                    </td>
+                    <td>
+                        We use nodemon and tsc to run our server. We see that node doesn't concern itself with file termination and that ti will run a .ts file if it has no ts features.
+                    </td>
+                </tr>
+                <tr>
+                    <th scope="row">2</th>
+                    <td>
+                        <a href="#02">Setting up a Project</a>
+                    </td>
+                    <td>
+                        We create our package.json and then create our tsconfig file. We switch the target to es2018, because node can handle anything up to there and set moduleResolution to node. We then install our packages <strong>express body-parses</strong> and add nodemon as a dev dependency.
+                    </td>
+                </tr>
+                <tr>
+                    <th scope="row">3</th>
+                    <td>
+                        <a href="#03">Working with Types (In Node+Express)</a>
+                    </td>
+                    <td>
+                        We install <code>@types/node @types/express -D</code> to get type support for both modules. Now we can use import statements using <code>import {} from '...'</code> and gives us TS support for express and node. We create a script for nodemon in our dist directory. 
+                    </td>
+                </tr>
+                <tr>
+                    <th scope="row">4</th>
+                    <td>
+                        <a href="#04">Adding Middleware and Types</a>
+                    </td>
+                    <td>
+                        We start our REST API using the express Router. We create very basic err handling with a function I haven't used. We import types from express.
+                    </td>
+                </tr>
+                <tr>
+                    <th scope="row">5</th>
+                    <td>
+                        <a href="#05">Working with Controllers & Parsing Request Bodies</a>
+                    </td>
+                    <td>
+                        We separate our routes from our logic through a <strong>controllers.ts</strong> file. We create a model for our Todo items to use in our files. We import the controller to the route and use it, and also import the body-parser <strong>json</strong> method. I refactored to use composition instead of classes.
+                    </td>
+                </tr>
+                <tr>
+                    <th scope="row">6</th>
+                    <td>
+                        <a href="#06">More CRUD Operations</a>
+                    </td>
+                    <td>
+                        We create the <strong>PATCH</strong> route to edit our todos. We use the type <code>RequestHandler</code> and use a generic to give TS support to our params. We then create our <strong>DELETE</strong> route and test everything on Postman, which works.
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+
+        <ul class="list-group">
+            <li class="list-group-item">
+                <a id="01" href="#00">Index</a>
+                <h2 class="subtitle">Executing TypeScript code with Node</h2>
+                <p class="paragraph">
+                    We create an <strong>app.ts</strong> file and we create a console.log(), we then use tsc to compile and run it. However, if we run our app.ts file directly with node, it also executes. This is because node doesn't care about file termination and will treat any file it is passed as a JS file, which works if don't use TS features. However, if we add TS features to our app.ts file, Node will not run it. We must compile it to JS and then run it. There is a package <strong>ts-node</strong> that is a tool that compiles to JS and runs it on node automatically. This is good for Dev but not for Production because it will need to compile our file every time it is called from the server. Therefore we want to serve compiled TS files. 
+                </p>
+                <a id="02" href="#00">Index</a>
+                <h2 class="subtitle">Setting up a Project</h2>
+                <p class="paragraph">
+                    We won't use webpack for our project. We will just use tsc. We create a package.json with <code>yarn init</code> to install our packages and <code>tsc --init</code> to create our tsconfig.json file. We change our target to <code>es2018</code> which runs with our node version, and we set <code>"moduleResolution": node</code> which will handle our imports as node. We set outDir to ./dist and rootDir to ./src which we have done before. We then install production dependencies to our projects <code>yarn add express body-parser</code> and then dev dependencies <code>yarn add nodemon -D</code>. This is our very basic setup for a node express ts app.
+                </p>
+                <a id="03" href="#00">Index</a>
+                <h2 class="subtitle">Working With Types (In Node+Express)</h2>
+                <p class="paragraph">
+                    We set upp the basic import with node syntax <code>require('express')</code> however we get errs because this import is a node import syntax, not a browser side import. We need to install <code>yarn add @types/node -D</code> which removes our err. However we see that we get no intellisense for app or anything express so we <code>yarn add @types/express -D</code> however, we still get no intellisense. This is because of our import syntax. We change our import to <code>import express from 'express'</code> which gives us TS support. This syntax is experimental in node, however we are <em>NOT</em> using it directly because we are using TS, which will change it when compiling to JS. We set up nodemon by adding a script for start <code>"nodemon dist/app.js"</code> which means that yarn start will execute nodemon in our app.js.
+                </p>
+                <a id="04" href="#00">Index</a>
+                <h2 class="subtitle">Adding Middleware and Types</h2>
+                <p class="paragraph">
+                    We want to make a REST API, so we create a directory in src routes/ where we create a <strong>todos.ts</strong> file. Here we <code>import { Router } from 'express'</code> which imports our express router. We use it with <code>const router = Router()</code> and export with <code>export default Router</code> (This export syntax is unfamiliar to me). Inside we create post, get, patch, and delete routes with '/' or '/:id'. Then we go to our app.ts and use them with <code>import todoRoutes from './routes/todos'</code> which lets us use these routes, <code>app.use('/todos', todoRoutes)</code> which will make all our routes in the file trigger on /todos. We then create a basic error handling function (Never done it before). In express this is done with a function that takes 4 arguments (err, req, res, next) <code>app.use(err, req, res, next)=>{ ... }</code> We get an err because we have no types on these params. So we add them to our express import for syntax brevity <code>import express, { Request, Response, NextFunction } from 'express'</code> now we can set the types <code>err: Error, req: Request, res: Response, next: NextFunction</code> before we would have need to do <code>req: express.Request</code>. Inside we 'handle' our errors with <code>res.status(500).json({message: err.message})</code> Still unclear what this will do. 
+                </p>
+                <a id="05" href="#00">Index</a>
+                <h2 class="subtitle">Working with Controllers & Parsing Request Bodies</h2>
+                <p class="paragraph">
+                    We want to create <em>controllers</em> for our routes. This is not necessary but it is optional. Here we will export functions to pass to our routes. We create <code>export const createTodo = (req,res,next)=> { ... }</code> where we get errs because of types. We can do it as we did earlier in our app, however we can do it by importing a specific type <code>import ( RequestHandler } from 'express'</code> which we set with <code>export const createTodo: RequestHandler = ( ... )...</code> Which understands what types each argument of the function is. We want to create a new todo in this contorller. However we want to create a type for this newTodo.
+                </p>
+                <p class="paragraph">
+                    We create a models/ dir in our src/ where we want to create the model for our todo. We do <code>export class Todo {
+                        constructor(public id: string, public text: string) {}
+                     }</code> which we will import into our controllers <code>import { Todo } from '../models/todo'</code> which we can now use: <code>const TODOS: Todo[] = []</code>. We want to use it in our route, where we will get text from our request body and we want to use that to create a newTodo <code>const text = (req.body as {text:string}).text</code> where we use typecasting to get TS inferrence. And we finally create the object with <code>const newTodo = new Todo(Math.random().toString(), text)</code> which will use our class constructor to instanciate a new todo. Then we <code>TODO.push(newTodo)</code> which will push an instance of our class to TODOS. 
+                </p>
+                <p class="paragraph">
+                    We then <code>import { createTodo } from '../controlleres/todos'</code> and use it in our post route <code>router.post('/', createTodo)</code> where we just point at it, not execute it. Now we go back to our contoller and add a response <code>res.status(201).json({message: 'Created the todo', createdTodo: newTodo})</code> where the status indicates we created the resource successfuly. We need to parse the bodies of incoming request.
+                </p>
+                <p class="paragraph">
+                    We installed 'body-parser' for this, but we will use the json method from that package <code>import { json } from 'body-parser'</code> which we use with <code>app.use(json())</code> which will execute it as middleware. This parses the body of any request and extracts any JSON data it find there to poulate the body key with that parsed json data <code>req.body</code>. 
+                </p>
+                <p class="paragraph">
+                    We want to test our route, we do it through <em>Postman</em> which we will use to send a POST request to trigger our backend route. We create a new requrest to our localhost/todos/, we go to body and set it to json Where we send a JSON object with <code>{ "text" : "string value" }</code> which we execute and get a response as we set it: { message: 'Created the todo.', createdTodo: newTodo }. 
+                </p>
+                <p class="paragraph">
+                    <strong>Refactor to composition</strong>
+                    <br>
+                    I removed the class from model, instead opting for a factory function. I created <code>export const todoFFn = (id: string, text: string): Todo => { return { id: id, text: text } }</code> which does the same as our <em>class</em> constructor, without the use of this. This caused an err, because the class works as a type as well. I had to create an interface for this <code>export interface Todo { id: string, text: string }</code> which I used as the return for TodoFFn() and imported it to the controller. I then didn't get an error in the data set <code>: Todo[]</code>. 
+                </p>
+                <a id="06" href="#00">Index</a>
+                <h2 class="subtitle">MOre CRUD Operations</h2>
+                <p class="paragraph">
+                    Since we are managing our TODOS in memory, every time we save the app and reset, the data gets scrapped. We will therefore create the routes and execute them with postman in sequence. We do our get route <code>export const getTodos: RequestHandler (...) => { res.json({todos: TODOS}) }</code> which will return our todos in json format. If we excute our get we get an empty array, but if we run our POST and then our GET we see the todo we created. 
+                </p>
+                <p class="paragraph">
+                    We the work on the <strong>patch</strong> edit controller (Similar to PUT). Here we will use the req.params to get the id from an element and then use it to update the todo. We create <code>export const updateTodo: RequestHandler&lt;{id: string}&gt; = (req, res, next)=>{ ... }</code> Which tells our route that we expect an id in our route corresponding to a string. We then catch that id <code>const todoId = req.params.id</code> and then get the update text from the request body <code>const updatedText = (req.body as {text: string}).text</code>. Then we find the index of the item we want to modify <code>const todoIndex = TODOS.findIndex(todo => todo.id === todoId)</code> 
+                </p>
+                <p class="paragraph">
+                    Then we want to check if we found an element, if .find() doesn't find a match, it returns -1 as the index, therefore we check using <code>if(todoIndex < 0) throw new Error(`Couldn't find todo!`)</code> which would end the execution of our route. If the route continues, we then modify the item with <code>TODOS[todoIndex] = TodoFFN(todoId, updatedText)</code> which uses our factory function to create a new todo element. Once it is done we respond with <code>res.json({message: 'Updated!, updateTodo: TODOS[todoIndex]})</code> We import it to our routes and use it in our patch route, then go through the whole, post, get, and then patch route using postman (sending a req.body with {text: string}), and the route works successfuly. 
+                </p>
+                <p class="paragprah">
+                    We work on the delete controller <code>export const deleteTodo: RequestHandler ... (req,res,next)=> { ... }</code> where we can re-use the code from the previous route regarding finding the element and throwing an error. Then if we get through we use <code>TODOS.splice(todoIndex, 1)</code> to remove the found element and then <code>res.json({message: 'Todo deleted!'})</code>, which concludes our basic CRUD.
+                </p>
+            </li>
+        </ul>
+    </div>
+
+    <!-- Optional JavaScript -->
+    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+    <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js" integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>
+    </body>
+</html>
